@@ -1,1 +1,1 @@
-# hi-kingz-frontend
+# hi-kingz
