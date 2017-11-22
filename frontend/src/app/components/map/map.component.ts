@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment';
 
 import * as mapboxgl from 'mapbox-gl';
 import { decode } from '@mapbox/polyline';
-import {instantiateDefaultStyleNormalizer} from "@angular/platform-browser/animations/src/providers";
+import {instantiateDefaultStyleNormalizer} from '@angular/platform-browser/animations/src/providers';
 
 // Global vars
 const request = new XMLHttpRequest();
@@ -57,24 +57,24 @@ export class MapComponent implements OnInit {
       .addTo(map);
 
     map.on('load', function() {
-      map.addSource('route_source', { 
-				'type' : 'geojson',
-				'data' : {
-				  'type' : 'Feature',
-				  'properties' : {},
-				  'geometry' : {
-				'type' : 'LineString',
-              			'coordinates' : [
-                			[8.24, 50.7],
-                			[8.25, 50.7],
-                			[8.26, 50.56]
-              			]}
-			}
-		});
+      map.addSource('route_source', {
+                    'type' : 'geojson',
+                    'data' : {
+                      'type' : 'Feature',
+                      'properties' : {},
+                      'geometry' : {
+                    'type' : 'LineString',
+                                'coordinates' : [
+                                  [8.24, 50.7],
+                                  [8.25, 50.7],
+                                  [8.26, 50.56]
+                                ]}
+                    }
+                    });
       map.addLayer({
                     'id' : 'route',
                     'type': 'line',
-			'source': 'route_source',	
+                    'source': 'route_source',
                     'layout': {
                       'line-join': 'round',
                       'line-cap' : 'round'
@@ -84,7 +84,7 @@ export class MapComponent implements OnInit {
                       'line-width': 3
                     }
       });
-		
+
 
     });
   }
@@ -119,7 +119,7 @@ export class MapComponent implements OnInit {
         'geometry' : {
           'type' : 'LineString',
           'coordinates' : []
-        }     
+        }
     };
 
     const decoded = decode(route.geometry, 5).map(function(c) {
@@ -138,7 +138,7 @@ export class MapComponent implements OnInit {
   private buildQuery() {
     const query = [];
     waypoints.forEach((waypoint) => {
-      query.push([waypoint.getLngLat().lat, waypoint.getLngLat().lng].join(','));
+      query.push([waypoint.getLngLat().lng, waypoint.getLngLat().lat].join(','));
     });
     return query.join(';');
   }
@@ -151,7 +151,7 @@ export class MapComponent implements OnInit {
       options.push('geometries=polyline');
       // if (alternatives) { options.push('alternatives=true'); }
       // if (congestion) { options.push('annotations=congestion'); }
-      options.push('steps=true');
+      options.push('steps=false');
       options.push('overview=full');
       if (environment.mapbox.accessToken) { options.push('access_token=' + environment.mapbox.accessToken); }
       request.abort();
