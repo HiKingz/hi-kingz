@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
 
 
 import { AppComponent } from './app.component';
@@ -12,6 +14,10 @@ import { MapComponent } from './map/map.component';
 import { RatingComponent } from './rating/rating.component';
 import { MyRoutesComponent } from './my-routes/my-routes.component';
 
+
+const appRoutes: Routes = [
+  { path: 'map', component: MapComponent }
+];
 
 @NgModule({
   declarations: [
@@ -26,6 +32,10 @@ import { MyRoutesComponent } from './my-routes/my-routes.component';
     MyRoutesComponent
   ],
   imports: [
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: true } // debugging purposes only
+    ),
     BrowserModule
   ],
   providers: [],
