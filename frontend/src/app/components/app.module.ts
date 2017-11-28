@@ -16,7 +16,8 @@ import { MyRoutesComponent } from './my-routes/my-routes.component';
 
 
 const appRoutes: Routes = [
-  { path: 'map', component: MapComponent }
+  { path: 'map', component: MapComponent },
+  { path: 'map/:mode', component: MapComponent }
 ];
 
 @NgModule({

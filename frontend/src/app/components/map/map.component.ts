@@ -1,9 +1,13 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import 'rxjs/add/operator/switchMap';
+
 import * as mapboxgl from 'mapbox-gl';
 import { decode } from '@mapbox/polyline';
 import {instantiateDefaultStyleNormalizer} from '@angular/platform-browser/animations/src/providers';
+import * as ctrls from './map.controls';
 
 // Global vars
 const request = new XMLHttpRequest();
@@ -25,8 +29,8 @@ export class MapComponent implements OnInit {
   cli;
   // map: mapboxgl.Map;
 
-
-  constructor() {
+  constructor(private route: ActivatedRoute,
+              private router: Router) {
     mapboxgl.accessToken = 'pk.eyJ1Ijoic3RhbmRieW1vZGUiLCJhIjoiY2o5NzZqMTdmMDQzMDJ3cnc5aW5ueXNmeSJ9.q_l4vASYPsSkfHrAxPGjbw';
     instance = this;
   }
@@ -38,6 +42,12 @@ export class MapComponent implements OnInit {
       zoom: 13,
       center: [8.24, 50.7]
     });
+
+    const mode = this.route.snapshot.paramMap.get('mode');
+    if (mode === 'show') {
+      map.addControl(new ctrls.HelloWorldControl(), 'top-left');
+    }
+
 
 
 
