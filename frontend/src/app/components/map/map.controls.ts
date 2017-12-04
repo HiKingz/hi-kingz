@@ -37,7 +37,7 @@ export class PlanningControl {
     this._map = map;
     this._container = document.createElement('div');
     this._container.className = 'mapboxgl-ctrl';
-    this._container.textContent = 'Routeplanning';
+    this._container.textContent = 'Route Planning';
     this._wpList = document.createElement('div');
     this._container.appendChild(this._wpList);
     map.on('click', this.handleClick);
@@ -233,13 +233,46 @@ export class PlanningControl {
     this._wpList = document.createElement('div');
     this._container.appendChild(this._wpList);
     route_wps.forEach((wp) => {
-      const p = document.createElement('p');
+      const div = document.createElement('div');
+      div.className = 'hi-kingz-waypoint-list-element';
+      const a = document.createElement('a');
+      a.className = 'hi-kingz-waypoint-list-element-text';
+      a.href = 'javascript:;';
       if (wp.name) {
-        p.textContent = wp.name;
+        a.textContent = wp.name;
       } else {
-        p.textContent = wp.location;
+        a.textContent = wp.location;
       }
-      this._wpList.appendChild(p);
+      a.onclick = () => {
+        this._map.flyTo({
+            // These options control the ending camera position: centered at
+            // the target, at zoom level 9, and north up.
+            center: wp.location,
+            zoom: 15,
+            bearing: 0,
+
+            // These options control the flight curve, making it move
+            // slowly and zoom out almost completely before starting
+            // to pan.
+            speed: 5.0, // make the flying slow
+            curve: 1, // change the speed at which it zooms out
+
+            // This can be any easing function: it takes a number between
+            // 0 and 1 and returns another number between 0 and 1.
+            easing: function (t) {
+              return t;
+            }
+          }
+        );
+        return null;
+      };
+      const del = document.createElement('div');
+      del.className = 'hi-kingz-waypoint-list-element-delete';
+
+      div.appendChild(a);
+      div.appendChild(del);
+
+      this._wpList.appendChild(div);
     });
   }
 
