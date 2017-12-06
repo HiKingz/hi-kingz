@@ -6,12 +6,12 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyBFpDCh17j6CFmB1Qjxm6970M7TERbw8Wo",
-    authDomain: "hikingz-540f3.firebaseapp.com",
-    databaseURL: "https://hikingz-540f3.firebaseio.com",
-    projectId: "hikingz-540f3",
-    storageBucket: "hikingz-540f3.appspot.com",
-    messagingSenderId: "1020004507861"
+    apiKey: "AIzaSyA8iOUUnJ_Nd7l2_DI4wCR2pUxpH0l3RP8",
+    authDomain: "hikingz-185410.firebaseapp.com",
+    databaseURL: "https://hikingz-185410.firebaseio.com",
+    projectId: "hikingz-185410",
+    storageBucket: "hikingz-185410.appspot.com",
+    messagingSenderId: "1069159165360"
   },
   mapbox: {
     accessToken: 'pk.eyJ1Ijoic3RhbmRieW1vZGUiLCJhIjoiY2o5NzZqMTdmMDQzMDJ3cnc5aW5ueXNmeSJ9.q_l4vASYPsSkfHrAxPGjbw'
