@@ -2,13 +2,12 @@ import {User} from '../users/user.model';
 import {Rating} from '../ratings/rating.model';
 import {File} from '../files/file.model';
 import {Waypoint} from '../coordinates/waypoint.model';
-import {Rateable} from '../commons/models/rateable.model';
 import {IFileable} from '../commons/models/fileable';
+import {IRateable} from '../commons/models/rateable';
 
-class Route extends Rateable implements IFileable {
+class Route implements IFileable, IRateable {
   constructor(
-    id: string,
-    ratings: [Rating],
+    public ratings: [Rating],
     public files: [File],
     public name: string,
     public description: string,
@@ -17,7 +16,5 @@ class Route extends Rateable implements IFileable {
     public waypoint: Waypoint,
     public isPublic: boolean,
     public isSponsored: boolean
-  ) {
-    super(id, ratings);
-  }
+  ) { }
 }

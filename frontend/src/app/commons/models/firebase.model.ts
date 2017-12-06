@@ -1,3 +1,3 @@
-export abstract class FirebaseModel {
-  constructor(public id: string) {}
+export class FirebaseItem<Model> {
+  constructor(public id: string, public item: Model) { }
 }

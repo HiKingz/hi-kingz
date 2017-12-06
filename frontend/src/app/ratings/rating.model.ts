@@ -1,15 +1,12 @@
 import {User} from '../users/user.model';
 import {File} from '../files/file.model';
-import {Fileable} from '../commons/models/fileable.model';
+import {IFileable} from '../commons/models/fileable';
 
-export class Rating extends Fileable {
+export class Rating implements IFileable {
   constructor(
-    id: string,
-    files: [File],
+    public files: [File],
     public user: User,
     public score: number,
     public comment: string,
-  ) {
-    super(id, files);
-  }
+  ) { }
 }
