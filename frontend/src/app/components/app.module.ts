@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
 
@@ -13,7 +13,17 @@ import { CreateRouteComponent } from './create-route/create-route.component';
 import { MapComponent } from './map/map.component';
 import { RatingComponent } from './rating/rating.component';
 import { MyRoutesComponent } from './my-routes/my-routes.component';
-
+import {
+  MatDialogModule, MatDialogRef, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
+  MatSnackBarModule, MatTabsModule, MatToolbarModule
+} from "@angular/material";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {AngularFireModule} from "angularfire2";
+import {environment} from "../../environments/environment";
+import {AngularFireAuthModule} from "angularfire2/auth";
+import {AuthenticationService} from "../authentication/authentication.service";
+import {MatButtonModule} from '@angular/material/button';
+import {AngularFireDatabaseModule} from "angularfire2/database";
 
 const appRoutes: Routes = [
   { path: 'map', component: MapComponent },
@@ -37,9 +47,25 @@ const appRoutes: Routes = [
       appRoutes,
       { enableTracing: true } // debugging purposes only
     ),
-    BrowserModule
+    BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase, 'HiKingz'),
+    AngularFireAuthModule,
+    AngularFireDatabaseModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatDialogModule,
+    FormsModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatSnackBarModule,
+    MatMenuModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatButtonModule
   ],
-  providers: [],
+  entryComponents:[LoginComponent],
+  providers: [AuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

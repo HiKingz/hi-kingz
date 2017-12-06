@@ -17,20 +17,20 @@ const point_src = {
   }]
 };
 
-const waypoints = {};
-let wp_next_id = 0;
-let draggedPoint: string;
-let isDragging = false;
-let instance: PlanningControl;
-
 export class PlanningControl {
 
   _wpList;
   _container;
   _map: mapboxgl.Map;
 
+  waypoints = {};
+  wp_next_id = 0;
+  draggedPoint: string;
+  isDragging = false;
+
+
+
   constructor() {
-    instance = this;
   }
 
   onAdd(map) {
@@ -55,7 +55,7 @@ export class PlanningControl {
       .setLngLat([8.24, 50.7])
       .addTo(map); */
 
-    map.on('load', function() {
+    map.on('load', () => {
       map.addSource('route_source', {
         'type' : 'geojson',
         'data' : {
@@ -80,13 +80,13 @@ export class PlanningControl {
           'line-width': 3
         }
       });
-      map.on('mousedown', instance.mouseDown);
+      map.on('mousedown', this.mouseDown);
     });
 
     return this._container;
   }
 
-  public handleClick(e) {
+  public handleClick = (e) => {
     // alert('You clicked the map at ' + e.lngLat);
 
     // create a DOM element for the marker
@@ -103,12 +103,12 @@ export class PlanningControl {
       .setLngLat(e.lngLat)
       .addTo(overlay);
 
-    waypoints.push(marker); */
+    this.waypoints.push(marker); */
 
     const coords = e.lngLat;
 
-    const wp_id = 'point' + wp_next_id;
-    instance._map.addSource(wp_id, {
+    const wp_id = 'point' + this.wp_next_id;
+    this._map.addSource(wp_id, {
       'type': 'geojson',
       'data': {
         'type': 'FeatureCollection',
@@ -122,7 +122,7 @@ export class PlanningControl {
       }
     });
 
-    instance._map.addLayer({
+    this._map.addLayer({
       'id': wp_id,
       'type': 'circle',
       'source': wp_id,
@@ -132,66 +132,67 @@ export class PlanningControl {
       }
     });
 
-    instance._map.on('mouseenter', wp_id, function() {
-      instance._map.getCanvasContainer().style.cursor = 'move';
-      draggedPoint = wp_id;
-      instance._map.dragPan.disable();
+    const self = this;
+    this._map.on('mouseenter', wp_id, () => {
+      self._map.getCanvasContainer().style.cursor = 'move';
+      self.draggedPoint = wp_id;
+      self._map.dragPan.disable();
     });
-    instance._map.on('mouseleave', wp_id, function() {
-      if (isDragging) {
+    this._map.on('mouseleave', wp_id, () => {
+      if (self.isDragging) {
         return; // YOU SHALL NOT LEAVE
       }
-      instance._map.getCanvasContainer().style.cursor = '';
-      draggedPoint = null;
-      instance._map.dragPan.enable();
+      self._map.getCanvasContainer().style.cursor = '';
+      self.draggedPoint = null;
+      self._map.dragPan.enable();
     });
 
-    waypoints[wp_id] = [coords.lng, coords.lat];
+    this.waypoints[wp_id] = [coords.lng, coords.lat];
 
-    wp_next_id++;
+    this.wp_next_id++;
 
-    instance.fetchDirections();
+    this.fetchDirections();
   }
 
-  mouseDown() {
-    if (!draggedPoint) {
+  mouseDown = () => {
+    if (!this.draggedPoint) {
       return;
     }
 
-    isDragging = true;
+    this.isDragging = true;
 
     // Set a cursor indicator
-    instance._map.getCanvasContainer().style.cursor = 'grab';
+    this._map.getCanvasContainer().style.cursor = 'grab';
 
     // Mouse events
-    instance._map.on('mousemove', instance.onMove);
-    instance._map.once('mouseup', instance.onUp);
+    this._map.on('mousemove', this.onMove);
+    this._map.once('mouseup', this.onUp);
   }
 
-  onMove(e) {
-    if (!draggedPoint) {
+  onMove = (e) => {
+    if (!this.draggedPoint) {
       return;
     }
     const coords = e.lngLat;
 
     // Set a UI indicator for dragging.
-    instance._map.getCanvasContainer().style.cursor = 'grabbing';
+    this._map.getCanvasContainer().style.cursor = 'grabbing';
 
     // Update the Point feature in `geojson` coordinates
     // and call setData to the source layer `point` on it.
     point_src.features[0].geometry.coordinates = [coords.lng, coords.lat];
-    instance._map.getSource(draggedPoint).setData(point_src);
-    waypoints[draggedPoint] = [coords.lng, coords.lat];
+    this._map.getSource(this.draggedPoint).setData(point_src);
+    this.waypoints[this.draggedPoint] = [coords.lng, coords.lat];
 
 
   }
 
-  onUp(e) {
-    if (!draggedPoint) {
+  onUp = (e) => {
+    if (!this.draggedPoint) {
       return;
     }
 
-    isDragging = false;
+    this.isDragging = false;
 
     const coords = e.lngLat;
 
@@ -199,15 +200,15 @@ export class PlanningControl {
     // finished being dragged to on the map.
     // coordinates.style.display = 'block';
     // coordinates.innerHTML = 'Longitude: ' + coords.lng + '<br />Latitude: ' + coords.lat;
-    instance._map.getCanvasContainer().style.cursor = '';
+    this._map.getCanvasContainer().style.cursor = '';
 
     // Unbind mouse events
-    instance._map.off('mousemove', instance.onMove);
+    this._map.off('mousemove', this.onMove);
 
-    instance.fetchDirections();
+    this.fetchDirections();
   }
 
-  public displayRoute(route, route_wps) {
+  public displayRoute = (route, route_wps) => {
 
     const geojson = {
       'type' : 'Feature',
@@ -228,7 +229,7 @@ export class PlanningControl {
 
 
 
-    instance._map.getSource('route_source').setData(geojson);
+    this._map.getSource('route_source').setData(geojson);
     this._container.removeChild(this._wpList);
     this._wpList = document.createElement('div');
     this._container.appendChild(this._wpList);
@@ -276,18 +277,18 @@ export class PlanningControl {
     });
   }
 
-  private buildQuery() {
+  private buildQuery = () => {
     const query = [];
-    for (const key in waypoints) {
+    for (const key in this.waypoints) {
       if (true) { // Warum will TSLint so eine Kacke haben?!
-        query.push([waypoints[key][0], waypoints[key][1]].join(','));
+        query.push([this.waypoints[key][0], this.waypoints[key][1]].join(','));
       }
     }
     return query.join(';');
   }
 
-  private fetchDirections() {
-    const query = instance.buildQuery();
+  private fetchDirections = () => {
+    const query = this.buildQuery();
 
     // Request params
     const options = [];
@@ -309,7 +310,7 @@ export class PlanningControl {
         }
 
         if (data.routes[0]) {
-          instance.displayRoute(data.routes[0], data.waypoints);
+          this.displayRoute(data.routes[0], data.waypoints);
         }
 
       }
