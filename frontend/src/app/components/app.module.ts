@@ -27,7 +27,8 @@ import {AngularFireDatabaseModule} from "angularfire2/database";
 
 const appRoutes: Routes = [
   { path: 'map', component: MapComponent },
-  { path: 'map/:mode', component: MapComponent }
+  { path: 'map/:mode', component: MapComponent },
+  { path: 'create_route', component: CreateRouteComponent }
 ];
 
 @NgModule({

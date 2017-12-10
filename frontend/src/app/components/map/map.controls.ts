@@ -1,6 +1,8 @@
 import * as mapboxgl from 'mapbox-gl';
 import { decode } from '@mapbox/polyline';
 import { environment } from '../../../environments/environment';
+import { MapComponent } from './map.component';
+
 
 // Global vars
 const request = new XMLHttpRequest();
@@ -28,9 +30,10 @@ export class PlanningControl {
   draggedPoint: string;
   isDragging = false;
 
+  component: MapComponent
 
-
-  constructor() {
+  constructor(component: MapComponent) {
+    this.component = component;
   }
 
   onAdd(map) {
@@ -227,7 +230,7 @@ export class PlanningControl {
       geojson.geometry.coordinates.push(c);
     });
 
-
+    this.component.rt.points = geojson.geometry.coordinates;
 
     this._map.getSource('route_source').setData(geojson);
     this._container.removeChild(this._wpList);

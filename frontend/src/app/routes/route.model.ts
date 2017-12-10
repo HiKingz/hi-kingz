@@ -5,7 +5,10 @@ import {Waypoint} from '../coordinates/waypoint.model';
 import {IFileable} from '../commons/models/fileable';
 import {IRateable} from '../commons/models/rateable';
 
-class Route implements IFileable, IRateable {
+export class Route implements IFileable, IRateable {
+
+  points;
+
   constructor(
     public ratings: [Rating],
     public files: [File],
@@ -16,5 +19,7 @@ class Route implements IFileable, IRateable {
     public waypoint: Waypoint,
     public isPublic: boolean,
     public isSponsored: boolean
-  ) { }
+  ) {
+    this.points = [];
+  }
 }
