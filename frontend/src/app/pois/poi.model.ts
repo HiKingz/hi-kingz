@@ -4,8 +4,9 @@ import {User} from '../users/user.model';
 import {Point} from '../coordinates/point.model';
 import {File} from '../files/file.model';
 import {IRateable} from '../commons/models/rateable';
+import {IFirebaseStorable} from '../commons/models/firebase-storable';
 
-export class Poi implements IFileable, IRateable {
+export class Poi implements IFileable, IRateable, IFirebaseStorable {
   constructor(
     public ratings: [Rating],
     public files: [File],
