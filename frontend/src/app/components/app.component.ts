@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {MatDialog} from "@angular/material";
+import {MatDialog, MatSnackBar} from "@angular/material";
 import {AuthenticationService} from "../authentication/authentication.service";
 import {LoginComponent} from "./login/login.component";
 import * as firebase from "firebase";
@@ -15,7 +15,8 @@ export class AppComponent {
   title = 'app';
 
   constructor(public dialog: MatDialog,
-              private authenticationService: AuthenticationService){
+              private authenticationService: AuthenticationService,
+              public snackBar: MatSnackBar){
     firebase.initializeApp(environment.firebase);
   }
 
@@ -26,7 +27,13 @@ export class AppComponent {
   }
 
   logout(){
-    this.authenticationService.logout();
+    this.authenticationService.logout()
+      .then(()=>{
+        this.snackBar.open('Logout successful', null, {duration: 1000});
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
   }
 
 }
