@@ -19,13 +19,15 @@ export class AppComponent {
     firebase.initializeApp(environment.firebase);
   }
 
-  login(){
+  // login is executed on click
+  login():void{
     this.dialog.open(LoginComponent, {
       width: '400px'
     });
   }
 
-  logout(){
+  // logout is executed on click
+  logout():void{
     this.authenticationService.logout()
       .then(()=>{
         this.snackBar.open('Logout successful', null, {duration: 1000});
@@ -35,6 +37,7 @@ export class AppComponent {
       })
   }
 
+  // checks whether user is logged in and depending on it the screen shows either the login option or the logout option
   userIsLoggedIn():boolean{
     return this.authenticationService.userIsSignedIn();
   }
