@@ -13,13 +13,21 @@ export class AuthenticationService {
   }
 
   // login via facebook account
-  loginWithFacebook(){
-    //TODO
+  loginWithFacebook():Promise<any>{
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
+  }
+
+  loginWithGithub():Promise<any>{
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.GithubAuthProvider());
   }
 
   // login via google account
   loginWithGoogle():Promise<any>{
-      return this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  }
+
+  loginWithTwitter():Promise<any>{
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.TwitterAuthProvider());
   }
 
   // register method
@@ -38,10 +46,6 @@ export class AuthenticationService {
     } else {
       return false;
     }
-  }
-
-  getSignedInUser(){
-
   }
 
   // logout method

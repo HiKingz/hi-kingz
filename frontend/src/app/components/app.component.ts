@@ -12,7 +12,6 @@ import {environment} from "../../environments/environment";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
 
   constructor(public dialog: MatDialog,
               private authenticationService: AuthenticationService,
@@ -34,6 +33,10 @@ export class AppComponent {
       .catch((error)=>{
         console.log(error);
       })
+  }
+
+  userIsLoggedIn():boolean{
+    return this.authenticationService.userIsSignedIn();
   }
 
 }

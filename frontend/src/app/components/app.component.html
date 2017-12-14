@@ -5,11 +5,11 @@
   <mat-icon><i class="material-icons">menu</i></mat-icon>
 </button>
 <mat-menu #menu="matMenu">
-    <button (click)="login()" mat-menu-item>
+    <button *ngIf="!userIsLoggedIn()" (click)="login()" mat-menu-item>
       <mat-icon><i class="material-icons">fingerprint</i></mat-icon>
       <span>Login</span>
     </button>
-  <button (click)="logout()" mat-menu-item>
+  <button *ngIf="userIsLoggedIn()" (click)="logout()" mat-menu-item>
     <mat-icon><i class="material-icons">time_to_leave</i> </mat-icon>
     <span>Logout</span>
   </button>
