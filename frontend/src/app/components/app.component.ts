@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import {MatDialog} from "@angular/material";
+import {MatDialog} from '@angular/material';
 import {AuthenticationService} from "../authentication/authentication.service";
 import {LoginComponent} from "./login/login.component";
 import * as firebase from "firebase";
 import {environment} from "../../environments/environment";
-
 
 @Component({
   selector: 'app-root',

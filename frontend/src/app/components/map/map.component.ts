@@ -26,11 +26,6 @@ const point_src = {
   }]
 };
 
-
-
-
-let instance: MapComponent;
-
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -57,7 +52,7 @@ export class MapComponent implements OnInit {
       center: [8.24, 50.7]
     });
 
-    if (this.rt.points.length === 0) {
+    if (this.rt.direction.points.length === 0) {
       this.map.addControl(new ctrls.PlanningControl(this), 'top-left');
     }
   }

@@ -2,6 +2,7 @@ import * as mapboxgl from 'mapbox-gl';
 import { decode } from '@mapbox/polyline';
 import { environment } from '../../../environments/environment';
 import { MapComponent } from './map.component';
+import {Point} from "../../coordinates/point.model";
 
 
 // Global vars
@@ -226,11 +227,12 @@ export class PlanningControl {
       return c.reverse();
     });
 
+    const self = this;
     decoded.forEach(function(c, i) {
       geojson.geometry.coordinates.push(c);
+      // Also push this into the current route model passed down by the component embedding the map
+      self.component.rt.direction.points.push(new Point(c[0], c[1]));
     });
-
-    this.component.rt.points = geojson.geometry.coordinates;
 
     this._map.getSource('route_source').setData(geojson);
     this._container.removeChild(this._wpList);

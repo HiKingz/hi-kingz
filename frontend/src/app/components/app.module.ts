@@ -13,10 +13,14 @@ import { CreateRouteComponent } from './create-route/create-route.component';
 import { MapComponent } from './map/map.component';
 import { RatingComponent } from './rating/rating.component';
 import { MyRoutesComponent } from './my-routes/my-routes.component';
+
 import {
   MatDialogModule, MatDialogRef, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
   MatSnackBarModule, MatTabsModule, MatToolbarModule
 } from "@angular/material";
+import {MatSelectModule} from '@angular/material/select';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AngularFireModule} from "angularfire2";
 import {environment} from "../../environments/environment";
@@ -61,9 +65,11 @@ const appRoutes: Routes = [
     MatToolbarModule,
     MatSnackBarModule,
     MatMenuModule,
+    MatSelectModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSlideToggleModule
   ],
   entryComponents:[LoginComponent],
   providers: [AuthenticationService],
