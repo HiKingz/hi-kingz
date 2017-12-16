@@ -8,75 +8,48 @@ export class AuthenticationService {
   constructor(public afAuth: AngularFireAuth) { }
 
   // login with email address
-  loginWithEmail(email:string, password:string){
-    if(!this.userIsSignedIn()) {
-      this.afAuth.auth.signInWithEmailAndPassword(email,
-        password)
-        .then(function () {
-          console.log("login successful");
-          return true;
-        })
-        .catch(function (error) {
-          console.log(error + email);
-          return false;
-        });
-    }
+  loginWithEmail(email:string, password:string):Promise<any>{
+      return this.afAuth.auth.signInWithEmailAndPassword(email, password);
   }
 
   // login via facebook account
-  loginWithFacebook(){
-    //TODO
+  loginWithFacebook():Promise<any>{
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
+  }
+
+  loginWithGithub():Promise<any>{
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.GithubAuthProvider());
   }
 
   // login via google account
-  loginWithGoogle(){
-    if(!this.userIsSignedIn()){
-      this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-        .then(function () {
-          console.log("login successful");
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
+  loginWithGoogle():Promise<any>{
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  }
+
+  loginWithTwitter():Promise<any>{
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.TwitterAuthProvider());
   }
 
   // register method
-  register(email: string, password: string){
-    this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-      .then(function () {
-        console.log("Registration of " + email + " completed");
-      }).catch(function (error) {
-        console.log(error + email);
-    })
+  register(email: string, password: string):Promise<any>{
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password);
   }
 
   // checks whether a user is signed in or not
   // returns true or false
-  userIsSignedIn(){
+  userIsSignedIn():boolean{
 
-    var user = firebase.auth().currentUser;
+    let user = this.afAuth.auth.currentUser;
 
-    if (user) {
-      console.log(user.email + ' logged in');
+    if (user != null) {
       return true;
     } else {
-      console.log('No user logged in');
       return false;
     }
   }
 
   // logout method
-  logout(){
-    if (this.userIsSignedIn()){
-      firebase.auth().signOut()
-        .then(function () {
-          console.log('Logged out.');
-        })
-        .catch(function (error) {
-          console.log('function: logout ' + error);
-        })
-    }
+  logout():Promise<any> {
+    return this.afAuth.auth.signOut();
   }
-
 }

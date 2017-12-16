@@ -20,6 +20,12 @@
   <br/>
     <mat-slide-toggle [(ngModel)]="route_public" (change)="changePrivacy()">{{route_public_label}}</mat-slide-toggle>
   <br/>
+
+  <div>
+    <h4>Wegpunkte:</h4>
+    <input matInput *ngFor="let wp of route.waypoints" [(ngModel)]="wp.name">
+  </div>
+
   <button mat-button value="Route speichern" (click)="saveRoute()">Route speichern</button>
 
 

@@ -2,7 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Route} from '../../routes/route.model';
 import {Direction} from '../../directions/direction.model';
 import {Point} from '../../coordinates/point.model';
-
+import {Waypoint} from "../../coordinates/waypoint.model";
 
 
 @Component({
@@ -24,7 +24,7 @@ export class CreateRouteComponent implements OnInit {
   constructor() {
     this.route_public = true;
     this.route_public_label = 'Öffentliche Route';
-    this.route = new Route(null, null, null, null, null, null, null, new Direction(<[Point]>[]), null, null);
+    this.route = new Route(null, null, null, null, null, null, <[Waypoint]>[], new Direction(<[Point]>[]), null, null);
   }
 
   ngOnInit() {
