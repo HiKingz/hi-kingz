@@ -234,57 +234,23 @@ export class PlanningControl {
       // Also push this into the current route model passed down by the component embedding the map
       self.component.rt.direction.points.push(new Point(c[0], c[1]));
     });
-
-    self.component.rt.waypoints.length = 0;
     this._map.getSource('route_source').setData(geojson);
-    this._container.removeChild(this._wpList);
-    this._wpList = document.createElement('div');
-    this._container.appendChild(this._wpList);
-    route_wps.forEach((wp) => {
-      const div = document.createElement('div');
-      div.className = 'hi-kingz-waypoint-list-element';
-      const a = document.createElement('a');
-      a.className = 'hi-kingz-waypoint-list-element-text';
-      a.href = 'javascript:;';
-      if (wp.name) {
-        a.textContent = wp.name;
-      } else {
-        a.textContent = wp.location;
+
+    // Merge waypoints by iterating over both arrays: route_wps and self.component.rt.waypoints
+    for (let i = 0; i < self.component.rt.waypoints.length; i++) {
+      const wp_srvc = route_wps[i]; // Waypoint coming from the service
+      const wp_local = self.component.rt.waypoints[i];
+      // Location has changed -> Use name coming from the service
+      if (wp_local.point.longitude !== wp_srvc.location[0] || wp_local.point.latitude !== wp_srvc.location[1]) {
+        wp_local.name = wp_srvc.name ? wp_srvc.name : wp_srvc.location;
       }
-      // Spaghetti alert: push waypoint into route now that we have the text for sure...
-      self.component.rt.waypoints.push(new Waypoint(a.textContent, new Point(wp.location.longitude, wp.location.latitude)));
-
-      a.onclick = () => {
-        this._map.flyTo({
-            // These options control the ending camera position: centered at
-            // the target, at zoom level 9, and north up.
-            center: wp.location,
-            zoom: 15,
-            bearing: 0,
-
-            // These options control the flight curve, making it move
-            // slowly and zoom out almost completely before starting
-            // to pan.
-            speed: 5.0, // make the flying slow
-            curve: 1, // change the speed at which it zooms out
-
-            // This can be any easing function: it takes a number between
-            // 0 and 1 and returns another number between 0 and 1.
-            easing: function (t) {
-              return t;
-            }
-          }
-        );
-        return null;
-      };
-      const del = document.createElement('div');
-      del.className = 'hi-kingz-waypoint-list-element-delete';
-
-      div.appendChild(a);
-      div.appendChild(del);
-
-      this._wpList.appendChild(div);
-    });
+    }
+    for (let i = self.component.rt.waypoints.length; i < route_wps.length; i++) {
+      const wp_srvc = route_wps[i]; // Waypoint coming from the service
+      self.component.rt.waypoints.push(
+        new Waypoint(wp_srvc.name ? wp_srvc.name : wp_srvc.location,
+          new Point(wp_srvc.location[0], wp_srvc.location[1])));
+    }
   }
 
   private buildQuery = () => {

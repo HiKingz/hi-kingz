@@ -9,11 +9,14 @@
       <mat-icon><i class="material-icons">fingerprint</i></mat-icon>
       <span>Login</span>
     </button>
+  <button *ngIf="userIsLoggedIn()" routerLink="/create_route" routerLinkActive="active" mat-menu-item>
+    <mat-icon><i class="material-icons">time_to_leave</i> </mat-icon>
+    <span>Erstelle Route</span>
+  </button>
   <button *ngIf="userIsLoggedIn()" (click)="logout()" mat-menu-item>
     <mat-icon><i class="material-icons">time_to_leave</i> </mat-icon>
     <span>Logout</span>
   </button>
 </mat-menu>
-<a routerLink="/create_route" routerLinkActive="active">Open Map</a><br/>
 <router-outlet></router-outlet>
 

@@ -1,34 +1,36 @@
-<div class="hi-kingz-sidebar">
-  <mat-form-field>
-    <input matInput placeholder="Name der Route" [(ngModel)]="route_name"/>
-    <br/>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-select placeholder="Schwierigkeitsgrad" [(value)]="route_difficulty">
-      <mat-option value="1">EZ PZ</mat-option>
-      <mat-option value="2">Einfach</mat-option>
-      <mat-option value="3">Angemessen</mat-option>
-      <mat-option value="4">Hart wie Schotter</mat-option>
-      <mat-option value="5">Pilgerfahrt zur Hölle</mat-option>
-    </mat-select>
+<div>
+  <div class="hi-kingz-sidebar">
+    <mat-form-field>
+      <input matInput placeholder="Name der Route" [(ngModel)]="route_name"/>
+      <br/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Schwierigkeitsgrad" [(value)]="route_difficulty">
+        <mat-option value="1">EZ PZ</mat-option>
+        <mat-option value="2">Einfach</mat-option>
+        <mat-option value="3">Angemessen</mat-option>
+        <mat-option value="4">Hart wie Schotter</mat-option>
+        <mat-option value="5">Pilgerfahrt zur Hölle</mat-option>
+      </mat-select>
 
-  </mat-form-field>
-  <mat-form-field>
-    <textarea matInput placeholder="Beschreibung der Route" [(ngModel)]="route_description"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput placeholder="Beschreibung der Route" [(ngModel)]="route_description"></textarea>
+      <br/>
+    </mat-form-field>
     <br/>
-  </mat-form-field>
-  <br/>
-    <mat-slide-toggle [(ngModel)]="route_public" (change)="changePrivacy()">{{route_public_label}}</mat-slide-toggle>
-  <br/>
+      <mat-slide-toggle [(ngModel)]="route_public" (change)="changePrivacy()">{{route_public_label}}</mat-slide-toggle>
+    <br/>
 
-  <div>
-    <h4>Wegpunkte:</h4>
-    <input matInput *ngFor="let wp of route.waypoints" [(ngModel)]="wp.name">
+    <div>
+      <h4>Wegpunkte:</h4>
+      <div matInput *ngFor="let wp of route.waypoints; let i = index">
+        <input [(ngModel)]="wp.name"><button mat-mini-fab (click)="centerOn(i)">Center</button>
+      </div>
+    </div>
+
+    <button mat-button value="Route speichern" (click)="saveRoute()">Route speichern</button>
   </div>
-
-  <button mat-button value="Route speichern" (click)="saveRoute()">Route speichern</button>
-
-
 </div>
 
 <app-map [rt]="route"></app-map>
