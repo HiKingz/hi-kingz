@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import {MatDialog, MatSnackBar} from "@angular/material";
-import {AuthenticationService} from "../authentication/authentication.service";
-import {LoginComponent} from "./login/login.component";
-import * as firebase from "firebase";
-import {environment} from "../../environments/environment";
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {LoginComponent} from './login/login.component';
+import * as firebase from 'firebase';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +14,7 @@ export class AppComponent {
 
   constructor(public dialog: MatDialog,
               private authenticationService: AuthenticationService,
-              public snackBar: MatSnackBar){
+              public snackBar: MatSnackBar) {
     firebase.initializeApp(environment.firebase);
   }
 

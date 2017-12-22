@@ -18,5 +18,4 @@
     <span>Logout</span>
   </button>
 </mat-menu>
-<router-outlet></router-outlet>
-
+<router-outlet *ngIf="userIsLoggedIn()"></router-outlet>

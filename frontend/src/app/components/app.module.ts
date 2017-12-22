@@ -15,19 +15,22 @@ import { RatingComponent } from './rating/rating.component';
 import { MyRoutesComponent } from './my-routes/my-routes.component';
 
 import {
-  MatDialogModule, MatDialogRef, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
+  MatDialogModule, MatDialogRef, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatProgressBar,
   MatSnackBarModule, MatTabsModule, MatToolbarModule
-} from "@angular/material";
+} from '@angular/material';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {AngularFireModule} from "angularfire2";
-import {environment} from "../../environments/environment";
-import {AngularFireAuthModule} from "angularfire2/auth";
-import {AuthenticationService} from "../authentication/authentication.service";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AngularFireModule} from 'angularfire2';
+import {environment} from '../../environments/environment';
+import {AngularFireAuthModule} from 'angularfire2/auth';
+import {AuthenticationService} from '../authentication/authentication.service';
 import {MatButtonModule} from '@angular/material/button';
-import {AngularFireDatabaseModule} from "angularfire2/database";
+import {AngularFireDatabaseModule} from 'angularfire2/database';
+import {AngularFirestoreModule} from 'angularfire2/firestore';
+import {UserService} from '../users/user.service';
+import { UsernameDialogComponent } from './login/username-dialog/username-dialog.component';
 
 const appRoutes: Routes = [
   { path: 'map', component: MapComponent },
@@ -45,7 +48,8 @@ const appRoutes: Routes = [
     CreateRouteComponent,
     MapComponent,
     RatingComponent,
-    MyRoutesComponent
+    MyRoutesComponent,
+    UsernameDialogComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -67,12 +71,13 @@ const appRoutes: Routes = [
     MatMenuModule,
     MatSelectModule,
     ReactiveFormsModule,
+    AngularFirestoreModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatSlideToggleModule
   ],
-  entryComponents:[LoginComponent],
-  providers: [AuthenticationService],
+  entryComponents: [LoginComponent, UsernameDialogComponent],
+  providers: [AuthenticationService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
