@@ -9,8 +9,11 @@ import { AllRoutesComponent } from './all-routes/all-routes.component';
 import { LoginComponent } from './login/login.component';
 import { ListRoutesComponent } from './list-routes/list-routes.component';
 import { RouteComponent } from './route/route.component';
-import { CreateRouteComponent } from './create-route/create-route.component';
 import { MapComponent } from './map/map.component';
+import { MapUIComponent } from './map-ui/map-ui.component';
+import { CreateRouteComponent } from './create-route/create-route.component';
+import { EditRouteComponent } from './edit-route/edit-route.component';
+import { ShowRouteComponent } from './show-route/show-route.component';
 import { RatingComponent } from './rating/rating.component';
 import { MyRoutesComponent } from './my-routes/my-routes.component';
 
@@ -33,9 +36,10 @@ import {UserService} from '../users/user.service';
 import { UsernameDialogComponent } from './login/username-dialog/username-dialog.component';
 
 const appRoutes: Routes = [
-  { path: 'map', component: MapComponent },
-  { path: 'map/:mode', component: MapComponent },
-  { path: 'create_route', component: CreateRouteComponent }
+  { path: 'create_route', component: CreateRouteComponent },
+  { path: 'edit_route/:id', component: EditRouteComponent },
+  { path: 'show_route/:id', component: ShowRouteComponent },
+
 ];
 
 @NgModule({
@@ -46,7 +50,10 @@ const appRoutes: Routes = [
     ListRoutesComponent,
     RouteComponent,
     CreateRouteComponent,
+    EditRouteComponent,
+    ShowRouteComponent,
     MapComponent,
+    MapUIComponent,
     RatingComponent,
     MyRoutesComponent,
     UsernameDialogComponent

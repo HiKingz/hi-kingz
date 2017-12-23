@@ -2,8 +2,8 @@ import * as mapboxgl from 'mapbox-gl';
 import { decode } from '@mapbox/polyline';
 import { environment } from '../../../environments/environment';
 import { MapComponent } from './map.component';
-import {Point} from "../../coordinates/point.model";
-import {Waypoint} from "../../coordinates/waypoint.model";
+import {Point} from '../../coordinates/point.model';
+import {Waypoint} from '../../coordinates/waypoint.model';
 
 
 // Global vars
@@ -60,58 +60,18 @@ export class PlanningControl {
       .setLngLat([8.24, 50.7])
       .addTo(map); */
 
+    const self = this;
     map.on('load', () => {
-      map.addSource('route_source', {
-        'type' : 'geojson',
-        'data' : {
-          'type' : 'Feature',
-          'properties' : {},
-          'geometry' : {
-            'type' : 'LineString',
-            'coordinates' : [0, 0]
-          }
-        }
-      });
-      map.addLayer({
-        'id' : 'route',
-        'type': 'line',
-        'source': 'route_source',
-        'layout': {
-          'line-join': 'round',
-          'line-cap' : 'round'
-        },
-        'paint': {
-          'line-color': '#888',
-          'line-width': 3
-        }
-      });
       map.on('mousedown', this.mouseDown);
+      self.component.route.waypoints.forEach((wp) => {
+        self.addPoint(new mapboxgl.LngLat(wp.point.longitude, wp.point.latitude), false);
+      });
     });
 
     return this._container;
   }
 
-  public handleClick = (e) => {
-    // alert('You clicked the map at ' + e.lngLat);
-
-    // create a DOM element for the marker
-    /*const el = document.createElement('div');
-    el.className = 'marker';
-    el.style.backgroundImage = 'url(https://image.flaticon.com/icons/svg/149/149060.svg)';
-    el.style.backgroundAttachment = 'top';
-    el.style.backgroundSize = '25px,25px';
-    el.style.backgroundRepeat = 'no-repeat';
-    el.style.width = '25px';
-    el.style.height = '50px';
-
-    const marker = new mapboxgl.Marker(el)
-      .setLngLat(e.lngLat)
-      .addTo(overlay);
-
-    this.waypoints.push(marker); */
-
-    const coords = e.lngLat;
-
+  public addPoint = (coords, update: boolean = true) => {
     const wp_id = 'point' + this.wp_next_id;
     this._map.addSource(wp_id, {
       'type': 'geojson',
@@ -155,8 +115,13 @@ export class PlanningControl {
     this.waypoints[wp_id] = [coords.lng, coords.lat];
 
     this.wp_next_id++;
+    if (update) {
+      this.fetchDirections();
+    }
+  }
 
-    this.fetchDirections();
+  public handleClick = (e) => {
+    this.addPoint(e.lngLat, true);
   }
 
   mouseDown = () => {
@@ -213,44 +178,37 @@ export class PlanningControl {
     this.fetchDirections();
   }
 
-  public displayRoute = (route, route_wps) => {
+  public updateRoute = (route, route_wps) => {
 
-    const geojson = {
-      'type' : 'Feature',
-      'properties' : {},
-      'geometry' : {
-        'type' : 'LineString',
-        'coordinates' : []
-      }
-    };
-
+    // Decode the geometry and put the points in a simple array(decode gives LatLong, but we need LongLat, hence we call c.reverse())
     const decoded = decode(route.geometry, 5).map(function(c) {
       return c.reverse();
     });
 
     const self = this;
+    this.component.route.direction.points.length = 0;
     decoded.forEach(function(c, i) {
-      geojson.geometry.coordinates.push(c);
-      // Also push this into the current route model passed down by the component embedding the map
-      self.component.rt.direction.points.push(new Point(c[0], c[1]));
+      // push this into the current _route model passed down by the component embedding the map
+      self.component.route.direction.points.push(new Point(c[0], c[1]));
     });
-    this._map.getSource('route_source').setData(geojson);
 
     // Merge waypoints by iterating over both arrays: route_wps and self.component.rt.waypoints
-    for (let i = 0; i < self.component.rt.waypoints.length; i++) {
+    for (let i = 0; i < self.component.route.waypoints.length; i++) {
       const wp_srvc = route_wps[i]; // Waypoint coming from the service
-      const wp_local = self.component.rt.waypoints[i];
+      const wp_local = self.component.route.waypoints[i];
       // Location has changed -> Use name coming from the service
       if (wp_local.point.longitude !== wp_srvc.location[0] || wp_local.point.latitude !== wp_srvc.location[1]) {
         wp_local.name = wp_srvc.name ? wp_srvc.name : wp_srvc.location;
       }
     }
-    for (let i = self.component.rt.waypoints.length; i < route_wps.length; i++) {
+    for (let i = self.component.route.waypoints.length; i < route_wps.length; i++) {
       const wp_srvc = route_wps[i]; // Waypoint coming from the service
-      self.component.rt.waypoints.push(
+      self.component.route.waypoints.push(
         new Waypoint(wp_srvc.name ? wp_srvc.name : wp_srvc.location,
           new Point(wp_srvc.location[0], wp_srvc.location[1])));
     }
+
+    this.component.displayRoute();
   }
 
   private buildQuery = () => {
@@ -286,7 +244,7 @@ export class PlanningControl {
         }
 
         if (data.routes[0]) {
-          this.displayRoute(data.routes[0], data.waypoints);
+          this.updateRoute(data.routes[0], data.waypoints);
         }
 
       }
