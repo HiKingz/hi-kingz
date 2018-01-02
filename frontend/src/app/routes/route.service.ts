@@ -22,8 +22,24 @@ export class RouteService extends FirestoreDataService<Route> {
     return this._getPaginatedView('name');
   }
 
-  public get(id: string): Observable<FirebaseItem<Route>> {
-    return this._get(id);
+  /**
+   * retrieves a route given it's reference
+   *
+   * @param {string} reference the path which references the route e.g. routes/123qwertz.
+   * @returns {Observable<FirebaseItem<Route>>}
+   */
+  public get(reference: string): Observable<FirebaseItem<Route>> {
+    return this._get(reference);
+  }
+
+  /**
+   * retrieves a route give it's id
+   *
+   * @param {string} id
+   * @returns {Observable<FirebaseItem<Route>>}
+   */
+  public getById(id: string): Observable<FirebaseItem<Route>> {
+    return this.get(this._collectionPath + '/' + id);
   }
 
   public create(route: Route): Promise<Observable<FirebaseItem<Route>>> {

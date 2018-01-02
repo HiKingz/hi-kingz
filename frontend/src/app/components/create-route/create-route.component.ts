@@ -1,29 +1,35 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import {MapUIComponent} from '../map-ui/map-ui.component';
+import {FirebaseItem} from '../../commons/models/firebase.model';
 import {Route} from '../../routes/route.model';
 
 @Component({
   selector: 'app-create-route',
   templateUrl: './create-route.component.html',
-  styleUrls: ['./create-route.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./create-route.component.css']
 })
 export class CreateRouteComponent implements OnInit {
 
-  route: Route;
-  testvalue: string;
+  mapComp: MapUIComponent;
+  frbs_route: FirebaseItem<Route>;
+
 
   constructor() {
-    this.route = new Route(null, null, null, null, null, null, null, null, null);
+    this.frbs_route = new FirebaseItem(
+      '0',
+      new Route(null, null, null, null, null, null, null, null, null, null)
+    );
+  }
+
+  @ViewChild(MapUIComponent)
+  set appMap(comp: MapUIComponent) {
+    this.mapComp = comp;
   }
 
   ngOnInit() {
   }
 
-  prntroute = () => {
-    let newvar = '';
-    this.route.points.forEach(tpl => {
-      newvar += tpl[0] + ',' + tpl[1] + ';';
-    });
-    this.testvalue = newvar;
+  saveRoute = () => {
+    // TODO: Save route
   }
 }

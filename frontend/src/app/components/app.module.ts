@@ -9,29 +9,39 @@ import { AllRoutesComponent } from './all-routes/all-routes.component';
 import { LoginComponent } from './login/login.component';
 import { ListRoutesComponent } from './list-routes/list-routes.component';
 import { RouteComponent } from './route/route.component';
-import { CreateRouteComponent } from './create-route/create-route.component';
 import { MapComponent } from './map/map.component';
+import { MapUIComponent } from './map-ui/map-ui.component';
+import { CreateRouteComponent } from './create-route/create-route.component';
+import { EditRouteComponent } from './edit-route/edit-route.component';
+import { ShowRouteComponent } from './show-route/show-route.component';
 import { RatingComponent } from './rating/rating.component';
 import { MyRoutesComponent } from './my-routes/my-routes.component';
+
 import {
-  MatDialogModule, MatDialogRef, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
+  MatDialogModule, MatDialogRef, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatProgressBar,
   MatSnackBarModule, MatTabsModule, MatToolbarModule
-} from "@angular/material";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {AngularFireModule} from "angularfire2";
-import {environment} from "../../environments/environment";
-import {AngularFireAuthModule} from "angularfire2/auth";
-import {AuthenticationService} from "../authentication/authentication.service";
+} from '@angular/material';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AngularFireModule} from 'angularfire2';
+import {environment} from '../../environments/environment';
+import {AngularFireAuthModule} from 'angularfire2/auth';
+import {AuthenticationService} from '../authentication/authentication.service';
 import {MatButtonModule} from '@angular/material/button';
 import {RouteService} from '../routes/route.service';
 import {AngularFirestoreModule} from 'angularfire2/firestore';
 import {RatingService} from '../ratings/rating.service';
 import {PoiService} from '../pois/poi.service';
+import {UserService} from '../users/user.service';
+import {UsernameDialogComponent} from './login/username-dialog/username-dialog.component';
 
 const appRoutes: Routes = [
-  { path: 'map', component: MapComponent },
-  { path: 'map/:mode', component: MapComponent },
-  { path: 'create_route', component: CreateRouteComponent }
+  { path: 'create_route', component: CreateRouteComponent },
+  { path: 'edit_route/:id', component: EditRouteComponent },
+  { path: 'show_route/:id', component: ShowRouteComponent },
+
 ];
 
 @NgModule({
@@ -42,9 +52,13 @@ const appRoutes: Routes = [
     ListRoutesComponent,
     RouteComponent,
     CreateRouteComponent,
+    EditRouteComponent,
+    ShowRouteComponent,
     MapComponent,
+    MapUIComponent,
     RatingComponent,
-    MyRoutesComponent
+    MyRoutesComponent,
+    UsernameDialogComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -64,12 +78,15 @@ const appRoutes: Routes = [
     MatToolbarModule,
     MatSnackBarModule,
     MatMenuModule,
+    MatSelectModule,
     ReactiveFormsModule,
+    AngularFirestoreModule,
     BrowserAnimationsModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSlideToggleModule
   ],
-  entryComponents: [LoginComponent],
-  providers: [AuthenticationService, RouteService, RatingService, PoiService],
+  entryComponents: [LoginComponent, UsernameDialogComponent],
+  providers: [AuthenticationService, RouteService, RatingService, PoiService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

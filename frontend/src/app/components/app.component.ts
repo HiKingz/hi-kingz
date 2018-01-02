@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import {MatDialog, MatSnackBar} from "@angular/material";
-import {AuthenticationService} from "../authentication/authentication.service";
-import {LoginComponent} from "./login/login.component";
-import * as firebase from "firebase";
-import {environment} from "../../environments/environment";
-
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {LoginComponent} from './login/login.component';
+import * as firebase from 'firebase';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -15,30 +14,32 @@ export class AppComponent {
 
   constructor(public dialog: MatDialog,
               private authenticationService: AuthenticationService,
-              public snackBar: MatSnackBar){
+              public snackBar: MatSnackBar) {
     firebase.initializeApp(environment.firebase);
   }
 
+
   // login is executed on click
-  login():void{
+  login(): void {
     this.dialog.open(LoginComponent, {
       width: '400px'
     });
   }
 
+
   // logout is executed on click
-  logout():void{
+  logout(): void {
     this.authenticationService.logout()
-      .then(()=>{
+      .then(() => {
         this.snackBar.open('Logout successful', null, {duration: 1000});
       })
-      .catch((error)=>{
+      .catch((error) => {
         console.log(error);
-      })
+      });
   }
 
   // checks whether user is logged in and depending on it the screen shows either the login option or the logout option
-  userIsLoggedIn():boolean{
+  userIsLoggedIn(): boolean {
     return this.authenticationService.userIsSignedIn();
   }
 
