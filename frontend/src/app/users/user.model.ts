@@ -5,7 +5,7 @@ export class UserSignature {
 }
 
 export class User extends UserSignature implements FirebaseStorable {
-  constructor(id: string, username: string) {
+  constructor(id: string, username: string, public favorites: Array<string>) {
     super(id, username);
   }
 }
