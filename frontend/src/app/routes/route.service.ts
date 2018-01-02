@@ -47,7 +47,7 @@ export class RouteService extends FirestoreDataService<Route> {
   }
 
   public update(route: FirebaseItem<Route>): Promise<void> {
-    return this._update(route);
+    return this._updateOrCreate(route);
   }
 
   public delete(route: FirebaseItem<Route>): Promise<void> {

@@ -102,8 +102,7 @@ export abstract class FirestoreDataService<ModelType extends FirebaseStorable> {
     );
   }
 
-
-  protected _update(firesbaseItem: FirebaseItem<ModelType>): Promise<void> {
+  protected _updateOrCreate(firesbaseItem: FirebaseItem<ModelType>): Promise<void> {
     return this._db.doc<ModelType>(
       firesbaseItem.reference
     ).set(
