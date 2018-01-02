@@ -114,6 +114,10 @@ export abstract class FirestoreDataService<ModelType extends FirebaseStorable> {
     return this._db.doc<ModelType>(firesbaseItem.reference).delete();
   }
 
+  protected _concatPaths(basePath: string, path: string): string {
+    return basePath + (basePath.length > 0 && path.length > 0 ? '/' : '') + path;
+  }
+
   private _serializeFirebaseItem(data: ModelType): ModelType {
     return <ModelType> JSON.parse(JSON.stringify(data));
   }
@@ -122,7 +126,10 @@ export abstract class FirestoreDataService<ModelType extends FirebaseStorable> {
     return new FirebaseItem<ModelType>(documentSnapshot.ref.path, this._deserializeData(documentSnapshot.data()));
   }
 
-  private _getCollectionPath(parentDocument: FirebaseItem<FirebaseStorable>) {
-    return (parentDocument === undefined ? '' : (parentDocument.reference + '/')) + this._collectionPath;
+  private _getCollectionPath(parentDocument: FirebaseItem<FirebaseStorable>): string {
+    return this._concatPaths(
+      parentDocument === undefined ? '' : parentDocument.reference,
+      this._collectionPath
+    );
   }
 }

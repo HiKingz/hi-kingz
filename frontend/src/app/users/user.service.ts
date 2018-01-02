@@ -16,7 +16,7 @@ export class UserService extends FirestoreDataService<User> {
 
   public async create(user: UserSignature): Promise<Observable<FirebaseItem<User>>> {
     const firebaseItem = new FirebaseItem<User>(
-      this._collectionPath + '/' + user.id,
+      this._concatPaths(this._collectionPath, user.id),
       {...user, favorites: []}
     );
     await this._updateOrCreate(firebaseItem);
