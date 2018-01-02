@@ -23,7 +23,10 @@ import {environment} from "../../environments/environment";
 import {AngularFireAuthModule} from "angularfire2/auth";
 import {AuthenticationService} from "../authentication/authentication.service";
 import {MatButtonModule} from '@angular/material/button';
-import {AngularFireDatabaseModule} from "angularfire2/database";
+import {RouteService} from '../routes/route.service';
+import {AngularFirestoreModule} from 'angularfire2/firestore';
+import {RatingService} from '../ratings/rating.service';
+import {PoiService} from '../pois/poi.service';
 
 const appRoutes: Routes = [
   { path: 'map', component: MapComponent },
@@ -51,7 +54,7 @@ const appRoutes: Routes = [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase, 'HiKingz'),
     AngularFireAuthModule,
-    AngularFireDatabaseModule,
+    AngularFirestoreModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
@@ -65,8 +68,8 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     MatButtonModule
   ],
-  entryComponents:[LoginComponent],
-  providers: [AuthenticationService],
+  entryComponents: [LoginComponent],
+  providers: [AuthenticationService, RouteService, RatingService, PoiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
