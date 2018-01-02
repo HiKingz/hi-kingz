@@ -1,13 +1,13 @@
-import {User} from '../users/user.model';
+import {UserSignature} from '../users/user.model';
 import {File} from '../files/file.model';
-import {IFileable} from '../commons/models/fileable';
-import {IFirebaseStorable} from '../commons/models/firebase-storable';
+import {Fileable} from '../commons/models/fileable';
+import {FirebaseStorable} from '../commons/models/firebase-storable';
 
-export class Rating implements IFileable, IFirebaseStorable {
+export class Rating implements Fileable, FirebaseStorable {
   constructor(
-    public files: [File],
-    public user: User,
-    public score: number,
+    public files: Array<File>,
+    public user: UserSignature,
+    public rating: number,
     public comment: string,
   ) { }
 }

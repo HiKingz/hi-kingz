@@ -1,6 +1,6 @@
-import {IFirebaseStorable} from '../commons/models/firebase-storable';
+import {FirebaseStorable} from '../commons/models/firebase-storable';
 import {Point} from '../coordinates/point.model';
 
-export class Direction implements IFirebaseStorable {
-  constructor(public points: [Point]) {}
+export class Direction {
+  constructor(public points: Array<Point>) {}
 }

@@ -1,5 +1,5 @@
 import {File} from '../../files/file.model';
 
-export interface IFileable {
-  files: [File];
+export interface Fileable {
+  files: Array<File>;
 }

@@ -1,5 +1,9 @@
-import {Rating} from '../../ratings/rating.model';
+import {FirebaseStorable} from './firebase-storable';
 
-export interface IRateable {
-  ratings: [Rating];
+export class RatingAggregation {
+  constructor(public averageRating: number, totalRatings: number) { }
+}
+
+export interface Rateable extends FirebaseStorable {
+  ratingAggregation: RatingAggregation;
 }
