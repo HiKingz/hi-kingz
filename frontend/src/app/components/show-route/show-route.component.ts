@@ -3,7 +3,7 @@ import {MapUIComponent} from '../map-ui/map-ui.component';
 import {FirebaseItem} from '../../commons/models/firebase.model';
 import {Route} from '../../routes/route.model';
 import {Point} from '../../coordinates/point.model';
-import {User} from '../../users/user.model';
+import {UserSignature} from '../../users/user.model';
 import {Waypoint} from '../../coordinates/waypoint.model';
 import { ActivatedRoute } from '@angular/router';
 
@@ -40,7 +40,7 @@ export class ShowRouteComponent implements OnInit {
         'Testroute',
         'Eine Dummyroute ohne Datenbank dahinter.',
         3,
-        new User('1337', 'Der Geister der vergangenen Weihnacht'),
+        new UserSignature('1337', 'Der Geister der vergangenen Weihnacht'),
         [
           new Waypoint('Wegpunkt 1', new Point(8, 50)),
           new Waypoint('Wegpunkt 2', new Point(8.001, 49.999)),
