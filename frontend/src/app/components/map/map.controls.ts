@@ -21,7 +21,59 @@ const point_src = {
   }]
 };
 
-export class PlanningControl {
+export class PoiMakerControl {
+  _map: mapboxgl.Map;
+  _container;
+  component: MapComponent;
+
+  constructor(component: MapComponent) {
+    this.component = component;
+  }
+
+
+  onAdd(map) {
+    this._map = map;
+    this._container = document.createElement('div');
+    this._container.className = 'mapboxgl-ctrl';
+    this._container.textContent = 'Point of Interest';
+    map.on('click', this.handleClick);
+
+    this._map.addSource('poi', {
+      'type': 'geojson',
+      'data': {
+        'type': 'FeatureCollection',
+        'features': [{
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [ 0, 0 ]
+          }
+        }]
+      }
+    });
+
+    this._map.addLayer({
+      'id': 'poi',
+      'type': 'circle',
+      'source': 'poi',
+      'paint': {
+        'circle-radius': 10,
+        'circle-color': '#00A0FF'
+      }
+    });
+  }
+
+  public handleClick = (e) => {
+    this.setPoint(e.lngLat);
+  }
+
+  public setPoint = (coords) => {
+    this._map.getSource('poi').geometry.coordinates = [coords]; // TODO: Make map component differentiate properly, use 2 sources in mapComp
+  }
+
+}
+
+export class RoutePlanningControl {
 
   _wpList;
   _container;
@@ -32,7 +84,7 @@ export class PlanningControl {
   draggedPoint: string;
   isDragging = false;
 
-  component: MapComponent
+  component: MapComponent;
 
   constructor(component: MapComponent) {
     this.component = component;
@@ -47,18 +99,6 @@ export class PlanningControl {
     this._container.appendChild(this._wpList);
     map.on('click', this.handleClick);
 
-    /* const el = document.createElement('div');
-    el.className = 'marker';
-    el.style.backgroundImage = 'url(https://image.flaticon.com/icons/svg/149/149060.svg)';
-    el.style.backgroundAttachment = 'top';
-    el.style.backgroundSize = '25px,25px';
-    el.style.backgroundRepeat = 'no-repeat';
-    el.style.width = '25px';
-    el.style.height = '50px';
-
-    new mapboxgl.Marker(el)
-      .setLngLat([8.24, 50.7])
-      .addTo(map); */
 
     const self = this;
     map.on('load', () => {
@@ -208,17 +248,20 @@ export class PlanningControl {
           new Point(wp_srvc.location[0], wp_srvc.location[1])));
     }
 
-    this.component.displayRoute();
+    this.component.displayRouteOrPoi();
   }
 
   private buildQuery = () => {
-    const query = [];
+    /*const query = [];
     for (const key in this.waypoints) {
       if (true) { // Warum will TSLint so eine Kacke haben?!
         query.push([this.waypoints[key][0], this.waypoints[key][1]].join(','));
       }
     }
-    return query.join(';');
+    return query.join(';'); */
+    return Object.keys(this.waypoints).map(
+        key => [this.waypoints[key][0], this.waypoints[key][1]].join(',')
+      ).join(';');
   }
 
   private fetchDirections = () => {

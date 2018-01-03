@@ -12,6 +12,7 @@ import * as ctrls from './map.controls';
 import {Route} from '../../routes/route.model';
 import {Point} from '../../coordinates/point.model';
 import {Waypoint} from '../../coordinates/waypoint.model';
+import {Poi} from '../../pois/poi.model';
 
 // Global vars
 const request = new XMLHttpRequest();
@@ -37,7 +38,8 @@ const point_src = {
 export class MapComponent implements OnInit {
 
   map: mapboxgl.Map;
-  _route: Route;
+  _route: Route = undefined;
+  _poi: Poi = undefined;
   @Input() readonly: boolean;
 
   cli;
@@ -46,10 +48,19 @@ export class MapComponent implements OnInit {
   @Input()
   set route(route: Route) {
     this._route = route;
-    this.displayRoute(true);
+    this.displayRouteOrPoi(true);
   }
   get route(): Route {
     return this._route;
+  }
+
+  @Input()
+  set poi(poi: Poi) {
+    this._poi = poi;
+    this.displayRouteOrPoi(true);
+  }
+  get poi(): Poi {
+    return this._poi;
   }
 
   constructor() {
@@ -91,15 +102,15 @@ export class MapComponent implements OnInit {
       });
     });
 
-    if (!this.readonly) {
-      this.map.addControl(new ctrls.PlanningControl(this), 'top-left');
+    if (!this.readonly && this.route) {
+      this.map.addControl(new ctrls.RoutePlanningControl(this), 'top-left');
     }
-    if (this.route.direction.points.length > 0) {
-      this.displayRoute(true);
+    if ((this.route && this.route.direction.points.length > 0) || this.poi.point) {
+      this.displayRouteOrPoi(true);
     }
   }
 
-  public displayRoute = (jumpTo: boolean = false) => {
+  public displayRouteOrPoi = (jumpTo: boolean = false) => {
 
     if (!this.map) {
       return;
@@ -115,28 +126,41 @@ export class MapComponent implements OnInit {
     };
 
     const self = this;
-    self.route.direction.points.forEach(function(c, i) {
-      geojson.geometry.coordinates.push([c.longitude, c.latitude]);
-    });
+    if (self.route) {
+      self.route.direction.points.forEach(function(c, i) {
+        geojson.geometry.coordinates.push([c.longitude, c.latitude]);
+      });
+    } else {
+      geojson.geometry.coordinates.push([this.poi.point.longitude, this._poi.point.latitude]);
+    }
+
     const src = this.map.getSource('route_source');
     if (src) {
       src.setData(geojson);
     } else {
       this.map.on('load', () => {
         self.map.getSource('route_source').setData(geojson);
-        if (jumpTo && self.route.direction.points.length > 0) {
-          self.flyTo(self.route.direction.points[0]);
+        if (jumpTo) {
+          if (self.route && self.route.direction.points.length > 0) {
+            self.flyTo(self.route.direction.points[0]);
+          } else if (self.poi) {
+            self.flyTo(self.poi.point);
+          }
         }
         return;
       });
     }
 
-    if (jumpTo && this.route.direction.points.length > 0) {
-      this.flyTo(this.route.waypoints[0].point);
+    if (jumpTo) {
+      if (this.route  && self.route.direction.points.length > 0) {
+        this.flyTo(this.route.waypoints[0].point);
+      } else if (this.poi) {
+        this.flyTo(this._poi.point);
+      }
     }
   }
 
-  public flyTo = (location) => {
+  public flyTo = (location: Point) => {
     this.map.flyTo({
         // These options control the ending camera position: centered at
         // the target, at zoom level 9, and north up.

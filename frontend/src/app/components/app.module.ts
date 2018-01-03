@@ -10,7 +10,8 @@ import { LoginComponent } from './login/login.component';
 import { ListRoutesComponent } from './list-routes/list-routes.component';
 import { RouteComponent } from './route/route.component';
 import { MapComponent } from './map/map.component';
-import { MapUIComponent } from './map-ui/map-ui.component';
+import { RouteUIComponent } from './route-ui/route-ui.component';
+import { PoiUIComponent } from './poi-ui/poi-ui.component';
 import { CreateRouteComponent } from './create-route/create-route.component';
 import { EditRouteComponent } from './edit-route/edit-route.component';
 import { ShowRouteComponent } from './show-route/show-route.component';
@@ -34,11 +35,13 @@ import {AngularFireDatabaseModule} from 'angularfire2/database';
 import {AngularFirestoreModule} from 'angularfire2/firestore';
 import {UserService} from '../users/user.service';
 import { UsernameDialogComponent } from './login/username-dialog/username-dialog.component';
+import {CreatePoiComponent} from "./create-poi/create-poi.component";
 
 const appRoutes: Routes = [
   { path: 'create_route', component: CreateRouteComponent },
   { path: 'edit_route/:id', component: EditRouteComponent },
   { path: 'show_route/:id', component: ShowRouteComponent },
+  { path: 'create_poi', component: CreatePoiComponent },
 
 ];
 
@@ -50,10 +53,12 @@ const appRoutes: Routes = [
     ListRoutesComponent,
     RouteComponent,
     CreateRouteComponent,
+    CreatePoiComponent,
     EditRouteComponent,
     ShowRouteComponent,
     MapComponent,
-    MapUIComponent,
+    RouteUIComponent,
+    PoiUIComponent,
     RatingComponent,
     MyRoutesComponent,
     UsernameDialogComponent

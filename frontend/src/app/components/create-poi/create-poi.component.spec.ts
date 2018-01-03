@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RouteUIComponent } from './route-ui.component';
+import { CreatePoiComponent } from './create-poi.component';
 
-describe('RouteUIComponent', () => {
-  let component: RouteUIComponent;
-  let fixture: ComponentFixture<RouteUIComponent>;
+describe('CreatePoiComponent', () => {
+  let component: CreatePoiComponent;
+  let fixture: ComponentFixture<CreatePoiComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RouteUIComponent ]
+      declarations: [ CreatePoiComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RouteUIComponent);
+    fixture = TestBed.createComponent(CreatePoiComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

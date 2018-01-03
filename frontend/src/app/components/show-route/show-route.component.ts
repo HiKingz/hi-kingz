@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {MapUIComponent} from '../map-ui/map-ui.component';
+import {RouteUIComponent} from '../route-ui/route-ui.component';
 import {FirebaseItem} from '../../commons/models/firebase.model';
 import {Route} from '../../routes/route.model';
 import {Direction} from '../../directions/direction.model';
@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ShowRouteComponent implements OnInit {
 
-  mapComp: MapUIComponent;
+  mapComp: RouteUIComponent;
   frbs_route: FirebaseItem<Route>;
   sub: any;
 
@@ -26,8 +26,8 @@ export class ShowRouteComponent implements OnInit {
     );
   }
 
-  @ViewChild(MapUIComponent)
-  set appMap(comp: MapUIComponent) {
+  @ViewChild(RouteUIComponent)
+  set appMap(comp: RouteUIComponent) {
     this.mapComp = comp;
   }
 

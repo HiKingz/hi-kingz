@@ -8,13 +8,13 @@ import {MapComponent} from '../map/map.component';
 import * as firebase from 'firebase';
 
 @Component({
-  selector: 'app-map-ui',
-  templateUrl: './map-ui.component.html',
-  styleUrls: ['./map-ui.component.css'],
+  selector: 'app-route-ui',
+  templateUrl: './route-ui.component.html',
+  styleUrls: ['./route-ui.component.css'],
   encapsulation: ViewEncapsulation.None
 })
 
-export class MapUIComponent implements OnInit {
+export class RouteUIComponent implements OnInit {
 
   mapComp: MapComponent;
 

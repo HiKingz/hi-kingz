@@ -1,0 +1,18 @@
+<div>
+  <div class="hi-kingz-sidebar">
+    <mat-form-field>
+      <input matInput placeholder="Name der Punktes" [(ngModel)]="poi.name" [readonly]="readonly"/>
+      <br/>
+    </mat-form-field>
+    <br/>
+    <mat-form-field>
+      <textarea matInput placeholder="Beschreibung des Punktes" [(ngModel)]="poi.description" [readonly]="readonly"></textarea>
+      <br/>
+    </mat-form-field>
+    <br/>
+
+    <button *ngIf="!readonly" mat-button value="Punkt speichern" (click)="saveRoute()" [disabled]="readonly">Punkt speichern</button>
+  </div>
+</div>
+
+<app-map [poi]="poi" [readonly]="readonly"></app-map>
