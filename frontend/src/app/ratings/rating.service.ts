@@ -20,7 +20,7 @@ export class RatingService extends FirestoreDataService<Rating> {
   }
 
   public update(rating: FirebaseItem<Rating>): Promise<void> {
-    return this._update(rating);
+    return this._updateOrCreate(rating);
   }
 
   public delete(rating: FirebaseItem<Rating>): Promise<void> {

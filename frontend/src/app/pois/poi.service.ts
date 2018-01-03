@@ -6,10 +6,15 @@ import {UserSignature} from '../users/user.model';
 import {Point} from '../coordinates/point.model';
 import {Observable} from 'rxjs/Observable';
 import {FirebaseItem} from '../commons/models/firebase.model';
+import {AngularFirestore} from 'angularfire2/firestore';
 
 @Injectable()
 export class PoiService extends FirestoreDataService<Poi> {
   protected readonly _collectionPath = 'pois';
+
+  constructor(db: AngularFirestore) {
+    super(db);
+  }
 
   public create(poi: Poi): Promise<Observable<FirebaseItem<Poi>>> {
     return this._create(poi);

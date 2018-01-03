@@ -39,7 +39,7 @@ export class RouteService extends FirestoreDataService<Route> {
    * @returns {Observable<FirebaseItem<Route>>}
    */
   public getById(id: string): Observable<FirebaseItem<Route>> {
-    return this.get(this._collectionPath + '/' + id);
+    return this.get(this._concatPaths(this._collectionPath, id));
   }
 
   public create(route: Route): Promise<Observable<FirebaseItem<Route>>> {
@@ -47,7 +47,7 @@ export class RouteService extends FirestoreDataService<Route> {
   }
 
   public update(route: FirebaseItem<Route>): Promise<void> {
-    return this._update(route);
+    return this._updateOrCreate(route);
   }
 
   public delete(route: FirebaseItem<Route>): Promise<void> {
