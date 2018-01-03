@@ -5,12 +5,12 @@
       <br/>
     </mat-form-field>
     <mat-form-field>
-      <mat-select placeholder="Schwierigkeitsgrad" [(value)]="route.difficulty" [disabled]="readonly">
-        <mat-option value="1">EZ PZ</mat-option>
-        <mat-option value="2">Einfach</mat-option>
-        <mat-option value="3">Angemessen</mat-option>
-        <mat-option value="4">Hart wie Schotter</mat-option>
-        <mat-option value="5">Pilgerfahrt zur Hölle</mat-option>
+      <mat-select placeholder="Schwierigkeitsgrad" [(ngModel)]="route.difficulty" [disabled]="readonly">
+        <mat-option [value]="1">EZ PZ</mat-option>
+        <mat-option [value]="2">Einfach</mat-option>
+        <mat-option [value]="3">Angemessen</mat-option>
+        <mat-option [value]="4">Hart wie Schotter</mat-option>
+        <mat-option [value]="5">Pilgerfahrt zur Hölle</mat-option>
       </mat-select>
 
     </mat-form-field>
@@ -29,7 +29,8 @@
       </div>
     </div>
 
-    <button mat-button value="Route speichern" (click)="saveRoute()" [disabled]="readonly">Route speichern</button>
+
+    <button *ngIf="!readonly" mat-button value="Route speichern" (click)="saveRoute()" [disabled]="readonly">Route speichern</button>
   </div>
 </div>
 

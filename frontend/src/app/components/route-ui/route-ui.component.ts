@@ -13,6 +13,7 @@ import * as firebase from 'firebase';
   styleUrls: ['./map-ui.component.css'],
   encapsulation: ViewEncapsulation.None
 })
+
 export class MapUIComponent implements OnInit {
 
   mapComp: MapComponent;
