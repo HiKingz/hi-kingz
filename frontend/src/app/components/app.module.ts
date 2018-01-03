@@ -31,11 +31,13 @@ import {environment} from '../../environments/environment';
 import {AngularFireAuthModule} from 'angularfire2/auth';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {MatButtonModule} from '@angular/material/button';
-import {AngularFireDatabaseModule} from 'angularfire2/database';
+import {RouteService} from '../routes/route.service';
 import {AngularFirestoreModule} from 'angularfire2/firestore';
+import {RatingService} from '../ratings/rating.service';
+import {PoiService} from '../pois/poi.service';
 import {UserService} from '../users/user.service';
-import { UsernameDialogComponent } from './login/username-dialog/username-dialog.component';
-import {CreatePoiComponent} from "./create-poi/create-poi.component";
+import {UsernameDialogComponent} from './login/username-dialog/username-dialog.component';
+import {CreatePoiComponent} from './create-poi/create-poi.component';
 
 const appRoutes: Routes = [
   { path: 'create_route', component: CreateRouteComponent },
@@ -71,7 +73,7 @@ const appRoutes: Routes = [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase, 'HiKingz'),
     AngularFireAuthModule,
-    AngularFireDatabaseModule,
+    AngularFirestoreModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
@@ -89,7 +91,7 @@ const appRoutes: Routes = [
     MatSlideToggleModule
   ],
   entryComponents: [LoginComponent, UsernameDialogComponent],
-  providers: [AuthenticationService, UserService],
+  providers: [AuthenticationService, RouteService, RatingService, PoiService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

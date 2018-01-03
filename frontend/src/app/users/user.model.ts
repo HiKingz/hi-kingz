@@ -1,22 +1,11 @@
-import {IFirebaseStorable} from '../commons/models/firebase-storable';
+import {FirebaseStorable} from '../commons/models/firebase-storable';
 
-export class User implements IFirebaseStorable {
-  uID: string;
-  username: string;
+export class UserSignature {
+  constructor(public id: string, public username: string) { }
+}
 
-  /**
-   * @param {string} _uID
-   * @param {string} _username
-   */
-  constructor(
-    _uID: string,
-    _username: string) {
-    this.uID = _uID;
-    this.username = _username;
+export class User extends UserSignature implements FirebaseStorable {
+  constructor(id: string, username: string) {
+    super(id, username);
   }
-
-  toString() {
-    console.log('uID - ' + this.uID + '/nUsername - ' + this.username);
-  }
-
 }

@@ -68,7 +68,8 @@ export class PoiMakerControl {
   }
 
   public setPoint = (coords) => {
-    this._map.getSource('poi').geometry.coordinates = [coords]; // TODO: Make map component differentiate properly, use 2 sources in mapComp
+    point_src.features[0].geometry.coordinates = [coords];
+    this._map.getSource('poi').setData(point_src);
   }
 
 }
@@ -226,10 +227,10 @@ export class RoutePlanningControl {
     });
 
     const self = this;
-    this.component.route.direction.points.length = 0;
+    this.component.route.direction.length = 0;
     decoded.forEach(function(c, i) {
       // push this into the current _route model passed down by the component embedding the map
-      self.component.route.direction.points.push(new Point(c[0], c[1]));
+      self.component.route.direction.push(new Point(c[0], c[1]));
     });
 
     // Merge waypoints by iterating over both arrays: route_wps and self.component.rt.waypoints
@@ -252,16 +253,9 @@ export class RoutePlanningControl {
   }
 
   private buildQuery = () => {
-    /*const query = [];
-    for (const key in this.waypoints) {
-      if (true) { // Warum will TSLint so eine Kacke haben?!
-        query.push([this.waypoints[key][0], this.waypoints[key][1]].join(','));
-      }
-    }
-    return query.join(';'); */
     return Object.keys(this.waypoints).map(
-        key => [this.waypoints[key][0], this.waypoints[key][1]].join(',')
-      ).join(';');
+      key => [this.waypoints[key][0], this.waypoints[key][1]].join(',')
+    ).join(';');
   }
 
   private fetchDirections = () => {

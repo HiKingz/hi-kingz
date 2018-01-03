@@ -1,5 +1,5 @@
-import {IFirebaseStorable} from '../commons/models/firebase-storable';
+import {FirebaseStorable} from '../commons/models/firebase-storable';
 
-export class File implements IFirebaseStorable {
+export class File {
   constructor() { }
 }

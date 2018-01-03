@@ -1,5 +1,3 @@
-import {IFirebaseStorable} from '../commons/models/firebase-storable';
-
-export class Point implements IFirebaseStorable {
+export class Point {
   constructor(public longitude: number, public latitude: number) { }
 }

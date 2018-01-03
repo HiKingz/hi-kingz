@@ -1,11 +1,7 @@
 import {Component, OnInit, ViewEncapsulation, ViewChild, Input, Output, EventEmitter} from '@angular/core';
 import {Route} from '../../routes/route.model';
-import {Direction} from '../../directions/direction.model';
-import {Point} from '../../coordinates/point.model';
-import {Waypoint} from '../../coordinates/waypoint.model';
 
 import {MapComponent} from '../map/map.component';
-import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-route-ui',

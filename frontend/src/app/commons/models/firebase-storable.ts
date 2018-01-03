@@ -1,1 +1,1 @@
-export interface IFirebaseStorable {}
+export interface FirebaseStorable { }

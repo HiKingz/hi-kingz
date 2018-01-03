@@ -3,9 +3,8 @@ import {PoiUIComponent} from '../poi-ui/poi-ui.component';
 import {FirebaseItem} from '../../commons/models/firebase.model';
 import {Poi} from '../../pois/poi.model';
 import {Point} from '../../coordinates/point.model';
-import {Waypoint} from '../../coordinates/waypoint.model';
-import {Rating} from '../../ratings/rating.model';
 import {File} from '../../files/file.model';
+import {RatingAggregation} from '../../commons/models/rateable';
 
 @Component({
   selector: 'app-create-poi',
@@ -21,7 +20,7 @@ export class CreatePoiComponent implements OnInit {
   constructor() {
     this.frbs_poi = new FirebaseItem(
       '0',
-      new Poi(<[Rating]>[], <[File]>[], null, null, null, new Point(0, 0))
+      new Poi(<[File]>[], null, null, null, new RatingAggregation(0,0), new Point(0, 0))
     );
   }
 

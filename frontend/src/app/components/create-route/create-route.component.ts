@@ -2,9 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {RouteUIComponent} from '../route-ui/route-ui.component';
 import {FirebaseItem} from '../../commons/models/firebase.model';
 import {Route} from '../../routes/route.model';
-import {Direction} from '../../directions/direction.model';
-import {Point} from '../../coordinates/point.model';
-import {Waypoint} from '../../coordinates/waypoint.model';
 
 @Component({
   selector: 'app-create-route',
@@ -20,7 +17,7 @@ export class CreateRouteComponent implements OnInit {
   constructor() {
     this.frbs_route = new FirebaseItem(
       '0',
-      new Route(null, null, null, null, null, null, <[Waypoint]>[], new Direction(<[Point]>[]), null, null)
+      new Route(null, null, null, null, null, null, null, null, null, null)
     );
   }
 

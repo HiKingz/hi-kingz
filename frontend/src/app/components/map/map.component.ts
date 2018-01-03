@@ -1,17 +1,14 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 
 import * as mapboxgl from 'mapbox-gl';
 import { decode } from '@mapbox/polyline';
-import {instantiateDefaultStyleNormalizer} from '@angular/platform-browser/animations/src/providers';
 import * as ctrls from './map.controls';
 
 import {Route} from '../../routes/route.model';
 import {Point} from '../../coordinates/point.model';
-import {Waypoint} from '../../coordinates/waypoint.model';
 import {Poi} from '../../pois/poi.model';
 
 // Global vars
@@ -102,10 +99,14 @@ export class MapComponent implements OnInit {
       });
     });
 
-    if (!this.readonly && this.route) {
-      this.map.addControl(new ctrls.RoutePlanningControl(this), 'top-left');
+    if (!this.readonly) {
+      if (this.route) {
+        this.map.addControl(new ctrls.RoutePlanningControl(this), 'top-left');
+      } else if (this.poi) {
+        this.map.addControl(new ctrls.PoiMakerControl(this), 'top-left');
+      }
     }
-    if ((this.route && this.route.direction.points.length > 0) || this.poi.point) {
+    if ((this.route && this.route.direction.length > 0) || this.poi.point) {
       this.displayRouteOrPoi(true);
     }
   }
@@ -126,14 +127,14 @@ export class MapComponent implements OnInit {
     };
 
     const self = this;
+
     if (self.route) {
-      self.route.direction.points.forEach(function(c, i) {
+      self.route.direction.forEach(function(c, i) {
         geojson.geometry.coordinates.push([c.longitude, c.latitude]);
       });
     } else {
       geojson.geometry.coordinates.push([this.poi.point.longitude, this._poi.point.latitude]);
     }
-
     const src = this.map.getSource('route_source');
     if (src) {
       src.setData(geojson);
@@ -141,8 +142,8 @@ export class MapComponent implements OnInit {
       this.map.on('load', () => {
         self.map.getSource('route_source').setData(geojson);
         if (jumpTo) {
-          if (self.route && self.route.direction.points.length > 0) {
-            self.flyTo(self.route.direction.points[0]);
+          if (self.route && self.route.direction.length > 0) {
+            self.flyTo(self.route.direction[0]);
           } else if (self.poi) {
             self.flyTo(self.poi.point);
           }
@@ -152,7 +153,7 @@ export class MapComponent implements OnInit {
     }
 
     if (jumpTo) {
-      if (this.route  && self.route.direction.points.length > 0) {
+      if (this.route  && self.route.waypoints.length > 0) {
         this.flyTo(this.route.waypoints[0].point);
       } else if (this.poi) {
         this.flyTo(this._poi.point);

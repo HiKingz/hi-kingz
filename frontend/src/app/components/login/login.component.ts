@@ -3,6 +3,7 @@ import {AuthenticationService} from '../../authentication/authentication.service
 import {MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
 import {UserService} from '../../users/user.service';
 import {UsernameDialogComponent} from './username-dialog/username-dialog.component';
+import {UserSignature} from '../../users/user.model';
 
 @Component({
   selector: 'app-login',
@@ -105,7 +106,7 @@ export class LoginComponent implements OnInit {
         this.authenticationService.register(username.toString().trim(), email.toString().trim(), password.toString())
           .then((user) => {
             console.log('database operation ' + user.uid);
-            this.userService.addUser(user.uid, username)
+            this.userService.create(new UserSignature(user.uid, username))
               .then(() => {
                 console.log('wrote to database.');
                 user.sendEmailVerification()

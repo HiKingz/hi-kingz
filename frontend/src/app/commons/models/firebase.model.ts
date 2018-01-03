@@ -1,5 +1,9 @@
-import {IFirebaseStorable} from './firebase-storable';
+import {FirebaseStorable} from './firebase-storable';
 
-export class FirebaseItem<Model extends IFirebaseStorable> {
-  constructor(public id: string, public item: Model) { }
+export class FirebaseItem<Model extends FirebaseStorable> {
+  constructor(public reference: string, public item: Model) { }
+
+  public get id(): string {
+    return this.reference.split('/').pop();
+  }
 }

@@ -1,6 +1,6 @@
 import {Point} from './point.model';
-import {IFirebaseStorable} from '../commons/models/firebase-storable';
+import {FirebaseStorable} from '../commons/models/firebase-storable';
 
-export class Waypoint implements IFirebaseStorable {
+export class Waypoint {
   constructor(public name: string, public point: Point) { }
 }
