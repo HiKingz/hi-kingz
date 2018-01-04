@@ -1,4 +1,4 @@
 <mat-form-field class="container">
-  <input #username matInput placeholder="Please enter a username">
+  <input #username matInput (keyup.enter)="addUser(username.value)" placeholder="Please enter a username">
 </mat-form-field>
-<button class="container" color="primary" mat-raised-button >Confirm</button>
+<button class="container" color="primary" mat-raised-button (click)="addUser(username.value)" >Confirm</button>
