@@ -31,7 +31,7 @@ export class UserService extends FirestoreDataService<User> {
     return this._updateOrCreate(user);
   }
 
-  public get(id: string): Observable<FirebaseItem<User>> {
+  private get(id: string): Observable<FirebaseItem<User>> {
     return this._get(this._concatPaths(this._collectionPath, id));
   }
 
