@@ -39,7 +39,8 @@ export class RouteService extends FirestoreDataService<Route> {
    * @returns {Observable<FirebaseItem<Route>>}
    */
   public getById(id: string): Observable<FirebaseItem<Route>> {
-    return this.get(this._concatPaths(this._collectionPath, id));
+    // return this.get(this._concatPaths(this._collectionPath, id));
+    return this.get(id);
   }
 
   public create(route: Route): Promise<Observable<FirebaseItem<Route>>> {
@@ -59,19 +60,19 @@ export class RouteService extends FirestoreDataService<Route> {
       // TODO deserialize properly when model is done
       data.files && data.files.map(fileData => new File()) || [],
       data.name || '',
-      data.descrpition || '',
+      data.description || '',
       data.difficulty || null,
       data.user && new UserSignature(data.user.id || null, data.user.username || '') || null,
       data.waypoints && data.waypoints.map(
         waypointData => new Waypoint(
           waypointData.name || '',
           waypointData.point && new Point(
-            waypointData.point.longitude || null, waypointData.point.altitude || null
+            waypointData.point.longitude || null, waypointData.point.latitude || null
           ) || null
         )
       ) || [],
       data.direction && data.direction.map(
-        directionData => new Point(directionData.longitude || null, directionData.altitude || null)
+        directionData => new Point(directionData.longitude || null, directionData.latitude || null)
       ) || [],
       data.ratingAggregation && new RatingAggregation(
         data.ratingAggregation.averageRating || 0, data.ratingAggregation.totalRatings || 0

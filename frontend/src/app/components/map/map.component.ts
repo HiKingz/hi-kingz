@@ -106,7 +106,7 @@ export class MapComponent implements OnInit {
         this.map.addControl(new ctrls.PoiMakerControl(this), 'top-left');
       }
     }
-    if ((this.route && this.route.direction.length > 0) || this.poi.point) {
+    if ((this.route && this.route.direction.length > 0) || (this.poi && this.poi.point)) {
       this.displayRouteOrPoi(true);
     }
   }

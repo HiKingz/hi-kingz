@@ -37,30 +37,33 @@ export class PoiMakerControl {
     this._container.className = 'mapboxgl-ctrl';
     this._container.textContent = 'Point of Interest';
     map.on('click', this.handleClick);
+    map.on('load', () => {
+      this._map.addSource('poi', {
+        'type': 'geojson',
+        'data': {
+          'type': 'FeatureCollection',
+          'features': [{
+            'type': 'Feature',
+            'geometry': {
+              'type': 'Point',
+              'coordinates': [8.24958214937908, 50.08016862900732]
+            }
+          }]
+        }
+      });
 
-    this._map.addSource('poi', {
-      'type': 'geojson',
-      'data': {
-        'type': 'FeatureCollection',
-        'features': [{
-          'type': 'Feature',
-          'geometry': {
-            'type': 'Point',
-            'coordinates': [ 0, 0 ]
-          }
-        }]
-      }
+      this._map.addLayer({
+        'id': 'poi',
+        'type': 'circle',
+        'source': 'poi',
+        'paint': {
+          'circle-radius': 10,
+          'circle-color': '#00A0FF'
+        }
+      });
     });
 
-    this._map.addLayer({
-      'id': 'poi',
-      'type': 'circle',
-      'source': 'poi',
-      'paint': {
-        'circle-radius': 10,
-        'circle-color': '#00A0FF'
-      }
-    });
+    return this._container;
   }
 
   public handleClick = (e) => {
@@ -68,7 +71,7 @@ export class PoiMakerControl {
   }
 
   public setPoint = (coords) => {
-    point_src.features[0].geometry.coordinates = [coords];
+    point_src.features[0].geometry.coordinates = [coords.lng, coords.lat];
     this._map.getSource('poi').setData(point_src);
   }
 

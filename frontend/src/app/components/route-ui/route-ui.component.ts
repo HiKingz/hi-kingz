@@ -2,6 +2,7 @@ import {Component, OnInit, ViewEncapsulation, ViewChild, Input, Output, EventEmi
 import {Route} from '../../routes/route.model';
 
 import {MapComponent} from '../map/map.component';
+import {MatSelect} from '@angular/material';
 
 @Component({
   selector: 'app-route-ui',
@@ -13,6 +14,8 @@ import {MapComponent} from '../map/map.component';
 export class RouteUIComponent implements OnInit {
 
   mapComp: MapComponent;
+
+  select: MatSelect;
 
   @Input() route: Route;
   @Input() readonly: boolean;
@@ -35,6 +38,11 @@ export class RouteUIComponent implements OnInit {
     this.mapComp = comp;
   }
 
+  @ViewChild(MatSelect)
+  set appSelect(comp: MatSelect) {
+    this.select = comp;
+  }
+
   changePrivacy = () => {
     if (this.route_public) {
       this.route_public_label = 'Öffentliche Route';
@@ -50,5 +58,9 @@ export class RouteUIComponent implements OnInit {
 
   saveRoute = () => {
     this.routeSaved.emit();
+  }
+
+  private closeSelect() {
+    this.select.close();
   }
 }

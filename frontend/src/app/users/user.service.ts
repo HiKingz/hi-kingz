@@ -24,11 +24,15 @@ export class UserService extends FirestoreDataService<User> {
   }
 
   public getUser(): Observable<FirebaseItem<User>> {
-    return this._authService.userIsSignedIn() ? this._get(this._authService.getLoggedInUser().uid) : null;
+    return this._authService.userIsSignedIn() ? this.get(this._authService.getLoggedInUser().uid) : null;
   }
 
   public update(user: FirebaseItem<User>): Promise<void> {
     return this._updateOrCreate(user);
+  }
+
+  public get(id: string): Observable<FirebaseItem<User>> {
+    return this._get(this._concatPaths(this._collectionPath, id));
   }
 
   protected _deserializeData(data: any): User {

@@ -4,16 +4,17 @@
       <input matInput placeholder="Name der Route" [(ngModel)]="route.name" [readonly]="readonly"/>
       <br/>
     </mat-form-field>
+
     <mat-form-field>
-      <mat-select placeholder="Schwierigkeitsgrad" [(ngModel)]="route.difficulty" [disabled]="readonly">
-        <mat-option [value]="1">EZ PZ</mat-option>
+      <mat-select placeholder="Schwierigkeitsgrad" [(ngModel)]="route.difficulty" onselect="closeSelect()" [disabled]="readonly">
+        <mat-option [value]="1" onselect="closeSelect()">EZ PZ</mat-option>
         <mat-option [value]="2">Einfach</mat-option>
         <mat-option [value]="3">Angemessen</mat-option>
         <mat-option [value]="4">Hart wie Schotter</mat-option>
         <mat-option [value]="5">Pilgerfahrt zur Hölle</mat-option>
       </mat-select>
-
     </mat-form-field>
+    <br/>
     <mat-form-field>
       <textarea matInput placeholder="Beschreibung der Route" [(ngModel)]="route.description" [readonly]="readonly"></textarea>
       <br/>
