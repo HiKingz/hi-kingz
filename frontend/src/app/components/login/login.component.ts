@@ -3,7 +3,10 @@ import {AuthenticationService} from '../../authentication/authentication.service
 import {MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
 import {UserService} from '../../users/user.service';
 import {UsernameDialogComponent} from './username-dialog/username-dialog.component';
-import {UserSignature} from '../../users/user.model';
+import {User, UserSignature} from '../../users/user.model';
+import {FileService} from '../../files/file.service';
+import {AngularFireStorage} from 'angularfire2/storage';
+import {FirebaseItem} from "../../commons/models/firebase.model";
 
 @Component({
   selector: 'app-login',
@@ -20,12 +23,14 @@ export class LoginComponent implements OnInit {
   /**
    * @param {AuthenticationService} authenticationService
    * @param {UserService} userService
+   * @param fileService
    * @param {MatDialogRef<LoginComponent>} dialogRef
    * @param {MatSnackBar} snackBar
    * @param dialog
    */
   constructor(private authenticationService: AuthenticationService,
               private userService: UserService,
+              private fileService: FileService,
               public dialogRef: MatDialogRef<LoginComponent>,
               public snackBar: MatSnackBar,
               public dialog: MatDialog) {
@@ -85,7 +90,9 @@ export class LoginComponent implements OnInit {
   // login via google account
   loginWithGoogle(): void {
     this.authenticationService.loginWithGoogle()
-      .then(() => {
+      .then((result) => {
+        console.log(result.user.email);
+        this.uidInDatabase();
         this.closeDialogWithSnackBar(this.loginSucceeded);
       })
       .catch((error) => {
@@ -180,8 +187,9 @@ export class LoginComponent implements OnInit {
     return username.length !== 0 || email.length !== 0;
   }
 
-  click() {
-    this.openUsernameDialog();
+  upload(event) {
+    const file = event.target.files[0];
+    this.fileService.upload(file);
   }
 
   /**
@@ -196,6 +204,12 @@ export class LoginComponent implements OnInit {
   openUsernameDialog(): void {
     this.dialog.open(UsernameDialogComponent, {
       width: '400px'
+    });
+  }
+
+  uidInDatabase(): void {
+    this.userService.getUser().subscribe((user: FirebaseItem<User>) => {
+      console.log(user);
     });
   }
 }

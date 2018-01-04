@@ -16,7 +16,7 @@
         <li class="flex-item"><img onmouseover="this.style.cursor='pointer';" height="42" width="42" (click)="loginWithTwitter()" src="../../../assets/icons/twitter.svg"></li>
         <li class="flex-item"><img onmouseover="this.style.cursor='pointer';" height="42" width="42" (click)="loginWithGithub()" src="../../../assets/icons/github.svg"></li>
       </ul>
-      <button (click)="click()">Click</button>
+      <input #file type="file" (change)="upload($event)"/>
     </div>
 
   </mat-tab>
