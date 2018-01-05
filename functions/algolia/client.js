@@ -1,0 +1,1 @@
+module.exports = algoliasearch(functions.config().algolia.app_id, functions.config().algolia.api_key);
