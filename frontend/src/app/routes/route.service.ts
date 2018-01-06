@@ -75,7 +75,8 @@ export class RouteService extends FirestoreDataService<Route> {
         directionData => new Point(directionData.longitude || null, directionData.latitude || null)
       ) || [],
       data.ratingAggregation && new RatingAggregation(
-        data.ratingAggregation.averageRating || 0, data.ratingAggregation.totalRatings || 0
+        data.ratingAggregation.ratingsCount || 0,
+        data.ratingAggregation.ratingsSum || 0
       ) || new RatingAggregation(0, 0),
       data.isPublic || false,
       data.isSponsored || false
