@@ -1,6 +1,7 @@
 const algoliaClient = require('./client');
 
-class AlgoliaSync {
+
+module.exports = class AlgoliaSync {
   constructor(index) {
     this.algoliaIndex = algoliaClient.initIndex(index);
   }
@@ -13,6 +14,4 @@ class AlgoliaSync {
   delete(id) {
     return this.algoliaIndex.deleteObject(id);
   }
-}
-
-module.exports = AlgoliaSync;
+};
