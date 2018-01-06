@@ -1,14 +1,10 @@
-const functions = require('firebase-functions');
-const AlgoliaSync = require('./algolia/sync');
+require('firebase-admin').initializeApp(require('firebase-functions').config().firebase);
 
-const algoliaSync = new AlgoliaSync('hi-kingz.routes');
+const FirestoreEventManager = require('./firestore-events/handling').FirestoreEventManager;
 
-exports.onRouteCreate = functions.firestore.document('routes/{routeId}').onCreate(
-  event => algoliaSync.sync(event.params.routeId, event.data.data())
-);
-exports.onRouteUpdate = functions.firestore.document('routes/{routeId}').onUpdate(
-  event => algoliaSync.sync(event.params.routeId, event.data.data())
-);
-exports.onRouteDelete = functions.firestore.document('routes/{routeId}').onDelete(
-  event => algoliaSync.delete(event.params.routeId)
-);
+const AlgoliaSyncHandler = require('./algolia/event-handlers').AlgoliaSyncHandler;
+const RatingAggregationHandler = require('./aggregations/event-handlers').RatingAggregationHandler;
+
+
+FirestoreEventManager.attachEventHandlerFunctionsToExportsObject('Route', AlgoliaSyncHandler, exports);
+FirestoreEventManager.attachEventHandlerFunctionsToExportsObject('Rateable', RatingAggregationHandler, exports);
