@@ -4,7 +4,6 @@ import {FirebaseItem} from '../../commons/models/firebase.model';
 import {Poi} from '../../pois/poi.model';
 import {Point} from '../../coordinates/point.model';
 import {File} from '../../files/file.model';
-import {RatingAggregation} from '../../commons/models/rateable';
 
 @Component({
   selector: 'app-create-poi',
@@ -20,7 +19,7 @@ export class CreatePoiComponent implements OnInit {
   constructor() {
     this.frbs_poi = new FirebaseItem(
       '0',
-      new Poi(<[File]>[], null, null, null, new RatingAggregation(0, 0), new Point(8.24958214937908, 50.08016862900732))
+      new Poi(<[File]>[], null, null, null, 0, new Point(8.24958214937908, 50.08016862900732))
     );
   }
 

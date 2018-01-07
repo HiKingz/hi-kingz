@@ -8,7 +8,6 @@ import {Point} from '../coordinates/point.model';
 import {Observable} from 'rxjs/Observable';
 import {FirebaseItem} from '../commons/models/firebase.model';
 import {UserSignature} from '../users/user.model';
-import {RatingAggregation} from '../commons/models/rateable';
 
 @Injectable()
 export class RouteService extends FirestoreDataService<Route> {
@@ -74,9 +73,7 @@ export class RouteService extends FirestoreDataService<Route> {
       data.direction && data.direction.map(
         directionData => new Point(directionData.longitude || null, directionData.latitude || null)
       ) || [],
-      data.ratingAggregation && new RatingAggregation(
-        data.ratingAggregation.averageRating || 0, data.ratingAggregation.totalRatings || 0
-      ) || new RatingAggregation(0, 0),
+      data.ratingAggregation && data.ratingAggregation.avg || 0,
       data.isPublic || false,
       data.isSponsored || false
     );
