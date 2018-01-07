@@ -5,8 +5,8 @@ import {UserService} from '../../users/user.service';
 import {UsernameDialogComponent} from './username-dialog/username-dialog.component';
 import {User, UserSignature} from '../../users/user.model';
 import {FileService} from '../../files/file.service';
-import {AngularFireStorage} from 'angularfire2/storage';
-import {FirebaseItem} from "../../commons/models/firebase.model";
+// import {AngularFireStorage} from 'angularfire2/storage';
+import {FirebaseItem} from '../../commons/models/firebase.model';
 
 @Component({
   selector: 'app-login',
