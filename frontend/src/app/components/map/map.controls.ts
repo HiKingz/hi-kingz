@@ -245,6 +245,7 @@ export class RoutePlanningControl {
         wp_local.name = wp_srvc.name ? wp_srvc.name : wp_srvc.location;
       }
     }
+    // Add new waypoint(s)
     for (let i = self.component.route.waypoints.length; i < route_wps.length; i++) {
       const wp_srvc = route_wps[i]; // Waypoint coming from the service
       self.component.route.waypoints.push(

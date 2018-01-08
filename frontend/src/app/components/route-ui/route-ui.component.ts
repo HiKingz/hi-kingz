@@ -3,6 +3,7 @@ import {Route} from '../../routes/route.model';
 
 import {MapComponent} from '../map/map.component';
 import {MatSelect} from '@angular/material';
+import {Point} from '../../coordinates/point.model';
 
 @Component({
   selector: 'app-route-ui',
@@ -60,7 +61,7 @@ export class RouteUIComponent implements OnInit {
     this.routeSaved.emit();
   }
 
-  private closeSelect() {
-    this.select.close();
+  public flyTo(location: Point) {
+    this.mapComp.flyTo(location);
   }
 }

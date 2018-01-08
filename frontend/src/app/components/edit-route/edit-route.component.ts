@@ -50,6 +50,9 @@ export class EditRouteComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       self.routeService.getById(params['id']).subscribe(new_rt => {
         self.frbs_route = new_rt;
+        if (new_rt.item.waypoints.length > 0) {
+          this.mapComp.flyTo(new_rt.item.waypoints[0].point);
+        }
       });
     });
     this.userService.getUser().subscribe((usr) => {

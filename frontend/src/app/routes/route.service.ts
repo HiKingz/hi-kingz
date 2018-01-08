@@ -38,8 +38,7 @@ export class RouteService extends FirestoreDataService<Route> {
    * @returns {Observable<FirebaseItem<Route>>}
    */
   public getById(id: string): Observable<FirebaseItem<Route>> {
-    // return this.get(this._concatPaths(this._collectionPath, id));
-    return this.get(id);
+    return this.get(this._concatPaths(this._collectionPath, id));
   }
 
   public create(route: Route): Promise<Observable<FirebaseItem<Route>>> {

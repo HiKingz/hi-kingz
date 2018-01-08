@@ -37,17 +37,10 @@ import {RatingService} from '../ratings/rating.service';
 import {PoiService} from '../pois/poi.service';
 import {UserService} from '../users/user.service';
 import {UsernameDialogComponent} from './login/username-dialog/username-dialog.component';
-<<<<<<< Updated upstream
 import {CreatePoiComponent} from './create-poi/create-poi.component';
-<<<<<<< HEAD
-=======
-import {FileService} from "../files/file.service";
-import {AngularFireStorageModule} from "angularfire2/storage";
->>>>>>> Stashed changes
-=======
 import {FileService} from '../files/file.service';
 // import {AngularFireStorageModule} from 'angularfire2/storage';
->>>>>>> development
+
 
 const appRoutes: Routes = [
   { path: 'create_route', component: CreateRouteComponent },
@@ -96,11 +89,7 @@ const appRoutes: Routes = [
     MatSelectModule,
     ReactiveFormsModule,
     AngularFirestoreModule,
-<<<<<<< HEAD
-    AngularFireStorageModule,
-=======
     // AngularFireStorageModule,
->>>>>>> development
     BrowserAnimationsModule,
     MatButtonModule,
     MatSlideToggleModule

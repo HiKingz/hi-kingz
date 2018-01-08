@@ -45,7 +45,7 @@ export class MapComponent implements OnInit {
   @Input()
   set route(route: Route) {
     this._route = route;
-    this.displayRouteOrPoi(true);
+    // this.displayRouteOrPoi(true);
   }
   get route(): Route {
     return this._route;
@@ -54,7 +54,6 @@ export class MapComponent implements OnInit {
   @Input()
   set poi(poi: Poi) {
     this._poi = poi;
-    this.displayRouteOrPoi(true);
   }
   get poi(): Poi {
     return this._poi;
@@ -68,7 +67,7 @@ export class MapComponent implements OnInit {
     this.map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/outdoors-v9',
-      zoom: 13,
+      zoom: 5,
       center: [8.24, 50.7]
     });
     const self = this;

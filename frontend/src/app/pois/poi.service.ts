@@ -19,6 +19,10 @@ export class PoiService extends FirestoreDataService<Poi> {
     return this._create(poi);
   }
 
+  public update(poi: FirebaseItem<Poi>): Promise<void> {
+    return this._updateOrCreate(poi);
+  }
+
   public getInArea(top: number, right: number, bottom: number, left: number): Observable<Array<FirebaseItem<Poi>>> {
     // TODO
     return null;

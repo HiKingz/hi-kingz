@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 import {MapComponent} from '../map/map.component';
 import {Poi} from '../../pois/poi.model';
+import {Point} from '../../coordinates/point.model';
 
 @Component({
   selector: 'app-poi-ui',
@@ -26,4 +27,7 @@ export class PoiUIComponent implements OnInit {
   ngOnInit() {
   }
 
+  public flyTo(location: Point) {
+    this.mapComp.flyTo(location);
+  }
 }
