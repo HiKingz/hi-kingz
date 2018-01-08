@@ -45,7 +45,7 @@ export class MapComponent implements OnInit {
   @Input()
   set route(route: Route) {
     this._route = route;
-    // this.displayRouteOrPoi(true);
+    this.displayRouteOrPoi(false);
   }
   get route(): Route {
     return this._route;
@@ -54,6 +54,7 @@ export class MapComponent implements OnInit {
   @Input()
   set poi(poi: Poi) {
     this._poi = poi;
+    this.displayRouteOrPoi(false);
   }
   get poi(): Poi {
     return this._poi;
