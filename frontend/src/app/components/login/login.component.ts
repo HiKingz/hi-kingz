@@ -218,6 +218,7 @@ export class LoginComponent implements OnInit {
    * @returns {boolean}
    */
   uidInDatabase(uid: string): boolean {
-    return this.userService.getAllUsers().includes(uid);
+    // TODO
+    return false;
   }
 }
