@@ -5,7 +5,6 @@ import {User, UserSignature} from './user.model';
 import {FirestoreDataService} from '../commons/firestore-data-services';
 import {FirebaseItem} from '../commons/models/firebase.model';
 import {AuthenticationService} from '../authentication/authentication.service';
-import {DocumentChangeAction} from 'angularfire2/firestore/interfaces';
 
 @Injectable()
 export class UserService extends FirestoreDataService<User> {
@@ -29,15 +28,6 @@ export class UserService extends FirestoreDataService<User> {
     return this._authService.userIsSignedIn() ? this._get(
       this._concatPaths(this._collectionPath, this._authService.getLoggedInUser().uid)
     ) : null;
-  }
-
-  public getAllUsers(): string[] {
-    this._getAll().subscribe((users: DocumentChangeAction[]) => {
-      users.forEach((user) => {
-        this.uidList.push(user.payload.doc.data().id);
-      });
-    });
-    return this.uidList;
   }
 
   public update(user: FirebaseItem<User>): Promise<void> {
