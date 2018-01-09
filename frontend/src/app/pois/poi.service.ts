@@ -6,6 +6,7 @@ import {Point} from '../coordinates/point.model';
 import {Observable} from 'rxjs/Observable';
 import {FirebaseItem} from '../commons/models/firebase.model';
 import {AngularFirestore} from 'angularfire2/firestore';
+import {RatingAggregation} from '../commons/models/rateable';
 
 @Injectable()
 export class PoiService extends FirestoreDataService<Poi> {
@@ -35,7 +36,9 @@ export class PoiService extends FirestoreDataService<Poi> {
       data.name || '',
       data.descrpition || '',
       data.user && new UserSignature(data.user.id || null, data.user.username || '') || null,
-      data.ratingAggregation && data.ratingAggregation.avg || 0,
+      data.ratingAggregation && new RatingAggregation(
+      data.ratingAggregation.avg || 0, data.ratingAggregation.count || 0, data.ratingAggregation.sum || 0
+      ) || new RatingAggregation(0, 0, 0),
       data.point && new Point(data.point.longitude || null, data.point.altitude || null) || null
     );
   }
