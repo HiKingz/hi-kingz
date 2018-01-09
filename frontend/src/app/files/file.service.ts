@@ -9,8 +9,8 @@ export class FileService {
   constructor(private storage: AngularFireStorage) { }
 
   /**
-   * uploads a file to the storage and returns its path
    * @param file
+   * @returns {string}
    */
   upload(file): string {
     this.storage.upload(file.name, file).downloadURL().subscribe(
@@ -33,5 +33,22 @@ export class FileService {
    */
   delete(path: string): Observable<any> {
     return this.storage.ref(path).delete();
+  }
+
+  /**
+   * @param {string} path
+   * @returns {Observable<any>}
+   */
+  getMetadata(path: string): Observable<any> {
+    return this.storage.ref(path).getMetadata();
+  }
+
+  /**
+   * @param {string} parentpath
+   * @param {string} childpath
+   * @returns {any}
+   */
+  getChild(parentpath: string, childpath: string): any {
+    return this.storage.ref(parentpath).child(childpath);
   }
 }
