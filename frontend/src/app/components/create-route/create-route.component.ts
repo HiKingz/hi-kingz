@@ -5,6 +5,7 @@ import {Route} from '../../routes/route.model';
 import {RouteService} from '../../routes/route.service';
 import {UserService} from '../../users/user.service';
 import {User} from '../../users/user.model';
+import {File} from '../../files/file.model';
 
 @Component({
   selector: 'app-create-route',
@@ -20,7 +21,7 @@ export class CreateRouteComponent implements OnInit {
   constructor(private routeService: RouteService, private userService: UserService) {
     this.frbs_route = new FirebaseItem(
       '0',
-      new Route([], null, null, 0, null, [], [], 0, true, false)
+      new Route([new File(), new File(), new File()], null, null, 0, null, [], [], 0, true, false)
     );
   }
 

@@ -40,7 +40,7 @@ import {UsernameDialogComponent} from './login/username-dialog/username-dialog.c
 import {CreatePoiComponent} from './create-poi/create-poi.component';
 import {FileService} from '../files/file.service';
 // import {AngularFireStorageModule} from 'angularfire2/storage';
-
+import {MediaDialogComponent} from './media-dialog/media-dialog.component';
 
 const appRoutes: Routes = [
   { path: 'create_route', component: CreateRouteComponent },
@@ -66,7 +66,8 @@ const appRoutes: Routes = [
     PoiUIComponent,
     RatingComponent,
     MyRoutesComponent,
-    UsernameDialogComponent
+    UsernameDialogComponent,
+    MediaDialogComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -94,7 +95,7 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatSlideToggleModule
   ],
-  entryComponents: [LoginComponent, UsernameDialogComponent],
+  entryComponents: [LoginComponent, UsernameDialogComponent, MediaDialogComponent],
   providers: [AuthenticationService, RouteService, RatingService, PoiService, UserService, FileService  ],
   bootstrap: [AppComponent]
 })
