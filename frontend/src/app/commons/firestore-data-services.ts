@@ -87,6 +87,10 @@ export abstract class FirestoreDataService<ModelType extends FirebaseStorable> {
     );
   }
 
+  protected _getAll(): Observable<DocumentChangeAction[]> {
+    return this._db.collection<ModelType>(this._collectionPath).snapshotChanges();
+  }
+
   protected async _create(
     data: ModelType,
     parentDocument?: FirebaseItem<FirebaseStorable>

@@ -3,10 +3,8 @@ import {AuthenticationService} from '../../authentication/authentication.service
 import {MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
 import {UserService} from '../../users/user.service';
 import {UsernameDialogComponent} from './username-dialog/username-dialog.component';
-import {User, UserSignature} from '../../users/user.model';
+import {UserSignature} from '../../users/user.model';
 import {FileService} from '../../files/file.service';
-import {AngularFireStorage} from 'angularfire2/storage';
-import {FirebaseItem} from '../../commons/models/firebase.model';
 
 @Component({
   selector: 'app-login',
@@ -39,7 +37,11 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  // login with email address
+  /**
+   * login via email address
+   * @param {string} email
+   * @param {string} password
+   */
   loginWithEmail(email: string, password: string): void {
     this.authenticationService.loginWithEmail(email.toString().trim(), password.toString().trim())
       .then(() => {
@@ -54,45 +56,44 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  // login via facebook account
+  /**
+   * login via facebook
+   */
   loginWithFacebook(): void {
-    this.authenticationService.loginWithFacebook()
-      .then(() => {
-        this.closeDialogWithSnackBar(this.loginSucceeded);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    this.providerLogin(this.authenticationService.loginWithFacebook());
   }
 
-  // login via Github
+  /**
+   * login via github
+   */
   loginWithGithub(): void {
-    this.authenticationService.loginWithGithub()
-      .then(() => {
-        this.closeDialogWithSnackBar(this.loginSucceeded);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    this.providerLogin(this.authenticationService.loginWithGithub());
   }
 
-  // login via Twitter
+  /**
+   * login via twitter
+   */
   loginWithTwitter(): void {
-    this.authenticationService.loginWithTwitter()
-      .then(() => {
-        this.closeDialogWithSnackBar(this.loginSucceeded);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    this.providerLogin(this.authenticationService.loginWithTwitter());
   }
 
-  // login via google account
+  /**
+   * login via google account
+   */
   loginWithGoogle(): void {
-    this.authenticationService.loginWithGoogle()
+    this.providerLogin(this.authenticationService.loginWithGoogle());
+  }
+
+  /**
+   * promise and error handling for provider logins
+   * @param {Promise<any>} promise
+   */
+  providerLogin(promise: Promise<any>): void {
+    promise
       .then((result) => {
-        console.log(result.user.email);
-        this.uidInDatabase();
+        if (!this.uidInDatabase(result.user.uid)) {
+          this.openUsernameDialog();
+        }
         this.closeDialogWithSnackBar(this.loginSucceeded);
       })
       .catch((error) => {
@@ -201,15 +202,22 @@ export class LoginComponent implements OnInit {
     return password.toString() === passwordCheck.toString();
   }
 
+  /**
+   * opens username dialog
+   */
   openUsernameDialog(): void {
     this.dialog.open(UsernameDialogComponent, {
-      width: '400px'
+      width: '400px',
+      disableClose: true
     });
   }
 
-  uidInDatabase(): void {
-    this.userService.getUser().subscribe((user: FirebaseItem<User>) => {
-      console.log(user);
-    });
+  /**
+   * checks if userid is already in database
+   * @param {string} uid
+   * @returns {boolean}
+   */
+  uidInDatabase(uid: string): boolean {
+    return this.userService.getAllUsers().includes(uid);
   }
 }

@@ -4,19 +4,34 @@ import {AngularFireStorage} from 'angularfire2/storage';
 
 @Injectable()
 export class FileService {
-
-  profileUrl: Observable<string | null>;
+  private path;
 
   constructor(private storage: AngularFireStorage) { }
-  //
-  upload(file): void {
+
+  /**
+   * uploads a file to the storage and returns its path
+   * @param file
+   */
+  upload(file): string {
     this.storage.upload(file.name, file).downloadURL().subscribe(
-      x => console.log('path - ', x)
+      path => this.path = path
     );
+    return this.path;
   }
 
-  download(path: string): void {
-    const ref = this.storage.ref(path);
-    this.profileUrl = ref.getDownloadURL();
-}
+  /**
+   *
+   * @param {string} path
+   */
+  download(path: string): Observable<any> {
+    return this.storage.ref(path).getDownloadURL();
+  }
+
+  /**
+   *
+   * @param {string} path
+   */
+  delete(path: string): Observable<any> {
+    return this.storage.ref(path).delete();
+  }
 }

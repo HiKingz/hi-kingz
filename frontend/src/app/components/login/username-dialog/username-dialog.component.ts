@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../../users/user.service';
-import {User, UserSignature} from '../../../users/user.model';
+import {UserSignature} from '../../../users/user.model';
 import {AuthenticationService} from '../../../authentication/authentication.service';
-import {FirebaseItem} from '../../../commons/models/firebase.model';
-import {Observable} from 'rxjs/Observable';
+import {MatDialogRef, MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-username-dialog',
@@ -13,7 +12,9 @@ import {Observable} from 'rxjs/Observable';
 export class UsernameDialogComponent implements OnInit {
 
   constructor(private userService: UserService,
-              private authService: AuthenticationService) { }
+              private authService: AuthenticationService,
+              private dialogRef: MatDialogRef<UsernameDialogComponent>,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit() {
   }
@@ -22,9 +23,25 @@ export class UsernameDialogComponent implements OnInit {
     this.userService.create(new UserSignature(this.authService.getLoggedInUser().uid, username))
       .then(() => {
         console.log('successful.');
+        this.closeDialogWithSnackBar('Welcome ' + username);
       })
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  /**
+   * @param {string} message
+   */
+  closeDialogWithSnackBar(message: string): void {
+    this.dialogRef.close();
+    this.showSnackBar(message);
+  }
+
+  /**
+   * @param {string} message
+   */
+  showSnackBar(message: string): void {
+    this.snackBar.open(message, null, {duration: 1000});
   }
 }
