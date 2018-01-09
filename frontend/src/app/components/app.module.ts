@@ -39,7 +39,7 @@ import {UserService} from '../users/user.service';
 import {UsernameDialogComponent} from './login/username-dialog/username-dialog.component';
 import {CreatePoiComponent} from './create-poi/create-poi.component';
 import {FileService} from '../files/file.service';
-// import {AngularFireStorageModule} from 'angularfire2/storage';
+import {AngularFireStorageModule} from 'angularfire2/storage';
 
 
 const appRoutes: Routes = [
@@ -89,7 +89,7 @@ const appRoutes: Routes = [
     MatSelectModule,
     ReactiveFormsModule,
     AngularFirestoreModule,
-    // AngularFireStorageModule,
+    AngularFireStorageModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatSlideToggleModule
