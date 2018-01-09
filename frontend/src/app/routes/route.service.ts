@@ -19,7 +19,7 @@ export class RouteService extends FirestoreDataService<Route> {
   }
 
   public getPaginatedView(): PaginatedDataView<Route> {
-    return this._getPaginatedView(new OrderSettings('ratingAggregation.avg'));
+    return this._getPaginatedView(new OrderSettings('ratingAggregation.avg', true));
   }
 
   /**
