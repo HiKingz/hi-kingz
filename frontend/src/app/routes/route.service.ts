@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Route} from './route.model';
 import {AngularFirestore} from 'angularfire2/firestore';
-import {FirestoreDataService, PaginatedDataView} from '../commons/firestore-data-services';
+import {FirestoreDataService, OrderSettings, PaginatedDataView} from '../commons/firestore-data-services';
 import {File} from '../files/file.model';
 import {Waypoint} from '../coordinates/waypoint.model';
 import {Point} from '../coordinates/point.model';
 import {Observable} from 'rxjs/Observable';
 import {FirebaseItem} from '../commons/models/firebase.model';
 import {UserSignature} from '../users/user.model';
+import {RatingAggregation} from '../commons/models/rateable';
 
 @Injectable()
 export class RouteService extends FirestoreDataService<Route> {
@@ -18,7 +19,7 @@ export class RouteService extends FirestoreDataService<Route> {
   }
 
   public getPaginatedView(): PaginatedDataView<Route> {
-    return this._getPaginatedView('name');
+    return this._getPaginatedView(new OrderSettings('ratingAggregation.avg', true));
   }
 
   /**
@@ -32,7 +33,7 @@ export class RouteService extends FirestoreDataService<Route> {
   }
 
   /**
-   * retrieves a route give it's id
+   * retrieves a route given it's id
    *
    * @param {string} id
    * @returns {Observable<FirebaseItem<Route>>}
@@ -72,7 +73,9 @@ export class RouteService extends FirestoreDataService<Route> {
       data.direction && data.direction.map(
         directionData => new Point(directionData.longitude || null, directionData.latitude || null)
       ) || [],
-      data.ratingAggregation && data.ratingAggregation.avg || 0,
+      data.ratingAggregation && new RatingAggregation(
+      data.ratingAggregation.avg || 0, data.ratingAggregation.count || 0, data.ratingAggregation.sum || 0
+      ) || new RatingAggregation(0, 0, 0),
       data.isPublic || false,
       data.isSponsored || false
     );

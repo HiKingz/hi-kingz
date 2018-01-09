@@ -17,7 +17,6 @@ export class LoginComponent implements OnInit {
 
   private showProgressBar = false;
   private loginSucceeded = 'Login successful.';
-  private uidExists = false;
 
   /**
    * @param {AuthenticationService} authenticationService
@@ -92,11 +91,12 @@ export class LoginComponent implements OnInit {
   providerLogin(promise: Promise<any>): void {
     promise
       .then((result) => {
-        this.uidInDatabase(result.user.uid);
+        if (!this.uidInDatabase(result.user.uid)) {
+          this.openUsernameDialog();
+        }
         this.closeDialogWithSnackBar(this.loginSucceeded);
-      }
-        )
-    .catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -138,7 +138,7 @@ export class LoginComponent implements OnInit {
           .catch((error) => {
             console.log(error);
           });
-      } else {
+      }else {
         this.showSnackBar('Passwords are not equal.');
       }
     } else {
@@ -217,21 +217,7 @@ export class LoginComponent implements OnInit {
    * @param {string} uid
    * @returns {boolean}
    */
-  uidInDatabase(uid: string): void {
-    this.uidExists = false;
-    this.userService.getById(uid).subscribe(
-      (x) => {
-        console.log(x);
-        this.uidExists = true;
-      },
-      () => {
-        if (this.uidExists !== true) {
-          this.openUsernameDialog();
-        }
-      },
-      () => {
-
-      }
-    );
+  uidInDatabase(uid: string): boolean {
+    return this.userService.getAllUsers().includes(uid);
   }
 }

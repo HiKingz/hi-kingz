@@ -11,7 +11,9 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/concat';
 import 'rxjs/add/operator/take';
 
-export interface FilterSettings {}
+export class OrderSettings {
+  constructor(public by, public desc = false) {}
+}
 
 export class PaginatedDataView<ModelType extends FirebaseStorable> {
   private _cursor: DocumentSnapshot = null;
@@ -24,18 +26,19 @@ export class PaginatedDataView<ModelType extends FirebaseStorable> {
   constructor(
     private readonly _collectionFactory: (query: QueryFn) => AngularFirestoreCollection<ModelType>,
     private readonly _deserializationFunction: (data: any) => ModelType,
-    private readonly _orderBy: string,
+    private readonly _orderSettings: OrderSettings,
     private readonly _pageSize: number,
-    private readonly _filterSettings?: FilterSettings
   ) { }
 
   public loadNextPage(): Observable<Array<FirebaseItem<ModelType>>> {
     if (!this.loading) {
       this.loading = true;
 
-      // TODO filtering
       this._collectionFactory(
-        ref => ref.orderBy(this._orderBy).startAfter(this._cursor).limit(this._pageSize)
+        ref =>
+          ref.orderBy(
+            this._orderSettings.by, this._orderSettings.desc ? 'desc' : 'asc'
+          ).startAfter(this._cursor).limit(this._pageSize)
       ).snapshotChanges().do(
         (values: Array<DocumentChangeAction>) => {
           this._dataSubject.next(
@@ -67,8 +70,7 @@ export abstract class FirestoreDataService<ModelType extends FirebaseStorable> {
   protected abstract _deserializeData(data: any): ModelType;
 
   protected _getPaginatedView(
-    orderBy: string,
-    filterSettings?: FilterSettings,
+    orderBy: OrderSettings,
     pageSize: number = 30,
     parentDocument?: FirebaseItem<FirebaseStorable>
   ): PaginatedDataView<ModelType> {
@@ -76,8 +78,7 @@ export abstract class FirestoreDataService<ModelType extends FirebaseStorable> {
       query => this._db.collection(this._getCollectionPath(parentDocument), query),
       this._deserializeData,
       orderBy,
-      pageSize,
-      filterSettings
+      pageSize
     );
   }
 
