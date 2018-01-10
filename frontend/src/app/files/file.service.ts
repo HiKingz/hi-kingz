@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
+import { v4 as uuid } from 'uuid';
 import {Observable} from 'rxjs/Observable';
 import {AngularFireStorage, AngularFireUploadTask} from 'angularfire2/storage';
 
 @Injectable()
 export class FileService {
-  private path;
 
   constructor(private storage: AngularFireStorage) { }
 
@@ -13,7 +13,7 @@ export class FileService {
    * @returns {string}
    */
   upload(file: File): AngularFireUploadTask {
-    return this.storage.ref('Pictures/' + file.name).put(file);
+    return this.storage.ref('Pictures/' + uuid()).put(file);
     // return this.storage.upload(file.name, file).downloadURL();
   }
 

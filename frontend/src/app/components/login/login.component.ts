@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
 
   private showProgressBar = false;
   private loginSucceeded = 'Login successful.';
+  private loginNotSucceeded = 'Login unsuccessful.';
   private uidExists = false;
 
   /**
@@ -45,9 +46,13 @@ export class LoginComponent implements OnInit {
    */
   loginWithEmail(email: string, password: string): void {
     this.authenticationService.loginWithEmail(email.toString().trim(), password.toString().trim())
-      .then(() => {
-        if (!this.authenticationService.getLoggedInUser().emailVerified) {
-          this.showSnackBar('Email address is not verified.');
+      .then((user) => {
+        if (!user.emailVerified) {
+          this.authenticationService.logout()
+            .then(() => {
+              this.showSnackBar('Email address is not verified.');
+              this.closeDialogWithSnackBar(this.loginNotSucceeded);
+            });
         } else {
           this.closeDialogWithSnackBar(this.loginSucceeded);
         }
@@ -113,10 +118,8 @@ export class LoginComponent implements OnInit {
         this.showProgressBar = true;
         this.authenticationService.register(username.toString().trim(), email.toString().trim(), password.toString())
           .then((user) => {
-            console.log('database operation ' + user.uid);
             this.userService.create(new UserSignature(user.uid, username))
               .then(() => {
-                console.log('wrote to database.');
                 user.sendEmailVerification()
                   .then(() => {
                     this.authenticationService.logout()
@@ -186,11 +189,6 @@ export class LoginComponent implements OnInit {
    */
   formIsFilled(username: string, email: string): boolean {
     return username.length !== 0 || email.length !== 0;
-  }
-
-  upload(event) {
-    const file = event.target.files[0];
-    this.fileService.upload(file);
   }
 
   /**
