@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 import {environment} from '../../environments/environment';
 import {LoginDialogService} from '../authentication/login-dialog.service';
 import {UserDataService} from '../user-data/user-data.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -14,10 +15,11 @@ import {UserDataService} from '../user-data/user-data.service';
 export class AppComponent {
 
   constructor(
-    private authenticationService: AuthenticationService,
-    private userDataService: UserDataService,
-    private loginDialogService: LoginDialogService,
-    public snackBar: MatSnackBar
+    public authenticationService: AuthenticationService,
+    public userDataService: UserDataService,
+    public loginDialogService: LoginDialogService,
+    public snackBar: MatSnackBar,
+    public router: Router
   ) {
     firebase.initializeApp(environment.firebase);
   }
@@ -30,5 +32,9 @@ export class AppComponent {
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  goToRootRoute(): void {
+    this.router.navigate(['/']);
   }
 }

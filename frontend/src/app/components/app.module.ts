@@ -41,11 +41,12 @@ import {MediaDialogComponent} from './media-dialog/media-dialog.component';
 import {ForgotComponent} from './login/forgot-password-dialog/forgot.component';
 
 const appRoutes: Routes = [
-  { path: 'create_route', component: CreateRouteComponent },
-  { path: 'edit_route/:id', component: EditRouteComponent },
-  { path: 'show_route/:id', component: ShowRouteComponent },
-  { path: 'create_poi', component: CreatePoiComponent },
-
+  { path: '', component: AllRoutesComponent },
+  { path: 'routes/create', component: CreateRouteComponent },
+  { path: 'routes/:id/edit', component: EditRouteComponent },
+  { path: 'routes/:id', component: ShowRouteComponent },
+  { path: 'pois/create', component: CreatePoiComponent },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
