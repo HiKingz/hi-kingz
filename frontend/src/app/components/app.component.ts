@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {LoginComponent} from './login/login.component';
@@ -22,7 +22,8 @@ export class AppComponent {
   // login is executed on click
   login(): void {
     this.dialog.open(LoginComponent, {
-      width: '400px'
+      width: '25%',
+      height: '55%'
     });
   }
 

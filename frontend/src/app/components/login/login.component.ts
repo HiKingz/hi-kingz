@@ -97,11 +97,11 @@ export class LoginComponent implements OnInit {
   providerLogin(promise: Promise<any>): void {
     promise
       .then((result) => {
-        this.uidInDatabase(result.user.uid);
-        this.closeDialogWithSnackBar(this.loginSucceeded);
-      }
-        )
-    .catch((error) => {
+          this.uidInDatabase(result.user.uid);
+          this.closeDialogWithSnackBar(this.loginSucceeded);
+        }
+      )
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -221,8 +221,6 @@ export class LoginComponent implements OnInit {
       (x) => {
         console.log(x);
         this.uidExists = true;
-      },
-      () => {
       },
       () => {
         if (this.uidExists !== true) {

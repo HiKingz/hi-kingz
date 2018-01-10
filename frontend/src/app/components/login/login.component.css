@@ -13,6 +13,10 @@ button{
   width: 100%;
 }
 
+div.mat-tab-body-content.ng-trigger.ng-trigger-translateTab {
+  overflow: hidden !important;
+}
+
 mat-form-field{
   width: 100%;
 }
