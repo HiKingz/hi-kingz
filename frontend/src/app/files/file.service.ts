@@ -12,11 +12,8 @@ export class FileService {
    * @param file
    * @returns {string}
    */
-  upload(file): string {
-    this.storage.upload(file.name, file).downloadURL().subscribe(
-      path => this.path = path
-    );
-    return this.path;
+  upload(file: File): Observable<string> {
+    return this.storage.upload(file.name, file).downloadURL();
   }
 
   /**

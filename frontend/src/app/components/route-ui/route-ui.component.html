@@ -37,3 +37,15 @@
 
 <app-map [route]="route" [readonly]="readonly"></app-map>
 
+<fieldset>
+  <legend>Medien</legend>
+
+  <div class="mediablock" *ngFor="let file of route.files; let i = index">
+    <img src="{{file.url}}" width="150" height="150" (click)="showImage(i)">
+  </div>
+
+  <div *ngIf="!readonly" class="fileinput mediablock">
+    <button class="fileinputbutton"><a href="javascript: void(0)"><mat-icon class="upload_icon"><i class="material-icons upload_icon">backup</i> </mat-icon></a></button>
+    <input type="file" name="routemedia" class="hiddenfile" (change)="fileChanged($event)">
+  </div>
+</fieldset>

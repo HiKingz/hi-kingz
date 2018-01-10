@@ -57,7 +57,7 @@ export class RouteService extends FirestoreDataService<Route> {
   protected _deserializeData(data: any): Route {
     return new Route(
       // TODO deserialize properly when model is done
-      data.files && data.files.map(fileData => new File()) || [],
+      data.files && data.files.map(fileData => new File(fileData.url)) || [],
       data.name || '',
       data.description || '',
       data.difficulty || null,
