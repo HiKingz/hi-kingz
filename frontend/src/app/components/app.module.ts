@@ -1,26 +1,26 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {RouterModule, Routes} from '@angular/router';
 
 
-import { AppComponent } from './app.component';
-import { AllRoutesComponent } from './all-routes/all-routes.component';
-import { LoginComponent } from './login/login.component';
-import { ListRoutesComponent } from './list-routes/list-routes.component';
-import { RouteComponent } from './route/route.component';
-import { MapComponent } from './map/map.component';
-import { RouteUIComponent } from './route-ui/route-ui.component';
-import { PoiUIComponent } from './poi-ui/poi-ui.component';
-import { CreateRouteComponent } from './create-route/create-route.component';
-import { EditRouteComponent } from './edit-route/edit-route.component';
-import { ShowRouteComponent } from './show-route/show-route.component';
-import { RatingComponent } from './rating/rating.component';
-import { MyRoutesComponent } from './my-routes/my-routes.component';
+import {AppComponent} from './app.component';
+import {AllRoutesComponent} from './all-routes/all-routes.component';
+import {LoginComponent} from './login/login.component';
+import {ListRoutesComponent} from './list-routes/list-routes.component';
+import {RouteComponent} from './route/route.component';
+import {MapComponent} from './map/map.component';
+import {RouteUIComponent} from './route-ui/route-ui.component';
+import {PoiUIComponent} from './poi-ui/poi-ui.component';
+import {CreateRouteComponent} from './create-route/create-route.component';
+import {EditRouteComponent} from './edit-route/edit-route.component';
+import {ShowRouteComponent} from './show-route/show-route.component';
+import {RatingComponent} from './rating/rating.component';
+import {MyRoutesComponent} from './my-routes/my-routes.component';
 
 import {
-  MatDialogModule, MatDialogRef, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatProgressBar,
-  MatSnackBarModule, MatTabsModule, MatToolbarModule
+  MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatSnackBarModule,
+  MatTabsModule, MatToolbarModule
 } from '@angular/material';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
@@ -41,6 +41,7 @@ import {CreatePoiComponent} from './create-poi/create-poi.component';
 import {FileService} from '../files/file.service';
 import {AngularFireStorageModule} from 'angularfire2/storage';
 import {MediaDialogComponent} from './media-dialog/media-dialog.component';
+import {ForgotComponent} from './login/forgot-password-dialog/forgot.component';
 
 const appRoutes: Routes = [
   { path: 'create_route', component: CreateRouteComponent },
@@ -67,7 +68,8 @@ const appRoutes: Routes = [
     RatingComponent,
     MyRoutesComponent,
     UsernameDialogComponent,
-    MediaDialogComponent
+    MediaDialogComponent,
+    ForgotComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -95,7 +97,7 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatSlideToggleModule
   ],
-  entryComponents: [LoginComponent, UsernameDialogComponent, MediaDialogComponent],
+  entryComponents: [LoginComponent, UsernameDialogComponent, MediaDialogComponent, ForgotComponent],
   providers: [AuthenticationService, RouteService, RatingService, PoiService, UserService, FileService  ],
   bootstrap: [AppComponent]
 })

@@ -21,10 +21,7 @@ export class AppComponent {
 
   // login is executed on click
   login(): void {
-    this.dialog.open(LoginComponent, {
-      width: '25%',
-      height: '55%'
-    });
+    this.dialog.open(LoginComponent, {});
   }
 
 
