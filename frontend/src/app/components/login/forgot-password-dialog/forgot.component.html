@@ -1,0 +1,4 @@
+<mat-form-field class="container">
+  <input #email matInput (keyup.enter)="sendPassword(email.value)" placeholder="Emailadresse eingeben">
+</mat-form-field>
+<button class="container" color="primary" mat-raised-button (click)="sendPassword(email.value)">Bestätigen</button>

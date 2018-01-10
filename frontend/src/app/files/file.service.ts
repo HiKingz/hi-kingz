@@ -1,35 +1,33 @@
 import {Injectable} from '@angular/core';
+import {v4 as uuid} from 'uuid';
 import {Observable} from 'rxjs/Observable';
-import {AngularFireStorage} from 'angularfire2/storage';
+import {AngularFireStorage, AngularFireUploadTask} from 'angularfire2/storage';
 
 @Injectable()
 export class FileService {
-  private path;
 
   constructor(private storage: AngularFireStorage) { }
 
   /**
-   * @param file
-   * @returns {string}
+   * @param {File} file
+   * @returns {AngularFireUploadTask}
    */
-  upload(file): string {
-    this.storage.upload(file.name, file).downloadURL().subscribe(
-      path => this.path = path
-    );
-    return this.path;
+  upload(file: File): AngularFireUploadTask {
+    return this.storage.ref('Pictures/' + uuid()).put(file);
+    // return this.storage.upload(file.name, file).downloadURL();
   }
 
   /**
-   *
    * @param {string} path
+   * @returns {Observable<any>}
    */
   download(path: string): Observable<any> {
     return this.storage.ref(path).getDownloadURL();
   }
 
   /**
-   *
    * @param {string} path
+   * @returns {Observable<any>}
    */
   delete(path: string): Observable<any> {
     return this.storage.ref(path).delete();

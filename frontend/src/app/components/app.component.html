@@ -10,7 +10,7 @@
   </ng-template>
   <ng-template [ngIf]="!authenticationService.userIsSignedIn()">
     <span class="toolbar-item clickable" (click)="login()">Login</span>
-    <mat-icon class="clickable" style="transform: rotate(-90deg);" (click)="login()">file_download</mat-icon>
+    <mat-icon class="clickable" style="transform: rotate(-90deg);" (click)="loginDialogService.open()">file_download</mat-icon>
   </ng-template>
 </mat-toolbar>
 <router-outlet></router-outlet>

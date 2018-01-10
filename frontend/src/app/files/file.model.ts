@@ -1,4 +1,4 @@
 export class File {
-  constructor() {
+  constructor(public url: string) {
   }
 }

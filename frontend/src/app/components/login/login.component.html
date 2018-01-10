@@ -2,13 +2,15 @@
   <mat-tab label="Login">
     <div>
       <mat-form-field class="container">
-        <input #email (keyup.enter)="loginWithEmail(email.value, password.value)" matInput placeholder="Enter your email">
+        <input #email (keyup.enter)="loginWithEmail(email.value, password.value)" matInput placeholder="Emailadresse">
       </mat-form-field>
       <mat-form-field class="container">
-        <input #password (keyup.enter)="loginWithEmail(email.value, password.value)" matInput placeholder="Enter your password" [type]="hide ? 'text' : 'password'">
+        <input #password (keyup.enter)="loginWithEmail(email.value, password.value)" matInput placeholder="Passwwort"
+               [type]="hide ? 'text' : 'password'">
         <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
       </mat-form-field>
-      <div class="container" onmouseover="this.style.cursor='pointer';" (click)="forgotPassword(email.value)">Forgot password</div>
+      <div class="container" onmouseover="this.style.cursor='pointer';" (click)="forgotPassword()">Passwort vergessen
+      </div>
       <button class="container" color="primary" mat-raised-button (click)="loginWithEmail(email.value, password.value)">Login</button>
       <ul class="flex-container">
         <li class="flex-item"><img onmouseover="this.style.cursor='pointer';" (click)="loginWithFacebook()" src="../../../assets/icons/facebook.svg"></li>
@@ -16,27 +18,37 @@
         <li class="flex-item"><img onmouseover="this.style.cursor='pointer';" height="42" width="42" (click)="loginWithTwitter()" src="../../../assets/icons/twitter.svg"></li>
         <li class="flex-item"><img onmouseover="this.style.cursor='pointer';" height="42" width="42" (click)="loginWithGithub()" src="../../../assets/icons/github.svg"></li>
       </ul>
-      <input #file type="file" (change)="upload($event)"/>
     </div>
 
   </mat-tab>
-  <mat-tab label="Register">
+  <mat-tab label="Registrierung">
     <div>
       <mat-form-field class="container" >
-        <input #usernameRegister (keyup.enter)="register(usernameRegister.value, emailRegister.value, passwordRegister.value, passwordRegisterCheck.value)" matInput placeholder="Enter your username">
+        <input #usernameRegister
+               (keyup.enter)="register(usernameRegister.value, emailRegister.value, passwordRegister.value, passwordRegisterCheck.value)"
+               matInput placeholder="Username">
       </mat-form-field>
       <mat-form-field class="container" >
-        <input #emailRegister (keyup.enter)="register(usernameRegister.value, emailRegister.value, passwordRegister.value, passwordRegisterCheck.value)" matInput placeholder="Enter your email">
+        <input #emailRegister
+               (keyup.enter)="register(usernameRegister.value, emailRegister.value, passwordRegister.value, passwordRegisterCheck.value)"
+               matInput placeholder="Emailadresse">
       </mat-form-field>
       <mat-form-field class="container" >
-        <input #passwordRegister (keyup.enter)="register(usernameRegister.value, emailRegister.value, passwordRegister.value, passwordRegisterCheck.value)" matInput placeholder="Enter your password" [type]="hide ? 'text' : 'password'">
+        <input #passwordRegister
+               (keyup.enter)="register(usernameRegister.value, emailRegister.value, passwordRegister.value, passwordRegisterCheck.value)"
+               matInput placeholder="Passwort" [type]="hide ? 'text' : 'password'">
         <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
       </mat-form-field>
       <mat-form-field class="container" >
-        <input #passwordRegisterCheck (keyup.enter)="register(usernameRegister.value, emailRegister.value, passwordRegister.value, passwordRegisterCheck.value)" matInput placeholder="Confirm Password" [type]="hide ? 'text' : 'password'">
+        <input #passwordRegisterCheck
+               (keyup.enter)="register(usernameRegister.value, emailRegister.value, passwordRegister.value, passwordRegisterCheck.value)"
+               matInput placeholder="Passwort" [type]="hide ? 'text' : 'password'">
         <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
       </mat-form-field>
-      <button class="container"  mat-raised-button color="primary" (click)="register(usernameRegister.value, emailRegister.value, passwordRegister.value, passwordRegisterCheck.value)">Register</button>
+      <button class="container" mat-raised-button color="primary"
+              (click)="register(usernameRegister.value, emailRegister.value, passwordRegister.value, passwordRegisterCheck.value)">
+        Registrieren
+      </button>
     </div>
   </mat-tab>
 </mat-tab-group>

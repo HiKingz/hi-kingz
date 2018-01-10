@@ -5,6 +5,7 @@ import {UserDataService} from '../../user-data/user-data.service';
 import {UsernameDialogComponent} from './username-dialog/username-dialog.component';
 import {UserSignature} from '../../user-data/user-data.model';
 import {FileService} from '../../files/file.service';
+import {ForgotComponent} from './forgot-password-dialog/forgot.component';
 
 @Component({
   selector: 'app-login',
@@ -16,23 +17,35 @@ import {FileService} from '../../files/file.service';
 export class LoginComponent implements OnInit {
 
   private showProgressBar = false;
-  private loginSucceeded = 'Login successful.';
   private uidExists = false;
+  private errorCodePassword = 'auth/wrong-password';
+  private errorCodeEmail = 'auth/invalid-email';
+
+  private loginSucceeded = 'Login erfolgreich.';
+  private loginNotSucceeded = 'Login nicht erfolgreich.';
+  private alertWrongPassword = 'Falsches Passwort';
+  private alertWrongEmail = 'Unbekannte Emailadresse';
+  private alertNotVerified = 'Emailadresse ist nicht verifiziert.';
+  private alertRegistrationCompleted = 'Registrierung vollständig';
+  private alterPasswordNotEqual = 'Eingegebene Passwörter sind nicht gleich.';
+  private alertFillOutTheForm = 'Bitte die Felder ausfüllen.';
 
   /**
    * @param {AuthenticationService} authenticationService
    * @param {UserDataService} userService
-   * @param fileService
+   * @param {FileService} fileService
    * @param {MatDialogRef<LoginComponent>} dialogRef
    * @param {MatSnackBar} snackBar
-   * @param dialog
+   * @param {MatDialog} dialog
+   * @param {MatDialog} passwordDialog
    */
   constructor(private authenticationService: AuthenticationService,
               private userService: UserDataService,
               private fileService: FileService,
               public dialogRef: MatDialogRef<LoginComponent>,
               public snackBar: MatSnackBar,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              public passwordDialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -45,15 +58,23 @@ export class LoginComponent implements OnInit {
    */
   loginWithEmail(email: string, password: string): void {
     this.authenticationService.loginWithEmail(email.toString().trim(), password.toString().trim())
-      .then(() => {
-        if (!this.authenticationService.getLoggedInUser().emailVerified) {
-          this.showSnackBar('Email address is not verified.');
+      .then((user) => {
+        if (!user.emailVerified) {
+          this.authenticationService.logout()
+            .then(() => {
+              this.showSnackBar(this.alertNotVerified);
+              this.closeDialogWithSnackBar(this.loginNotSucceeded);
+            });
         } else {
           this.closeDialogWithSnackBar(this.loginSucceeded);
         }
       })
       .catch((error) => {
-        console.log(error);
+        if (error.code === this.errorCodePassword) {
+          this.showSnackBar(this.alertWrongPassword);
+        } else if (error.code === this.errorCodeEmail) {
+          this.showSnackBar(this.alertWrongEmail);
+        }
       });
   }
 
@@ -92,11 +113,11 @@ export class LoginComponent implements OnInit {
   providerLogin(promise: Promise<any>): void {
     promise
       .then((result) => {
-        this.uidInDatabase(result.user.uid);
-        this.closeDialogWithSnackBar(this.loginSucceeded);
-      }
-        )
-    .catch((error) => {
+          this.uidInDatabase(result.user.uid);
+          this.closeDialogWithSnackBar(this.loginSucceeded);
+        }
+      )
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -113,15 +134,13 @@ export class LoginComponent implements OnInit {
         this.showProgressBar = true;
         this.authenticationService.register(username.toString().trim(), email.toString().trim(), password.toString())
           .then((user) => {
-            console.log('database operation ' + user.uid);
             this.userService.create(new UserSignature(user.uid, username))
               .then(() => {
-                console.log('wrote to database.');
                 user.sendEmailVerification()
                   .then(() => {
                     this.authenticationService.logout()
                       .then(() => {
-                        this.closeDialogWithSnackBar('Registration completed');
+                        this.closeDialogWithSnackBar(this.alertRegistrationCompleted);
                       })
                       .catch((error) => {
                         console.log(error);
@@ -132,35 +151,23 @@ export class LoginComponent implements OnInit {
                   });
               })
               .catch((error) => {
-                console.log('Error writing to database' + error);
+                console.log(error);
               });
           })
           .catch((error) => {
             console.log(error);
           });
       } else {
-        this.showSnackBar('Passwords are not equal.');
+        this.showSnackBar(this.alterPasswordNotEqual);
       }
     } else {
-      this.showSnackBar('Please fill out the form.');
+      this.showSnackBar(this.alertFillOutTheForm);
     }
   }
 
-  /**
-   * @param {string} email
-   */
-  forgotPassword(email: string): void {
-    if (email.length !== 0) {
-      this.authenticationService.forgotPassword(email.trim())
-        .then(() => {
-          this.closeDialogWithSnackBar('Verification email sent. Please check your inbox.');
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else {
-      this.showSnackBar('Please enter an email address.');
-    }
+  forgotPassword(): void {
+    this.dialogRef.close();
+    this.passwordDialog.open(ForgotComponent, {});
   }
 
   // when successfully logged in this function closes the login dialogue and sends a Snackbar
@@ -188,11 +195,6 @@ export class LoginComponent implements OnInit {
     return username.length !== 0 || email.length !== 0;
   }
 
-  upload(event) {
-    const file = event.target.files[0];
-    this.fileService.upload(file);
-  }
-
   /**
    * @param {string} password
    * @param {string} passwordCheck
@@ -207,7 +209,7 @@ export class LoginComponent implements OnInit {
    */
   openUsernameDialog(): void {
     this.dialog.open(UsernameDialogComponent, {
-      width: '400px',
+      width: '40%',
       disableClose: true
     });
   }
@@ -220,11 +222,9 @@ export class LoginComponent implements OnInit {
   uidInDatabase(uid: string): void {
     this.uidExists = false;
     this.userService.getById(uid).subscribe(
-      (x) => {
-        console.log(x);
+      (user) => {
+        console.log(user);
         this.uidExists = true;
-      },
-      () => {
       },
       () => {
         if (this.uidExists !== true) {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {MatSnackBar} from '@angular/material';
 import {AuthenticationService} from '../authentication/authentication.service';
 import * as firebase from 'firebase';
@@ -20,10 +20,6 @@ export class AppComponent {
     public snackBar: MatSnackBar
   ) {
     firebase.initializeApp(environment.firebase);
-  }
-
-  login(): void {
-    this.loginDialogService.open();
   }
 
   logout(): void {
