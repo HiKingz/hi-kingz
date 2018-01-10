@@ -1,14 +1,34 @@
 import { Injectable } from '@angular/core';
 import {AngularFireAuth} from 'angularfire2/auth';
 import * as firebase from 'firebase';
+import {Subject} from 'rxjs/Subject';
+import {Observable} from 'rxjs/Observable';
+import {LoginComponent} from '../components/login/login.component';
+import {MatDialog} from '@angular/material';
 
 @Injectable()
 export class AuthenticationService {
+  private _logoutSubject = new Subject();
+  private _loginSubject = new Subject();
+
+  public onLogout: Observable<any> = this._logoutSubject.asObservable();
+  public onLogin: Observable<any> = this._loginSubject.asObservable();
 
   /**
+   *
    * @param {AngularFireAuth} afAuth
+   * @param {MatDialog} _dialog
    */
-  constructor(public afAuth: AngularFireAuth) { }
+  constructor(public afAuth: AngularFireAuth) {
+    afAuth.auth.onAuthStateChanged((user) => {
+        if (user) {
+          this._loginSubject.next();
+        } else {
+          this._logoutSubject.next();
+        }
+      }
+    );
+  }
 
   /**
    * @param {string} email

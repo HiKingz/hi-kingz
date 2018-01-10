@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {AuthenticationService} from '../../authentication/authentication.service';
 import {MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
-import {UserService} from '../../users/user.service';
+import {UserDataService} from '../../user-data/user-data.service';
 import {UsernameDialogComponent} from './username-dialog/username-dialog.component';
-import {UserSignature} from '../../users/user.model';
+import {UserSignature} from '../../user-data/user-data.model';
 import {FileService} from '../../files/file.service';
 
 @Component({
@@ -21,14 +21,14 @@ export class LoginComponent implements OnInit {
 
   /**
    * @param {AuthenticationService} authenticationService
-   * @param {UserService} userService
+   * @param {UserDataService} userService
    * @param fileService
    * @param {MatDialogRef<LoginComponent>} dialogRef
    * @param {MatSnackBar} snackBar
    * @param dialog
    */
   constructor(private authenticationService: AuthenticationService,
-              private userService: UserService,
+              private userService: UserDataService,
               private fileService: FileService,
               public dialogRef: MatDialogRef<LoginComponent>,
               public snackBar: MatSnackBar,

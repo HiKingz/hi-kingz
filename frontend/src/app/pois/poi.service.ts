@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Poi} from './poi.model';
 import {FirestoreDataService} from '../commons/firestore-data-services';
-import {UserSignature} from '../users/user.model';
+import {UserSignature} from '../user-data/user-data.model';
 import {Point} from '../coordinates/point.model';
 import {Observable} from 'rxjs/Observable';
 import {FirebaseItem} from '../commons/models/firebase.model';
@@ -35,7 +35,9 @@ export class PoiService extends FirestoreDataService<Poi> {
       null,
       data.name || '',
       data.descrpition || '',
-      data.user && new UserSignature(data.user.id || null, data.user.username || '') || null,
+      data.userSignature && new UserSignature(
+        data.userSignature.id || null, data.userSignature.username || ''
+      ) || null,
       data.ratingAggregation && new RatingAggregation(
       data.ratingAggregation.avg || 0, data.ratingAggregation.count || 0, data.ratingAggregation.sum || 0
       ) || new RatingAggregation(0, 0, 0),

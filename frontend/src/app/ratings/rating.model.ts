@@ -1,4 +1,4 @@
-import {UserSignature} from '../users/user.model';
+import {UserSignature} from '../user-data/user-data.model';
 import {File} from '../files/file.model';
 import {Fileable} from '../commons/models/fileable';
 import {FirebaseStorable} from '../commons/models/firebase-storable';

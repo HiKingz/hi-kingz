@@ -5,7 +5,7 @@ import {AngularFirestore} from 'angularfire2/firestore';
 import {FirebaseItem} from '../commons/models/firebase.model';
 import {Rateable} from '../commons/models/rateable';
 import {Observable} from 'rxjs/Observable';
-import {UserSignature} from '../users/user.model';
+import {UserSignature} from '../user-data/user-data.model';
 
 @Injectable()
 export class RatingService extends FirestoreDataService<Rating> {

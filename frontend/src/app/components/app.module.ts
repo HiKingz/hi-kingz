@@ -35,11 +35,12 @@ import {RouteService} from '../routes/route.service';
 import {AngularFirestoreModule} from 'angularfire2/firestore';
 import {RatingService} from '../ratings/rating.service';
 import {PoiService} from '../pois/poi.service';
-import {UserService} from '../users/user.service';
+import {UserDataService} from '../user-data/user-data.service';
 import {UsernameDialogComponent} from './login/username-dialog/username-dialog.component';
 import {CreatePoiComponent} from './create-poi/create-poi.component';
 import {FileService} from '../files/file.service';
 import {AngularFireStorageModule} from 'angularfire2/storage';
+import {LoginDialogService} from '../authentication/login-dialog.service';
 
 
 const appRoutes: Routes = [
@@ -95,7 +96,7 @@ const appRoutes: Routes = [
     MatSlideToggleModule
   ],
   entryComponents: [LoginComponent, UsernameDialogComponent],
-  providers: [AuthenticationService, RouteService, RatingService, PoiService, UserService, FileService  ],
+  providers: [AuthenticationService, RouteService, RatingService, PoiService, UserDataService, FileService, LoginDialogService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

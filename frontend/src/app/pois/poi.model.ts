@@ -1,5 +1,5 @@
 import {Fileable} from '../commons/models/fileable';
-import {UserSignature} from '../users/user.model';
+import {UserSignature} from '../user-data/user-data.model';
 import {Point} from '../coordinates/point.model';
 import {File} from '../files/file.model';
 import {Rateable, RatingAggregation} from '../commons/models/rateable';
@@ -10,7 +10,7 @@ export class Poi implements Fileable, Rateable, FirebaseStorable {
     public files: Array<File>,
     public name: string,
     public description: string,
-    public user: UserSignature,
+    public userSignature: UserSignature,
     public ratingAggregation: RatingAggregation,
     public point: Point,
   ) { }

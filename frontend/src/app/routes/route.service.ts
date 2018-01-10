@@ -7,7 +7,7 @@ import {Waypoint} from '../coordinates/waypoint.model';
 import {Point} from '../coordinates/point.model';
 import {Observable} from 'rxjs/Observable';
 import {FirebaseItem} from '../commons/models/firebase.model';
-import {UserSignature} from '../users/user.model';
+import {UserSignature} from '../user-data/user-data.model';
 import {RatingAggregation} from '../commons/models/rateable';
 
 @Injectable()
@@ -61,7 +61,9 @@ export class RouteService extends FirestoreDataService<Route> {
       data.name || '',
       data.description || '',
       data.difficulty || null,
-      data.user && new UserSignature(data.user.id || null, data.user.username || '') || null,
+      data.userSignature && new UserSignature(
+        data.userSignature.id || null, data.userSignature.username || ''
+      ) || null,
       data.waypoints && data.waypoints.map(
         waypointData => new Waypoint(
           waypointData.name || '',

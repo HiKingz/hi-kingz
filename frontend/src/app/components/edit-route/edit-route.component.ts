@@ -2,13 +2,9 @@ import { Component, OnInit, ViewChild} from '@angular/core';
 import {RouteUIComponent} from '../route-ui/route-ui.component';
 import {FirebaseItem} from '../../commons/models/firebase.model';
 import {Route} from '../../routes/route.model';
-import {Point} from '../../coordinates/point.model';
-import {Waypoint} from '../../coordinates/waypoint.model';
 import {ActivatedRoute} from '@angular/router';
-import {UserSignature} from '../../users/user.model';
 import {RouteService} from '../../routes/route.service';
-import {UserService} from '../../users/user.service';
-import {User} from '../../users/user.model';
+import {UserDataService} from '../../user-data/user-data.service';
 
 @Component({
   selector: 'app-edit-route',
@@ -20,9 +16,10 @@ export class EditRouteComponent implements OnInit {
   mapComp: RouteUIComponent;
   frbs_route: FirebaseItem<Route>;
   sub: any;
-  currentUser: User;
 
-  constructor(private route: ActivatedRoute, private routeService: RouteService, private userService: UserService) {
+  constructor(
+    private route: ActivatedRoute, private routeService: RouteService, private userDataService: UserDataService
+  ) {
     this.frbs_route = new FirebaseItem(
       '0',
       new Route(
@@ -55,15 +52,12 @@ export class EditRouteComponent implements OnInit {
         }
       });
     });
-    this.userService.getUser().subscribe((usr) => {
-      self.currentUser = usr.item;
-    });
   }
 
   saveRoute = () => {
     const self = this;
-    if (this.currentUser) {
-      this.frbs_route.item.user = this.currentUser;
+    if (this.userDataService.currentUserData) {
+      this.frbs_route.item.userSignature = this.userDataService.currentUserData.userSignature;
       this.routeService.update(this.frbs_route);
     }
   }

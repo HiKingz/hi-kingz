@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from '../../../users/user.service';
-import {UserSignature} from '../../../users/user.model';
+import {UserDataService} from '../../../user-data/user-data.service';
+import {UserSignature} from '../../../user-data/user-data.model';
 import {AuthenticationService} from '../../../authentication/authentication.service';
 import {MatDialogRef, MatSnackBar} from '@angular/material';
 
@@ -11,7 +11,7 @@ import {MatDialogRef, MatSnackBar} from '@angular/material';
 })
 export class UsernameDialogComponent implements OnInit {
 
-  constructor(private userService: UserService,
+  constructor(private userDataService: UserDataService,
               private authService: AuthenticationService,
               private dialogRef: MatDialogRef<UsernameDialogComponent>,
               private snackBar: MatSnackBar) { }
@@ -20,7 +20,7 @@ export class UsernameDialogComponent implements OnInit {
   }
 
   addUser(username: string): void {
-    this.userService.create(new UserSignature(this.authService.getLoggedInUser().uid, username))
+    this.userDataService.create(new UserSignature(this.authService.getLoggedInUser().uid, username))
       .then(() => {
         console.log('successful.');
         this.closeDialogWithSnackBar('Welcome ' + username);
