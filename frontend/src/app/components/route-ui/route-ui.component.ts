@@ -69,12 +69,9 @@ export class RouteUIComponent implements OnInit {
 
   public fileChanged(event) {
     const file = event.target.files.item(0);
-    this.fileService.upload(file).subscribe(path => {
-      this.route.files.push(new File(path));
-      setTimeout(function() {
-        throw new Error('Path = ' + path);
-      }, 0);
-      // this.saveRoute();
+    const task = this.fileService.upload(file);
+    task.then().then((val) => {
+      this.route.files.push(new File(val.downloadURL));
     });
   }
 

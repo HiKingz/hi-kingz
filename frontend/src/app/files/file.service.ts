@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {AngularFireStorage} from 'angularfire2/storage';
+import {AngularFireStorage, AngularFireUploadTask} from 'angularfire2/storage';
 
 @Injectable()
 export class FileService {
@@ -12,8 +12,9 @@ export class FileService {
    * @param file
    * @returns {string}
    */
-  upload(file: File): Observable<string> {
-    return this.storage.upload(file.name, file).downloadURL();
+  upload(file: File): AngularFireUploadTask {
+    return this.storage.ref('Pictures/' + file.name).put(file);
+    // return this.storage.upload(file.name, file).downloadURL();
   }
 
   /**
