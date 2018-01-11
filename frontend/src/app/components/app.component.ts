@@ -27,6 +27,7 @@ export class AppComponent {
   logout(): void {
     this.authenticationService.logout()
       .then(() => {
+        this.goToRootRoute();
         this.snackBar.open('Logout successful', null, {duration: 1000});
       })
       .catch((error) => {

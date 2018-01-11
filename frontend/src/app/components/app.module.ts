@@ -17,7 +17,7 @@ import {RatingComponent} from './rating/rating.component';
 import {MyRoutesComponent} from './my-routes/my-routes.component';
 import {
   MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatSnackBarModule,
-  MatTabsModule, MatToolbarModule
+  MatTabsModule, MatToolbarModule, MatCardModule
 } from '@angular/material';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
@@ -88,6 +88,7 @@ const appRoutes: Routes = [
     MatSnackBarModule,
     MatMenuModule,
     MatSelectModule,
+    MatCardModule,
     ReactiveFormsModule,
     AngularFirestoreModule,
     AngularFireStorageModule,

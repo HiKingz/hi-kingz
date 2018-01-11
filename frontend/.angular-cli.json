@@ -19,7 +19,9 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "../node_modules/instantsearch.js/dist/instantsearch.css",
+        "../node_modules/instantsearch.js/dist/instantsearch-theme-algolia.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
