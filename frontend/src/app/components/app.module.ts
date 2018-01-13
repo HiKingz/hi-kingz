@@ -19,6 +19,7 @@ import {
   MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatSnackBarModule,
   MatTabsModule, MatToolbarModule
 } from '@angular/material';
+import {MatCardModule} from '@angular/material';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -93,7 +94,8 @@ const appRoutes: Routes = [
     AngularFireStorageModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatCardModule
   ],
   entryComponents: [LoginComponent, UsernameDialogComponent, MediaDialogComponent, ForgotComponent],
   providers: [

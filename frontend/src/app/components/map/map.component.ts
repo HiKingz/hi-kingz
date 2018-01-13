@@ -1,9 +1,10 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, Output, OnInit, ViewEncapsulation, EventEmitter, ComponentFactoryResolver } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
 import 'rxjs/add/operator/switchMap';
 
 import * as mapboxgl from 'mapbox-gl';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { decode } from '@mapbox/polyline';
 import * as ctrls from './map.controls';
 
@@ -39,6 +40,8 @@ export class MapComponent implements OnInit {
   _poi: Poi = undefined;
   @Input() readonly: boolean;
 
+  @Output() deleteWaypoint = new EventEmitter();
+
   cli;
   // map: mapboxgl.Map;
 
@@ -60,7 +63,7 @@ export class MapComponent implements OnInit {
     return this._poi;
   }
 
-  constructor() {
+  constructor(private fact: ComponentFactoryResolver) {
     mapboxgl.accessToken = environment.mapbox.accessToken;
   }
 
@@ -101,7 +104,11 @@ export class MapComponent implements OnInit {
 
     if (!this.readonly) {
       if (this.route) {
-        this.map.addControl(new ctrls.RoutePlanningControl(this), 'top-left');
+        const rt_ctrl = new ctrls.RoutePlanningControl(this, this.route);
+        this.deleteWaypoint.subscribe((data) => {
+          rt_ctrl.deleteWaypointAt(data);
+        });
+        this.map.addControl(rt_ctrl, 'top-left');
       } else if (this.poi) {
         this.map.addControl(new ctrls.PoiMakerControl(this), 'top-left');
       }
@@ -109,6 +116,7 @@ export class MapComponent implements OnInit {
     if ((this.route && this.route.direction.length > 0) || (this.poi && this.poi.point)) {
       this.displayRouteOrPoi(true);
     }
+    this.map.addControl(new MapboxGeocoder({accessToken: environment.mapbox.accessToken}), 'top-right');
   }
 
   public displayRouteOrPoi = (jumpTo: boolean = false) => {

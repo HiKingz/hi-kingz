@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import { MapComponent } from './map.component';
 import {Point} from '../../coordinates/point.model';
 import {Waypoint} from '../../coordinates/waypoint.model';
+import {Route} from '../../routes/route.model';
 
 
 // Global vars
@@ -77,7 +78,7 @@ export class PoiMakerControl {
 
 }
 
-export class RoutePlanningControl {
+export class RoutePlanningControl  {
 
   _wpList;
   _container;
@@ -85,16 +86,15 @@ export class RoutePlanningControl {
 
   waypoints = {};
   wp_next_id = 0;
+  wp_ids = [];
   draggedPoint: string;
   isDragging = false;
 
-  component: MapComponent;
-
-  constructor(component: MapComponent) {
-    this.component = component;
+  constructor(private component: MapComponent, private route: Route) {
   }
 
-  onAdd(map) {
+
+  public onAdd(map) {
     this._map = map;
     this._container = document.createElement('div');
     this._container.className = 'mapboxgl-ctrl';
@@ -113,6 +113,7 @@ export class RoutePlanningControl {
     });
 
     return this._container;
+    // return this.rootHTML.nativeElement;
   }
 
   public addPoint = (coords, update: boolean = true) => {
@@ -157,11 +158,21 @@ export class RoutePlanningControl {
     });
 
     this.waypoints[wp_id] = [coords.lng, coords.lat];
+    this.wp_ids.push(wp_id);
 
     this.wp_next_id++;
     if (update) {
       this.fetchDirections();
     }
+  }
+
+  public deleteWaypointAt(index: number) {
+    this._map.removeLayer(this.wp_ids[index]);
+    this._map.removeSource(this.wp_ids[index]);
+    delete this.waypoints[this.wp_ids[index]];
+    this.component.route.waypoints.splice(index, 1);
+    this.wp_ids.splice(index, 1);
+    this.fetchDirections();
   }
 
   public handleClick = (e) => {
@@ -243,6 +254,7 @@ export class RoutePlanningControl {
       // Location has changed -> Use name coming from the service
       if (wp_local.point.longitude !== wp_srvc.location[0] || wp_local.point.latitude !== wp_srvc.location[1]) {
         wp_local.name = wp_srvc.name ? wp_srvc.name : wp_srvc.location;
+        wp_local.point = new Point(wp_srvc.location[0], wp_srvc.location[1]);
       }
     }
     // Add new waypoint(s)
