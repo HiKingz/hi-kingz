@@ -9,10 +9,6 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.row {
-  margin: 0 !important;
-}
-
 .app-container {
   position: fixed;
   top: 64px;

@@ -11,14 +11,12 @@
       </mat-card-content>
     </mat-card>
     <div class="row">
-      <mat-card *ngFor="let result of instantSearchManager?.searchResults | async" class="search-result-card col-xs-12 spaced-item">
-        <mat-card-content>
-          <p>{{ result.name }}</p>
-        </mat-card-content>
-      </mat-card>
+      <div class="route-detail-card-container col-sm-6 slide-in" *ngFor="let route of instantSearchManager?.searchResults | async; trackBy: identifyRoute">
+        <app-route-overview-card [route]="route"></app-route-overview-card>
+      </div>
     </div>
     <div class="spaced-item load-more-container">
-      <button mat-fab *ngIf="instantSearchManager?.gotMoreToLoad" (click)="instantSearchManager?.loadMore()" color="primary"><mat-icon>expand_more</mat-icon></button>
+      <button mat-fab *ngIf="instantSearchManager?.gotMoreToLoad" (click)="instantSearchManager?.loadMore()" color="primary" matTooltip="Load more!" matTooltipPosition="below"><mat-icon>expand_more</mat-icon></button>
     </div>
   </div>
 </div>

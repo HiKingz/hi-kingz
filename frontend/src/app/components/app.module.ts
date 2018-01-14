@@ -17,7 +17,7 @@ import {RatingComponent} from './rating/rating.component';
 import {MyRoutesComponent} from './my-routes/my-routes.component';
 import {
   MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatSnackBarModule,
-  MatTabsModule, MatToolbarModule, MatCardModule, MatProgressSpinnerModule
+  MatTabsModule, MatToolbarModule, MatCardModule, MatProgressSpinnerModule, MatTooltipModule, MatChipsModule
 } from '@angular/material';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
@@ -40,6 +40,10 @@ import {LoginDialogService} from '../authentication/login-dialog.service';
 import {MediaDialogComponent} from './media-dialog/media-dialog.component';
 import {ForgotComponent} from './login/forgot-password-dialog/forgot.component';
 import {InstantSearchService} from '../instantsearch/instantsearch.service';
+import {StarRatingComponent} from './star-rating/star-rating.component';
+import {DifficultyInidicatorComponent} from './difficulty-inidicator/difficulty-inidicator.component';
+import {RouteOverviewCardComponent} from './route-overview-card/route-overview-card.component';
+import {HttpClientModule} from '@angular/common/http';
 
 const appRoutes: Routes = [
   { path: '', component: AllRoutesComponent },
@@ -68,7 +72,10 @@ const appRoutes: Routes = [
     MyRoutesComponent,
     UsernameDialogComponent,
     MediaDialogComponent,
-    ForgotComponent
+    ForgotComponent,
+    StarRatingComponent,
+    DifficultyInidicatorComponent,
+    RouteOverviewCardComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -88,6 +95,8 @@ const appRoutes: Routes = [
     MatToolbarModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    MatTooltipModule,
+    MatChipsModule,
     MatMenuModule,
     MatSelectModule,
     MatCardModule,
@@ -96,7 +105,8 @@ const appRoutes: Routes = [
     AngularFireStorageModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    HttpClientModule
   ],
   entryComponents: [LoginComponent, UsernameDialogComponent, MediaDialogComponent, ForgotComponent],
   providers: [

@@ -1,0 +1,21 @@
+<mat-card class="card-container clickable" (click)="openRoute()">
+  <div class="route-image-container">
+    <img class="route-image" [src]="'https://loremflickr.com/640/300/hiking?random=' + route.name">
+  </div>
+  <button mat-fab class="open-route-button" color="primary"><mat-icon svgIcon="hiking"></mat-icon></button>
+  <mat-card-content>
+    <div class="description-container">
+      <h2>{{ route.name }}</h2>
+      <p>{{ route.description }}</p>
+      <div class="read-more-gradient"></div>
+    </div>
+    <div class="tags-container">
+      <mat-chip-list>
+        <mat-chip>One fish</mat-chip>
+        <mat-chip>Two fish</mat-chip>
+        <mat-chip color="primary">Primary fish</mat-chip>
+        <mat-chip color="accent">Accent fish</mat-chip>
+      </mat-chip-list>
+    </div>
+  </mat-card-content>
+</mat-card>

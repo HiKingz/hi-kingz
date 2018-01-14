@@ -55,4 +55,8 @@ export class AllRoutesComponent implements OnInit {
       })
     ).start();
   }
+
+  public identifyRoute(index, route) {
+    return route.objectID;
+  }
 }
