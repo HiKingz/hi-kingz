@@ -8,6 +8,8 @@ import {FileService} from '../../files/file.service';
 import {File} from '../../files/file.model';
 import {Waypoint} from '../../coordinates/waypoint.model';
 
+
+
 @Component({
   selector: 'app-route-ui',
   templateUrl: './route-ui.component.html',

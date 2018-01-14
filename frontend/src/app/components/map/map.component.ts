@@ -12,6 +12,8 @@ import {Route} from '../../routes/route.model';
 import {Point} from '../../coordinates/point.model';
 import {Poi} from '../../pois/poi.model';
 
+import {PoiService} from '../../pois/poi.service';
+
 // Global vars
 const request = new XMLHttpRequest();
 
@@ -35,6 +37,10 @@ const point_src = {
 })
 export class MapComponent implements OnInit {
 
+  poi_count = 0; // Amount of POIs displayed, stored for knowing how many PoI-Layers to delete
+  on_poi: boolean;
+  poi_sub: any; // Observable<FirebaseItem<Poi>>;
+  poi_list: Array<Poi>;
   map: mapboxgl.Map;
   _route: Route = undefined;
   _poi: Poi = undefined;
@@ -63,11 +69,14 @@ export class MapComponent implements OnInit {
     return this._poi;
   }
 
-  constructor(private fact: ComponentFactoryResolver) {
+  constructor(private poiService: PoiService) {
     mapboxgl.accessToken = environment.mapbox.accessToken;
+    this.on_poi = false;
   }
 
   ngOnInit() {
+
+
     this.map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/outdoors-v9',
@@ -100,6 +109,16 @@ export class MapComponent implements OnInit {
           'line-width': 3
         }
       });
+      self.map.on('mouseup', (ev) => {
+        if (self.poi_sub) {
+          self.poi_sub.unsubscribe();
+        }
+        const bounds = self.map.getBounds();
+        const obs = self.poiService.getInArea(bounds._ne.lat, bounds._ne.lng, bounds._sw.lat, bounds._sw.lng);
+        self.poi_sub = obs.subscribe((frbs_pois) => {
+          self.displayPointsOfInterest(frbs_pois.map((frbs) => frbs.item));
+        });
+      });
     });
 
     if (!this.readonly) {
@@ -117,6 +136,57 @@ export class MapComponent implements OnInit {
       this.displayRouteOrPoi(true);
     }
     this.map.addControl(new MapboxGeocoder({accessToken: environment.mapbox.accessToken}), 'top-right');
+  }
+
+  public displayPointsOfInterest(pois: Array<Poi>) {
+    let i = 0;
+    for (; i < this.poi_count; i++) {
+      this.map.removeLayer('poi' + i);
+      this.map.removeSource('poi' + i);
+    }
+    i = 0;
+    const self = this;
+    pois.forEach((poi) => {
+      self.map.addSource('poi' + i, {
+        'type': 'geojson',
+        'data': {
+          'type': 'FeatureCollection',
+          'features': [{
+            'type': 'Feature',
+            'geometry': {
+              'type': 'Point',
+              'coordinates': [poi.point.longitude, poi.point.latitude]
+            }
+          }]
+        }
+      });
+
+      self.map.addLayer({
+        'id': 'poi' + i,
+        'type': 'circle',
+        'source': 'poi' + i,
+        'paint': {
+          'circle-radius': 14,
+          'circle-color': '#ff2300'
+        }
+      });
+
+      self.map.on('click', 'poi' + i, (ev) => {
+        // Display this PoI in the popup (TODO)
+        alert('It\'s interesting, but not *that* interesting');
+      });
+
+      self.map.on('mouseenter', 'poi' + i, (ev) => {
+        self.on_poi = true;
+      });
+
+      self.map.on('mouseleave', 'poi' + i, (ev) => {
+        self.on_poi = false;
+      });
+
+      i++;
+    });
+    this.poi_count = i;
   }
 
   public displayRouteOrPoi = (jumpTo: boolean = false) => {

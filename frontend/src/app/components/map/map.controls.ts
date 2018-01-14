@@ -117,6 +117,9 @@ export class RoutePlanningControl  {
   }
 
   public addPoint = (coords, update: boolean = true) => {
+    if (this.component.on_poi) {
+      return;
+    }
     const wp_id = 'point' + this.wp_next_id;
     this._map.addSource(wp_id, {
       'type': 'geojson',
