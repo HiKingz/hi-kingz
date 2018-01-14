@@ -15,5 +15,10 @@ export const environment = {
   },
   mapbox: {
     accessToken: 'pk.eyJ1Ijoic3RhbmRieW1vZGUiLCJhIjoiY2o5NzZqMTdmMDQzMDJ3cnc5aW5ueXNmeSJ9.q_l4vASYPsSkfHrAxPGjbw'
+  },
+  algolia: {
+    appId: 'FN552M4GBM',
+    publicApiKey: '6d3baf4c1604a87d3a8d245f7040cd0e',
+    indexNamePrefix: 'hi-kingz.'
   }
 };
