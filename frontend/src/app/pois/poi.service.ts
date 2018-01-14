@@ -26,7 +26,31 @@ export class PoiService extends FirestoreDataService<Poi> {
 
   public getInArea(top: number, right: number, bottom: number, left: number): Observable<Array<FirebaseItem<Poi>>> {
     // TODO
-    return null;
+  const pois = [
+    new FirebaseItem('0',
+      new Poi([], 'Testpunkt',
+        'Desc', new UserSignature('0', 'Witzelbritz'), new RatingAggregation(0, 0, 0),
+        new Point(8.24958214937908, 50.08016862900732)
+        )
+    ),
+    new FirebaseItem('0',
+      new Poi([], 'Testpunkt',
+        'Desc', new UserSignature('0', 'Witzelbritz'), new RatingAggregation(0, 0, 0),
+        new Point(8.14958214937908, 50.08016862900732)
+      )
+    ),
+    new FirebaseItem('0',
+      new Poi([], 'Testpunkt',
+        'Desc', new UserSignature('0', 'Witzelbritz'), new RatingAggregation(0, 0, 0),
+        new Point(8.34958214937908, 50.08016862900732)
+      )
+    ),
+  ];
+    return Observable.create(observer => {
+      observer.next(pois);
+      observer.complete();
+    });
+    // return null;
   }
 
   protected _deserializeData(data: any): Poi {

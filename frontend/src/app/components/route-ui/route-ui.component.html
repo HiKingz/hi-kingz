@@ -23,18 +23,21 @@
       <mat-slide-toggle [(ngModel)]="route.isPublic" (change)="changePrivacy()" [disabled]="readonly">{{route_public_label}}</mat-slide-toggle>
     <br/>
 
-    <div>
-      <h4>Wegpunkte:</h4>
-      <div matInput *ngFor="let wp of route.waypoints; let i = index">
-        <input [(ngModel)]="wp.name" [readonly]="readonly"><button mat-mini-fab (click)="centerOn(i)">Center</button>
-      </div>
-    </div>
-
 
     <button *ngIf="!readonly" mat-button value="Route speichern" (click)="saveRoute()" [disabled]="readonly">Route speichern</button>
   </div>
 </div>
-
+<div class="waypoints">
+  <div class="waypoints_viewport">
+    <mat-card matInput *ngFor="let wp of route.waypoints; let i = index">
+      <mat-form-field>
+        <input matInput [(ngModel)]="wp.name" [readonly]="readonly">
+      </mat-form-field>
+      <button mat-icon-button (click)="centerOn(i)"><mat-icon>explore</mat-icon></button>
+      <button mat-icon-button (click)="deleteWaypointAt(i)"><mat-icon>delete</mat-icon></button>
+    </mat-card>
+  </div>
+</div>
 <app-map [route]="route" [readonly]="readonly"></app-map>
 
 <fieldset>

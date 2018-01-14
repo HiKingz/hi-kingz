@@ -6,6 +6,9 @@ import {Point} from '../../coordinates/point.model';
 import {MediaDialogComponent} from '../media-dialog/media-dialog.component';
 import {FileService} from '../../files/file.service';
 import {File} from '../../files/file.model';
+import {Waypoint} from '../../coordinates/waypoint.model';
+
+
 
 @Component({
   selector: 'app-route-ui',
@@ -55,8 +58,12 @@ export class RouteUIComponent implements OnInit {
   }
 
   // Center the map on the 'i'th waypoint in the _route
-  public centerOn = (i: number) => {
+  public centerOn(i: number) {
     this.mapComp.flyTo(this.route.waypoints[i].point);
+  }
+
+  private deleteWaypointAt(i: number) {
+    this.mapComp.deleteWaypoint.emit(i);
   }
 
   saveRoute = () => {
