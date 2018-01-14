@@ -5,11 +5,6 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './difficulty-inidicator.component.html',
   styleUrls: ['./difficulty-inidicator.component.css']
 })
-export class DifficultyInidicatorComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class DifficultyInidicatorComponent {
+  constructor() {}
 }

@@ -2,13 +2,8 @@ import {Injectable} from '@angular/core';
 import {Route} from './route.model';
 import {AngularFirestore} from 'angularfire2/firestore';
 import {FirestoreDataService, OrderSettings, PaginatedDataView} from '../commons/firestore-data-services';
-import {File} from '../files/file.model';
-import {Waypoint} from '../coordinates/waypoint.model';
-import {Point} from '../coordinates/point.model';
 import {Observable} from 'rxjs/Observable';
 import {FirebaseItem} from '../commons/models/firebase.model';
-import {UserSignature} from '../user-data/user-data.model';
-import {RatingAggregation} from '../commons/models/rateable';
 
 @Injectable()
 export class RouteService extends FirestoreDataService<Route> {
@@ -55,31 +50,6 @@ export class RouteService extends FirestoreDataService<Route> {
   }
 
   protected _deserializeData(data: any): Route {
-    return new Route(
-      // TODO deserialize properly when model is done
-      data.files && data.files.map(fileData => new File(fileData.url)) || [],
-      data.name || '',
-      data.description || '',
-      data.difficulty || null,
-      data.userSignature && new UserSignature(
-        data.userSignature.id || null, data.userSignature.username || ''
-      ) || null,
-      data.waypoints && data.waypoints.map(
-        waypointData => new Waypoint(
-          waypointData.name || '',
-          waypointData.point && new Point(
-            waypointData.point.longitude || null, waypointData.point.latitude || null
-          ) || null
-        )
-      ) || [],
-      data.direction && data.direction.map(
-        directionData => new Point(directionData.longitude || null, directionData.latitude || null)
-      ) || [],
-      data.ratingAggregation && new RatingAggregation(
-      data.ratingAggregation.avg || 0, data.ratingAggregation.count || 0, data.ratingAggregation.sum || 0
-      ) || new RatingAggregation(0, 0, 0),
-      data.isPublic || false,
-      data.isSponsored || false
-    );
+    return Route.deserialize(data);
   }
 }

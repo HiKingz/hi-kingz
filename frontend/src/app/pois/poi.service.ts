@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Poi} from './poi.model';
 import {FirestoreDataService} from '../commons/firestore-data-services';
 import {UserSignature} from '../user-data/user-data.model';
@@ -54,18 +54,6 @@ export class PoiService extends FirestoreDataService<Poi> {
   }
 
   protected _deserializeData(data: any): Poi {
-    return new Poi(
-      // TODO check if files need to be deserialized
-      null,
-      data.name || '',
-      data.descrpition || '',
-      data.userSignature && new UserSignature(
-        data.userSignature.id || null, data.userSignature.username || ''
-      ) || null,
-      data.ratingAggregation && new RatingAggregation(
-      data.ratingAggregation.avg || 0, data.ratingAggregation.count || 0, data.ratingAggregation.sum || 0
-      ) || new RatingAggregation(0, 0, 0),
-      data.point && new Point(data.point.longitude || null, data.point.altitude || null) || null
-    );
+    return Poi.deserialize(data);
   }
 }

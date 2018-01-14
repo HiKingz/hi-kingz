@@ -6,7 +6,7 @@ import {FirebaseStorable} from '../commons/models/firebase-storable';
 import {UserSignature} from '../user-data/user-data.model';
 import {Point} from '../coordinates/point.model';
 
-export class Route implements Fileable, Rateable, FirebaseStorable {
+export class Route extends FirebaseStorable implements Fileable, Rateable {
   constructor(
     public files: Array<File>,
     public name: string,
@@ -18,5 +18,36 @@ export class Route implements Fileable, Rateable, FirebaseStorable {
     public ratingAggregation: RatingAggregation,
     public isPublic: boolean,
     public isSponsored: boolean
-  ) { }
+  ) {
+    super();
+  }
+
+  public static deserialize(data: any): Route {
+    return new Route(
+      // TODO deserialize properly when model is done
+      data.files && data.files.map(fileData => new File(fileData.url)) || [],
+      data.name || '',
+      data.description || '',
+      data.difficulty || null,
+      data.userSignature && new UserSignature(
+      data.userSignature.id || null, data.userSignature.username || ''
+      ) || null,
+      data.waypoints && data.waypoints.map(
+      waypointData => new Waypoint(
+        waypointData.name || '',
+        waypointData.point && new Point(
+        waypointData.point.longitude || null, waypointData.point.latitude || null
+        ) || null
+      )
+      ) || [],
+      data.direction && data.direction.map(
+      directionData => new Point(directionData.longitude || null, directionData.latitude || null)
+      ) || [],
+      data.ratingAggregation && new RatingAggregation(
+      data.ratingAggregation.avg || 0, data.ratingAggregation.count || 0, data.ratingAggregation.sum || 0
+      ) || new RatingAggregation(0, 0, 0),
+      data.isPublic || false,
+      data.isSponsored || false
+    );
+  }
 }

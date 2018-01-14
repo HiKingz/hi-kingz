@@ -42,12 +42,6 @@ export class UserDataService extends FirestoreDataService<UserData> {
   }
 
   protected _deserializeData(data: any): UserData {
-    return new UserData(
-      data.userSignature && new UserSignature(
-        data.userSignature.id || null,
-        data.userSignature.username || ''
-      ) || new UserSignature(null, ''),
-      data.favorites || []
-    );
+    return UserData.deserialize(data);
   }
 }
