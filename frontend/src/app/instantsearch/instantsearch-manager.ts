@@ -14,8 +14,7 @@ export class InstantSearchManager {
     this._searchConnector = instantsearch({
       appId: appId,
       apiKey: apiKey,
-      indexName: indexName,
-      urlSync: true
+      indexName: indexName
     });
     widgets.forEach(widget => this._searchConnector.addWidget(widget));
     this._searchConnector.addWidget(connectInfiniteHits(

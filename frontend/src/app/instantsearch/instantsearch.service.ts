@@ -6,7 +6,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 class InstantSearchManagerBuilder {
-  private _widgets: Array = [];
+  private _widgets: Array<any> = [];
 
   constructor(private _appId: string, private _apiKey: string, private _indexName: string) { }
 
