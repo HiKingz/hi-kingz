@@ -29,6 +29,7 @@
     "angularfire2": "^5.0.0-rc.5-next",
     "core-js": "^2.4.1",
     "firebase": "^4.7.0",
+    "flexboxgrid": "^6.3.1",
     "font-awesome": "^4.7.0",
     "instantsearch.js": "^2.4.1",
     "mapbox-gl": "^0.42.2",

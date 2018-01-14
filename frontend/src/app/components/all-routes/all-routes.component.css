@@ -5,3 +5,42 @@
   width: 70px;
   height: 70px;
 }
+
+.search-box-container {
+  max-width: none !important;
+}
+
+.spaced-item {
+  margin-top: 16px;
+}
+
+.search-box-input {
+  border-radius: 2px;
+  border: none;
+  box-shadow: none;
+}
+
+.search-settings-container {
+  display: flex;
+  justify-content: center;
+}
+
+#difficulty-slider {
+  flex-grow: 5;
+}
+
+#rating-stars {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.search-result-card {
+  margin-top: 3px
+}
+
+.load-more-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}

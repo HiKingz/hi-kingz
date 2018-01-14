@@ -1,5 +1,5 @@
 <div class="header-container">
-  <mat-toolbar color="primary" class="mat-elevation-z3 slide-in-top">
+  <mat-toolbar color="primary" class="mat-elevation-z2 slide-in-top">
     <span class="toolbar-item clickable" (click)="goToRootRoute()">HiKingz</span>
     <span class="toolbar-spacer"></span>
     <ng-template [ngIf]="authenticationService.userIsSignedIn()">
@@ -7,10 +7,14 @@
         <mat-icon>account_circle</mat-icon>
         <span class="toolbar-item">{{ userDataService.currentUserData.userSignature.username }}</span>
       </ng-template>
-      <mat-icon class="clickable toolbar-item" style="transform: rotate(90deg);" (click)="logout()">file_upload</mat-icon>
+      <ng-template [ngIf]="!userDataService.currentUserData">
+        <mat-progress-spinner [diameter]="30" color="accent" mode="indeterminate"></mat-progress-spinner>
+        <span class="toolbar-item"></span>
+      </ng-template>
+      <button mat-icon-button class="toolbar-item" (click)="logout()"><mat-icon style="transform: rotate(90deg);" >file_upload</mat-icon></button>
     </ng-template>
     <ng-template [ngIf]="!authenticationService.userIsSignedIn()">
-      <span class="toolbar-item clickable" (click)="loginDialogService.open()">Login</span>
+      <span class="clickable" (click)="loginDialogService.open()">Login</span>
       <mat-icon class="clickable toolbar-item" style="transform: rotate(-90deg);" (click)="loginDialogService.open()">file_download</mat-icon>
     </ng-template>
   </mat-toolbar>

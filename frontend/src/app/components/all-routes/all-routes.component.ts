@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import instantsearch from 'instantsearch.js/es';
-import {hits} from 'instantsearch.js/es/widgets';
 import {searchBox} from 'instantsearch.js/es/widgets';
 import {rangeSlider} from 'instantsearch.js/es/widgets';
 import {starRating} from 'instantsearch.js/es/widgets';
 import {Router} from '@angular/router';
+import {InstantSearchService} from '../../instantsearch/instantsearch.service';
+import {InstantSearchManager} from '../../instantsearch/instantsearch-manager';
 
 @Component({
   selector: 'app-all-routes',
@@ -13,33 +13,30 @@ import {Router} from '@angular/router';
   encapsulation: ViewEncapsulation.None
 })
 export class AllRoutesComponent implements OnInit {
+  public instantSearchManager: InstantSearchManager = null;
 
-  constructor(public router: Router) {}
+  constructor(public router: Router, private _instantSearchService: InstantSearchService) {}
 
   public goToCreateRoute() {
     this.router.navigate(['/routes/create']);
   }
 
   ngOnInit() {
-    const search = instantsearch({
-      appId: 'FN552M4GBM',
-      apiKey: '6d3baf4c1604a87d3a8d245f7040cd0e',
-      indexName: 'hi-kingz.routes',
-      urlSync: true
-    });
+    this._initInstantSearchManager();
+  }
 
-    search.addWidget(
+  private _initInstantSearchManager() {
+    this.instantSearchManager = this._instantSearchService.buildInstantSearchManager('routes').addWidget(
       searchBox({
         container: '#search-box',
-        placeholder: 'Search for hiking routes. Where do you wanna go? How much can you handle?'
+        placeholder: 'Search for hiking routes. Where do you wanna go? How much can you handle?',
+        loadingIndicator: true,
+        cssClasses: {
+          root: ['search-box-container', 'full-width', 'mat-elevation-z2'],
+          input: ['search-box-input']
+        }
       })
-    );
-    search.addWidget(
-      hits({
-        container: '#hits'
-      })
-    );
-    search.addWidget(
+    ).addWidget(
       rangeSlider({
         container: '#difficulty-slider',
         attributeName: 'difficulty',
@@ -49,16 +46,13 @@ export class AllRoutesComponent implements OnInit {
         max: 5,
         step: 1
       })
-    );
-    search.addWidget(
+    ).addWidget(
       starRating({
         container: '#rating-stars',
         attributeName: 'ratingAggregation.avg',
         autoHideContainer: false,
         max: 5
       })
-    );
-
-    search.start();
+    ).start();
   }
 }

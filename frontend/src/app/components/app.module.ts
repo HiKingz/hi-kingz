@@ -17,7 +17,7 @@ import {RatingComponent} from './rating/rating.component';
 import {MyRoutesComponent} from './my-routes/my-routes.component';
 import {
   MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatSnackBarModule,
-  MatTabsModule, MatToolbarModule, MatCardModule
+  MatTabsModule, MatToolbarModule, MatCardModule, MatProgressSpinnerModule
 } from '@angular/material';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
@@ -39,6 +39,7 @@ import {AngularFireStorageModule} from 'angularfire2/storage';
 import {LoginDialogService} from '../authentication/login-dialog.service';
 import {MediaDialogComponent} from './media-dialog/media-dialog.component';
 import {ForgotComponent} from './login/forgot-password-dialog/forgot.component';
+import {InstantSearchService} from '../instantsearch/instantsearch.service';
 
 const appRoutes: Routes = [
   { path: '', component: AllRoutesComponent },
@@ -86,6 +87,7 @@ const appRoutes: Routes = [
     MatTabsModule,
     MatToolbarModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
     MatMenuModule,
     MatSelectModule,
     MatCardModule,
@@ -104,7 +106,8 @@ const appRoutes: Routes = [
     PoiService,
     UserDataService,
     FileService,
-    LoginDialogService
+    LoginDialogService,
+    InstantSearchService
   ],
   bootstrap: [AppComponent]
 })

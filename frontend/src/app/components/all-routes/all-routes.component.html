@@ -2,12 +2,23 @@
   <button id="create-route-button" class="slide-in-right" mat-fab (click)="goToCreateRoute()"><mat-icon>add</mat-icon></button>
   <div class="container slide-in">
     <div id="search-box"></div>
-    <mat-card>
+    <mat-card class="spaced-item">
       <mat-card-content>
-        <div id="difficulty-slider"></div>
+        <div class="search-settings-container">
+          <div id="difficulty-slider"></div>
+          <div id="rating-stars"></div>
+        </div>
       </mat-card-content>
     </mat-card>
-    <div id="rating-stars"></div>
-    <div id="hits"></div>
+    <div class="row">
+      <mat-card *ngFor="let result of instantSearchManager?.searchResults | async" class="search-result-card col-xs-12 spaced-item">
+        <mat-card-content>
+          <p>{{ result.name }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="spaced-item load-more-container">
+      <button mat-fab *ngIf="instantSearchManager?.gotMoreToLoad" (click)="instantSearchManager?.loadMore()" color="primary"><mat-icon>expand_more</mat-icon></button>
+    </div>
   </div>
 </div>

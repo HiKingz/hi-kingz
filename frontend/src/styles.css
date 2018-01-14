@@ -9,6 +9,10 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.row {
+  margin: 0 !important;
+}
+
 .app-container {
   position: fixed;
   top: 64px;
@@ -16,6 +20,14 @@ body {
   right: 0;
   bottom: 0;
   overflow: auto;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.full-height {
+  height: 100%;
 }
 
 .header-container {
@@ -27,7 +39,7 @@ body {
 }
 
 .container {
-  margin: 0 auto;
+  margin: 30px auto;
   max-width: 1280px;
   width: 90%;
 }
