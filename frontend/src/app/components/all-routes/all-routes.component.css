@@ -9,6 +9,7 @@
 
 .search-box-container {
   max-width: none !important;
+  height: 70px;
 }
 
 .spaced-item {
@@ -17,14 +18,16 @@
 }
 
 .search-box-input {
+  font-size: 20px;
   border-radius: 2px;
   border: none;
   box-shadow: none;
 }
 
-.search-settings-container {
-  display: flex;
-  justify-content: center;
+.search-settings-card {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-bottom: .5rem;
 }
 
 #difficulty-slider {
@@ -46,7 +49,3 @@
   display: flex;
   justify-content: center;
 }
-
-/*.route-detail-card-container {*/
-  /*padding:*/
-/*}*/

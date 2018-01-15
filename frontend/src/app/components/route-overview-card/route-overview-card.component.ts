@@ -2,6 +2,8 @@ import {Component, Input} from '@angular/core';
 import {Route} from '../../routes/route.model';
 import {MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
+import {FirebaseItem} from '../../commons/models/firebase.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-route-overview-card',
@@ -10,17 +12,16 @@ import {DomSanitizer} from '@angular/platform-browser';
 })
 export class RouteOverviewCardComponent {
   @Input()
-  public route: Route;
+  public route: FirebaseItem<Route>;
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+  constructor(private _router: Router, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon(
       'hiking',
       sanitizer.bypassSecurityTrustResourceUrl('assets/icons/hiking.svg')
     );
   }
 
-  public openRoute() {
-    // TODO
-    console.log('open route');
+  public openRoute(): void {
+    this._router.navigate(['/routes/' + this.route.id]);
   }
 }

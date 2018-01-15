@@ -1,12 +1,28 @@
 <mat-card class="card-container clickable" (click)="openRoute()">
-  <div class="route-image-container">
-    <img class="route-image" [src]="'https://loremflickr.com/640/300/hiking?random=' + route.name">
+  <div class="route-image-sizing-container">
+    <div class="loading-image-container center-content-horizontally center-content-vertically">
+      <i class="panorama-icon material-icons">panorama</i>
+    </div>
+    <div class="route-image-container">
+      <img class="route-image" [src]="'https://loremflickr.com/640/300/hiking?random=' + route.item.name">
+    </div>
   </div>
   <button mat-fab class="open-route-button" color="primary"><mat-icon svgIcon="hiking"></mat-icon></button>
+  <div class="info-container transparent-background">
+    <div class="row middle-xs full-height">
+      <div class="col-xs-5 info-col">
+        <app-star-rating matTooltip="average rating" matTooltipPosition="below" [rating]="route.item.ratingAggregation"></app-star-rating>
+      </div>
+      <div class="col-xs-5 info-col">
+        <app-difficulty-indicator matTooltip="difficulty" matTooltipPosition="below" [difficulty]="route.item.difficulty"></app-difficulty-indicator>
+      </div>
+      <div class="col-xs-2"></div>
+    </div>
+  </div>
   <mat-card-content>
     <div class="description-container">
-      <h2>{{ route.name }}</h2>
-      <p>{{ route.description }}</p>
+      <h2>{{ route.item.name }}</h2>
+      <p>{{ route.item.description }}</p>
       <div class="read-more-gradient"></div>
     </div>
     <div class="tags-container">

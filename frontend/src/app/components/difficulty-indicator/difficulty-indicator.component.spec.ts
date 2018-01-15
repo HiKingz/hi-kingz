@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DifficultyInidicatorComponent } from './difficulty-inidicator.component';
+import { DifficultyIndicatorComponent } from './difficulty-indicator.component';
 
-describe('DifficultyInidicatorComponent', () => {
-  let component: DifficultyInidicatorComponent;
-  let fixture: ComponentFixture<DifficultyInidicatorComponent>;
+describe('DifficultyIndicatorComponent', () => {
+  let component: DifficultyIndicatorComponent;
+  let fixture: ComponentFixture<DifficultyIndicatorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DifficultyInidicatorComponent ]
+      declarations: [ DifficultyIndicatorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DifficultyInidicatorComponent);
+    fixture = TestBed.createComponent(DifficultyIndicatorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

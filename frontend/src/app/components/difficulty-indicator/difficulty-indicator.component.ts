@@ -1,10 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'app-difficulty-inidicator',
-  templateUrl: './difficulty-inidicator.component.html',
-  styleUrls: ['./difficulty-inidicator.component.css']
+  selector: 'app-difficulty-indicator',
+  templateUrl: './difficulty-indicator.component.html',
+  styleUrls: ['./difficulty-indicator.component.css']
 })
-export class DifficultyInidicatorComponent {
+export class DifficultyIndicatorComponent {
+  @Input()
+  public difficulty: number;
+
+  @Input()
+  public readOnly = true;
+
   constructor() {}
 }

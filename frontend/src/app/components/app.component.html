@@ -1,5 +1,6 @@
 <div class="header-container">
   <mat-toolbar color="primary" class="mat-elevation-z2 slide-in-top">
+    <i class="main-icon material-icons clickable" (click)="goToRootRoute()">panorama</i>
     <span class="toolbar-item clickable" (click)="goToRootRoute()">HiKingz</span>
     <span class="toolbar-spacer"></span>
     <ng-template [ngIf]="authenticationService.userIsSignedIn()">

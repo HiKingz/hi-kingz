@@ -16,17 +16,10 @@ import {ShowRouteComponent} from './show-route/show-route.component';
 import {RatingComponent} from './rating/rating.component';
 import {MyRoutesComponent} from './my-routes/my-routes.component';
 import {
-  MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatSnackBarModule,
-<<<<<<< HEAD
+  MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatSnackBarModule, MatSliderModule,
   MatTabsModule, MatToolbarModule, MatCardModule, MatProgressSpinnerModule, MatTooltipModule, MatChipsModule
 } from '@angular/material';
-=======
-  MatTabsModule, MatToolbarModule, MatCardModule
-} from '@angular/material';
-import {MatTooltipModule} from '@angular/material/tooltip';
->>>>>>> ee1796081a89fd9e09ab33c354493a15f700c5df
 import {MatSelectModule} from '@angular/material/select';
-import {MatSliderModule} from '@angular/material/slider';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AngularFireModule} from 'angularfire2';
@@ -48,7 +41,7 @@ import {MediaDialogComponent} from './media-dialog/media-dialog.component';
 import {ForgotComponent} from './login/forgot-password-dialog/forgot.component';
 import {InstantSearchService} from '../instantsearch/instantsearch.service';
 import {StarRatingComponent} from './star-rating/star-rating.component';
-import {DifficultyInidicatorComponent} from './difficulty-inidicator/difficulty-inidicator.component';
+import {DifficultyIndicatorComponent} from './difficulty-indicator/difficulty-indicator.component';
 import {RouteOverviewCardComponent} from './route-overview-card/route-overview-card.component';
 import {HttpClientModule} from '@angular/common/http';
 import {MetaUiComponent} from './meta-ui/meta-ui.component';
@@ -81,13 +74,10 @@ const appRoutes: Routes = [
     UsernameDialogComponent,
     MediaDialogComponent,
     ForgotComponent,
-<<<<<<< HEAD
     StarRatingComponent,
-    DifficultyInidicatorComponent,
-    RouteOverviewCardComponent
-=======
+    DifficultyIndicatorComponent,
+    RouteOverviewCardComponent,
     MetaUiComponent
->>>>>>> ee1796081a89fd9e09ab33c354493a15f700c5df
   ],
   imports: [
     RouterModule.forRoot(
@@ -117,14 +107,11 @@ const appRoutes: Routes = [
     AngularFirestoreModule,
     AngularFireStorageModule,
     MatButtonModule,
-    MatSlideToggleModule,
-<<<<<<< HEAD
-    HttpClientModule
-=======
-    MatCardModule,
     MatSliderModule,
+    MatSlideToggleModule,
+    HttpClientModule,
+    MatCardModule,
     MatTooltipModule
->>>>>>> ee1796081a89fd9e09ab33c354493a15f700c5df
   ],
   entryComponents: [LoginComponent, UsernameDialogComponent, MediaDialogComponent, ForgotComponent, MetaUiComponent],
   providers: [

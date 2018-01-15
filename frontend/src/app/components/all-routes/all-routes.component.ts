@@ -5,6 +5,8 @@ import {starRating} from 'instantsearch.js/es/widgets';
 import {Router} from '@angular/router';
 import {InstantSearchService} from '../../instantsearch/instantsearch.service';
 import {InstantSearchManager} from '../../instantsearch/instantsearch-manager';
+import {FirebaseItem} from '../../commons/models/firebase.model';
+import {Route} from '../../routes/route.model';
 
 @Component({
   selector: 'app-all-routes',
@@ -15,10 +17,10 @@ import {InstantSearchManager} from '../../instantsearch/instantsearch-manager';
 export class AllRoutesComponent implements OnInit {
   public instantSearchManager: InstantSearchManager = null;
 
-  constructor(public router: Router, private _instantSearchService: InstantSearchService) {}
+  constructor(private _router: Router, private _instantSearchService: InstantSearchService) {}
 
   public goToCreateRoute() {
-    this.router.navigate(['/routes/create']);
+    this._router.navigate(['/routes/create']);
   }
 
   ngOnInit() {
@@ -58,5 +60,9 @@ export class AllRoutesComponent implements OnInit {
 
   public identifyRoute(index, route) {
     return route.objectID;
+  }
+
+  public getRouteFirebaseItemForResult(result: any): FirebaseItem<Route> {
+    return new FirebaseItem<Route>('routes/' + result.objectID, Route.deserialize(result));
   }
 }

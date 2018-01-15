@@ -2,17 +2,17 @@
   <button id="create-route-button" class="slide-in-right" mat-fab (click)="goToCreateRoute()"><mat-icon>add</mat-icon></button>
   <div class="container slide-in">
     <div id="search-box"></div>
-    <mat-card class="spaced-item">
+    <mat-card class="search-settings-card">
       <mat-card-content>
-        <div class="search-settings-container">
-          <div id="difficulty-slider"></div>
-          <div id="rating-stars"></div>
+        <div class="row middle-xs">
+          <div id="difficulty-slider" class="col-xs-10" matTooltip="Choose difficulty!" matTooltipPosition="below"></div>
+          <div id="rating-stars" class="col-xs-2" matTooltip="Choose minimum rating!" matTooltipPosition="below"></div>
         </div>
       </mat-card-content>
     </mat-card>
     <div class="row">
-      <div class="route-detail-card-container col-sm-6 slide-in" *ngFor="let route of instantSearchManager?.searchResults | async; trackBy: identifyRoute">
-        <app-route-overview-card [route]="route"></app-route-overview-card>
+      <div class="route-detail-card-container col-sm-6 slide-in" *ngFor="let result of instantSearchManager?.searchResults | async; trackBy: identifyRoute">
+        <app-route-overview-card [route]="getRouteFirebaseItemForResult(result)"></app-route-overview-card>
       </div>
     </div>
     <div class="spaced-item load-more-container">
