@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation, ViewChild, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation, ViewChild, Input, Output, EventEmitter, Injector, ValueProvider} from '@angular/core';
 import {Route} from '../../routes/route.model';
 import {MapComponent} from '../map/map.component';
 import {MatSelect, MatDialog} from '@angular/material';
@@ -7,8 +7,11 @@ import {MediaDialogComponent} from '../media-dialog/media-dialog.component';
 import {FileService} from '../../files/file.service';
 import {File} from '../../files/file.model';
 import {Waypoint} from '../../coordinates/waypoint.model';
-
-
+import {UserDataService} from '../../user-data/user-data.service';
+import {FirebaseItem} from '../../commons/models/firebase.model';
+import {OverlayModule, Overlay, OverlayRef} from '@angular/cdk/overlay';
+import {CdkPortal, ComponentPortal, Portal} from '@angular/cdk/portal';
+import {MetaUiComponent} from '../meta-ui/meta-ui.component';
 
 @Component({
   selector: 'app-route-ui',
@@ -19,21 +22,28 @@ import {Waypoint} from '../../coordinates/waypoint.model';
 
 export class RouteUIComponent implements OnInit {
 
+  overlayRef: OverlayRef;
+  metaUIPortal: ComponentPortal<MetaUiComponent>;
+
   mapComp: MapComponent;
 
   select: MatSelect;
 
-  @Input() route: Route;
+  @Input() route: FirebaseItem<Route>;
   @Input() readonly: boolean;
   @Output() routeSaved = new EventEmitter();
 
-  route_public: boolean;
-  route_public_label: string;
 
-  constructor(public dialog: MatDialog, private fileService: FileService) {
-    this.route_public = true;
-    this.route_public_label = 'Öffentliche Route';
+
+  constructor(public dialog: MatDialog,
+              private fileService: FileService,
+              private userDataService: UserDataService,
+              private overlay: Overlay) {
     // this._route = new Route(null, null, null, null, null, null, <[Waypoint]>[], new Direction(<[Point]>[]), null, null);
+    this.overlayRef = this.overlay.create({
+      height: '100%',
+      width: '100%'
+    });
   }
 
   ngOnInit() {
@@ -44,22 +54,9 @@ export class RouteUIComponent implements OnInit {
     this.mapComp = comp;
   }
 
-  @ViewChild(MatSelect)
-  set appSelect(comp: MatSelect) {
-    this.select = comp;
-  }
-
-  changePrivacy = () => {
-    if (this.route_public) {
-      this.route_public_label = 'Öffentliche Route';
-    } else {
-      this.route_public_label = 'Private Route';
-    }
-  }
-
   // Center the map on the 'i'th waypoint in the _route
   public centerOn(i: number) {
-    this.mapComp.flyTo(this.route.waypoints[i].point);
+    this.mapComp.flyTo(this.route.item.waypoints[i].point);
   }
 
   private deleteWaypointAt(i: number) {
@@ -78,7 +75,7 @@ export class RouteUIComponent implements OnInit {
     const file = event.target.files.item(0);
     const task = this.fileService.upload(file);
     task.then().then((val) => {
-      this.route.files.push(new File(val.downloadURL));
+      this.route.item.files.push(new File(val.downloadURL));
     });
   }
 
@@ -87,8 +84,29 @@ export class RouteUIComponent implements OnInit {
       height: '40em',
       width: '40em',
       data: {
-        source: this.route.files[index].url
+        source: this.route.item.files[index].url
       }
     });
+  }
+
+  // Wird als callBack zum schließen übergeben, da funktioniert es nur mit dieser Syntax, weil "this" sonst wieder was anderes ist.
+  public toggleMetaUI = (route: Route) => {
+    if (!this.metaUIPortal) {
+      this.metaUIPortal = new ComponentPortal(MetaUiComponent,
+        null,
+        Injector.create([
+          {provide: Boolean, useValue: this.readonly},
+          {provide: Route, useValue: this.route.item},
+          {provide: Function, useValue: this.toggleMetaUI}
+          ]
+        )
+      );
+      this.overlayRef.attach(this.metaUIPortal);
+    } else {
+      this.overlayRef.detach()
+      this.metaUIPortal = null;
+    }
+
+
   }
 }

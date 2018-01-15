@@ -19,7 +19,7 @@ export class CreateRouteComponent {
   constructor(private routeService: RouteService, private userDataService: UserDataService) {
     this.frbs_route = new FirebaseItem(
       '0',
-      new Route([], null, null, 0, null, [], [], new RatingAggregation(0, 0, 0), true, false)
+      new Route([], '', '', 1, null, [], [], new RatingAggregation(2.5, 0, 0), true, false)
     );
   }
 

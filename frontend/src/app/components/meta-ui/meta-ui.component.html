@@ -1,0 +1,66 @@
+<div class="modal-overlay" (click)="closeUI()">
+</div>
+<div class="hi-kingz-meta-ui">
+  <mat-form-field>
+    <input matInput placeholder="Name der Route" [(ngModel)]="route.name" [readonly]="rdonly"/>
+    <br/>
+  </mat-form-field>
+
+  <div class="rating_and_diff">
+    <div>
+        Schwierigkeitsgrad:<br/>
+        <mat-slider
+          class="diff_slider"
+          [max]="5"
+          [min]="1"
+          [step]="1"
+          [thumb-label]="true"
+          [tick-interval]="1"
+          [(ngModel)]="route.difficulty"
+          [vertical]="false">
+        </mat-slider>
+    </div>
+
+    <div class="ratings">
+      <mat-icon *ngFor="let i of fullStars(route.ratingAggregation.avg)">star</mat-icon>
+      <mat-icon *ngIf="halfStar(route.ratingAggregation.avg)">star_half</mat-icon>
+      <mat-icon *ngFor="let i of emptyStars(route.ratingAggregation.avg)">star_border</mat-icon>
+    </div>
+  </div>
+
+  <!--<mat-form-field>
+    <mat-select placeholder="Schwierigkeitsgrad" [(ngModel)]="route.difficulty" onselect="closeSelect()" [disabled]="rdonly">
+      <mat-option [value]="1" onselect="closeSelect()">EZ PZ</mat-option>
+      <mat-option [value]="2">Einfach</mat-option>
+      <mat-option [value]="3">Angemessen</mat-option>
+      <mat-option [value]="4">Hart wie Schotter</mat-option>
+      <mat-option [value]="5">Pilgerfahrt zur Hölle</mat-option>
+    </mat-select>
+  </mat-form-field>-->
+  <br/>
+  <mat-form-field>
+    <textarea matInput placeholder="Beschreibung der Route" [(ngModel)]="route.description" [readonly]="rdonly"></textarea>
+    <br/>
+  </mat-form-field>
+  <br/>
+  <mat-slide-toggle [(ngModel)]="route.isPublic" (change)="changePrivacy()" [disabled]="rdonly">{{route_public_label}}</mat-slide-toggle>
+  <br/>
+
+
+  <button *ngIf="!rdonly" mat-button value="Route speichern" (click)="saveRoute()" [disabled]="rdonly">Route speichern</button>
+
+
+  <fieldset>
+    <legend>Medien</legend>
+
+    <div class="mediablock" *ngFor="let file of route.files; let i = index">
+      <img src="{{file.url}}" width="150" height="150" (click)="showImage(i)">
+    </div>
+
+    <div *ngIf="!rdonly" class="fileinput mediablock">
+      <button class="fileinputbutton"><a href="javascript: void(0)"><mat-icon class="upload_icon"><i class="material-icons upload_icon">backup</i> </mat-icon></a></button>
+      <input type="file" name="routemedia" class="hiddenfile" (change)="fileChanged($event)">
+    </div>
+  </fieldset>
+</div>
+

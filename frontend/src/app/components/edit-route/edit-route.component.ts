@@ -56,8 +56,7 @@ export class EditRouteComponent implements OnInit {
 
   saveRoute = () => {
     const self = this;
-    if (this.userDataService.currentUserData) {
-      this.frbs_route.item.userSignature = this.userDataService.currentUserData.userSignature;
+    if (this.userDataService.currentUserData && this.frbs_route.item.userSignature.id === this.userDataService.currentUserData.userSignature.id) {
       this.routeService.update(this.frbs_route);
     }
   }

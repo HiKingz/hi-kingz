@@ -1,5 +1,7 @@
 import { Component, Input, Output, OnInit, ViewEncapsulation, EventEmitter, ComponentFactoryResolver } from '@angular/core';
+import {OverlayModule} from '@angular/cdk/overlay';
 import { environment } from '../../../environments/environment';
+
 
 import 'rxjs/add/operator/switchMap';
 
