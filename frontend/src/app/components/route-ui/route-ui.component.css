@@ -1,10 +1,5 @@
-.hi-kingz-sidebar {
-  width: 20em;
-  float: left;
-}
-
 #map {
-  height: 500px;
+  height: 55em;
 }
 
 .waypoints {
@@ -28,6 +23,7 @@
   height: 50px;
   margin-bottom: 10px;
   padding: 4px;
+  display: inline-block;
 }
 .hiddenfile {
   opacity: 0;

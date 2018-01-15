@@ -1,54 +1,20 @@
-<div>
-  <div class="hi-kingz-sidebar">
-    <mat-form-field>
-      <input matInput placeholder="Name der Route" [(ngModel)]="route.name" [readonly]="readonly"/>
-      <br/>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-select placeholder="Schwierigkeitsgrad" [(ngModel)]="route.difficulty" onselect="closeSelect()" [disabled]="readonly">
-        <mat-option [value]="1" onselect="closeSelect()">EZ PZ</mat-option>
-        <mat-option [value]="2">Einfach</mat-option>
-        <mat-option [value]="3">Angemessen</mat-option>
-        <mat-option [value]="4">Hart wie Schotter</mat-option>
-        <mat-option [value]="5">Pilgerfahrt zur Hölle</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <br/>
-    <mat-form-field>
-      <textarea matInput placeholder="Beschreibung der Route" [(ngModel)]="route.description" [readonly]="readonly"></textarea>
-      <br/>
-    </mat-form-field>
-    <br/>
-      <mat-slide-toggle [(ngModel)]="route.isPublic" (change)="changePrivacy()" [disabled]="readonly">{{route_public_label}}</mat-slide-toggle>
-    <br/>
-
-
-    <button *ngIf="!readonly" mat-button value="Route speichern" (click)="saveRoute()" [disabled]="readonly">Route speichern</button>
-  </div>
-</div>
 <div class="waypoints">
   <div class="waypoints_viewport">
-    <mat-card matInput *ngFor="let wp of route.waypoints; let i = index">
+    <mat-card matInput *ngFor="let wp of route.item.waypoints; let i = index" class="md-elevation-z10">
       <mat-form-field>
         <input matInput [(ngModel)]="wp.name" [readonly]="readonly">
       </mat-form-field>
       <button mat-icon-button (click)="centerOn(i)"><mat-icon>explore</mat-icon></button>
-      <button mat-icon-button (click)="deleteWaypointAt(i)"><mat-icon>delete</mat-icon></button>
+      <button *ngIf="!readonly" mat-icon-button (click)="deleteWaypointAt(i)"><mat-icon>delete</mat-icon></button>
     </mat-card>
   </div>
 </div>
-<app-map [route]="route" [readonly]="readonly"></app-map>
-
+<app-map [route]="route.item" [readonly]="readonly"></app-map>
 <fieldset>
-  <legend>Medien</legend>
-
-  <div class="mediablock" *ngFor="let file of route.files; let i = index">
-    <img src="{{file.url}}" width="150" height="150" (click)="showImage(i)">
-  </div>
-
-  <div *ngIf="!readonly" class="fileinput mediablock">
-    <button class="fileinputbutton"><a href="javascript: void(0)"><mat-icon class="upload_icon"><i class="material-icons upload_icon">backup</i> </mat-icon></a></button>
-    <input type="file" name="routemedia" class="hiddenfile" (change)="fileChanged($event)">
-  </div>
+  <legend>Options</legend>
+  <!--<a *ngIf="readonly && route.item.userSignature.id == userDataService.currentUserData.userSignature.id" href="routes/edit/{{route.id}}"><button mat-icon-button ><mat-icon>mode edit</mat-icon></button></a>
+  <button *ngIf="!readonly && route.item.userSignature.id == userDataService.currentUserData.userSignature.id" mat-icon-button (click)="saveRoute()"><mat-icon>done</mat-icon></button>-->
+  <a *ngIf="readonly" matTooltip="Bearbeiten" href="routes/{{route.id}}/edit"><button mat-icon-button ><mat-icon>mode_edit</mat-icon></button></a>
+  <button *ngIf="!readonly" matTooltip="Speichern" mat-icon-button (click)="saveRoute()"><mat-icon>done</mat-icon></button>
+  <button mat-icon-button matTooltip="Zeige Informationen" (click)="toggleMetaUI(route.item)"><mat-icon>description</mat-icon></button>
 </fieldset>

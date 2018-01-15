@@ -17,10 +17,11 @@ import {RatingComponent} from './rating/rating.component';
 import {MyRoutesComponent} from './my-routes/my-routes.component';
 import {
   MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule, MatSnackBarModule,
-  MatTabsModule, MatToolbarModule
+  MatTabsModule, MatToolbarModule, MatCardModule
 } from '@angular/material';
-import {MatCardModule} from '@angular/material';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
+import {MatSliderModule} from '@angular/material/slider';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AngularFireModule} from 'angularfire2';
@@ -40,6 +41,7 @@ import {AngularFireStorageModule} from 'angularfire2/storage';
 import {LoginDialogService} from '../authentication/login-dialog.service';
 import {MediaDialogComponent} from './media-dialog/media-dialog.component';
 import {ForgotComponent} from './login/forgot-password-dialog/forgot.component';
+import {MetaUiComponent} from './meta-ui/meta-ui.component';
 
 const appRoutes: Routes = [
   { path: '', component: AllRoutesComponent },
@@ -68,7 +70,8 @@ const appRoutes: Routes = [
     MyRoutesComponent,
     UsernameDialogComponent,
     MediaDialogComponent,
-    ForgotComponent
+    ForgotComponent,
+    MetaUiComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -76,6 +79,7 @@ const appRoutes: Routes = [
       { enableTracing: true } // debugging purposes only
     ),
     BrowserModule,
+    BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase, 'HiKingz'),
     AngularFireAuthModule,
     AngularFirestoreModule,
@@ -92,12 +96,13 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
-    BrowserAnimationsModule,
     MatButtonModule,
     MatSlideToggleModule,
-    MatCardModule
+    MatCardModule,
+    MatSliderModule,
+    MatTooltipModule
   ],
-  entryComponents: [LoginComponent, UsernameDialogComponent, MediaDialogComponent, ForgotComponent],
+  entryComponents: [LoginComponent, UsernameDialogComponent, MediaDialogComponent, ForgotComponent, MetaUiComponent],
   providers: [
     AuthenticationService,
     RouteService,
