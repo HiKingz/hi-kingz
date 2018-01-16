@@ -1,9 +1,12 @@
 import instantsearch from 'instantsearch.js/es';
 import {connectInfiniteHits} from 'instantsearch.js/es/connectors';
+import {connectHitsPerPage} from 'instantsearch.js/es/connectors';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 export class InstantSearchManager {
+  public static readonly RESULTS_PER_PAGE: number = 8;
+
   private _searchConnector = null;
   private _searchResultSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private _loadMoreFunctionReference: () => void = () => null;
@@ -22,6 +25,13 @@ export class InstantSearchManager {
         InfiniteHitsRenderingOptions, isFirstRendering
       )
     )());
+    this._searchConnector.addWidget(connectHitsPerPage(
+      (HitsPerPageRenderingOptions, isFirstRendering) => {
+        if (isFirstRendering) {
+          HitsPerPageRenderingOptions.refine(InstantSearchManager.RESULTS_PER_PAGE);
+        }
+      }
+    )({items: []}));
     this._searchConnector.start();
   }
 
