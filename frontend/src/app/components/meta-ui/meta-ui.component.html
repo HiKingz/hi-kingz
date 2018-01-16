@@ -67,24 +67,25 @@
       <mat-card class="meta-ui-new-comment"  *ngIf="true"> <!-- TODO: Anzeigen nur wenn eingeloggt -->
         <div class="meta-ui-new-comment-headline">
           <mat-icon>account_circle</mat-icon>
-          <mat-form-field>
+          <span class="meta-ui-comment-user">{{commentModel.user.username}}</span><br/>
+          <!--<mat-form-field>
             <input matInput placeholder="Title" [(ngModel)]="commentModel.title"/>
             <br/>
-          </mat-form-field>
+          </mat-form-field>-->
           <app-star-rating [rating]="commentModel.rating" [canSet]="true"></app-star-rating>
         </div>
         <mat-form-field>
-          <textarea rows="8" matInput placeholder="Comment" [(ngModel)]="commentModel.text"></textarea>
+          <textarea rows="8" matInput placeholder="Comment" [(ngModel)]="commentModel.comment"></textarea>
         </mat-form-field>
         <br/>
-        <button mat-button value="Kommentar speichern" (click)="saveComment()">Kommnetar speichern</button>
+        <button mat-button value="Kommentar speichern" (click)="saveComment()">Kommentar speichern</button>
       </mat-card>
 
       <mat-card class="meta-ui-comment" *ngFor="let comment of comments">
         <div class="meta-ui-comment-headline">
           <mat-icon>account_circle</mat-icon>
           <span class="meta-ui-comment-user">{{comment.username}}</span><br/>
-          <span class="meta-ui-comment-title">{{comment.title}}</span>
+          <!--<span class="meta-ui-comment-title">{{comment.title}}</span>-->
           <app-star-rating [rating]="comment.ratingAggregation"></app-star-rating>
         </div>
         <p class="meta-ui-comment-text">{{comment.text}}</p>

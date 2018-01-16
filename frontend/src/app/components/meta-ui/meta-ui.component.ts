@@ -5,14 +5,18 @@ import {File} from '../../files/file.model';
 import {Route} from '../../routes/route.model';
 import {Poi} from '../../pois/poi.model';
 
-class CommentModel {
-  title: string;
-  text: string;
-  rating = { 'avg' : 1};
-}
+// TODO: RatingService und UserDataservice verwenden statt dieser Imports für Mocks
+import {Rating} from '../../ratings/rating.model';
+import {UserSignature} from '../../user-data/user-data.model';
+import {RatingAggregation} from '../../commons/models/rateable';
 
 export class MetaCallbacks {
   constructor(public saveCallback: Function, public closeCallback: Function) {}
+}
+
+class CommentModel {
+  constructor(public comment: string, public user: UserSignature, public rating: RatingAggregation) {}
+
 }
 
 @Component({
@@ -38,7 +42,7 @@ export class MetaUiComponent implements OnInit {
 
   constructor(private fileService: FileService, private rdonly: boolean, @Inject('FileableInterface') private infoobject: Fileable, private callbacks: MetaCallbacks) {
     this.route_public_label = 'Öffentliche Route';
-    this.commentModel = new CommentModel();
+    this.commentModel = new CommentModel('', new UserSignature('42', 'Witzelbritz'), new RatingAggregation(0, 0, 0));
     // TODO: Subscribe to service
     this.comments = [
       {
@@ -48,6 +52,10 @@ export class MetaUiComponent implements OnInit {
         'text' : 'Eine Minute nachdem ich reingetreten bin fand eine unvorhersehbare chemische Reaktion statt, die meinen Schuh prompt am Bürgersteig festgesetzt hat. NASA pickelt mich gerade von der Straße, weil sie sehr an einer Probe interessiert sind.'
       }
     ];
+  }
+
+  private saveComment() {
+    // TODO: Write comment to service into the correct collection.
   }
 
   private gotRoute(): boolean {
