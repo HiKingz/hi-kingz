@@ -41,7 +41,6 @@ export class MapComponent implements OnInit {
 
   poi_count = 0; // Amount of POIs displayed, stored for knowing how many PoI-Layers to delete
   on_poi: boolean;
-  poi_sub: any; // Observable<FirebaseItem<Poi>>;
   poi_list: Array<Poi>;
   map: mapboxgl.Map;
   _route: Route = undefined;
@@ -112,14 +111,12 @@ export class MapComponent implements OnInit {
         }
       });
       self.map.on('mouseup', (ev) => {
-        if (self.poi_sub) {
-          self.poi_sub.unsubscribe();
-        }
         const bounds = self.map.getBounds();
-        const obs = self.poiService.getInArea(bounds._ne.lat, bounds._ne.lng, bounds._sw.lat, bounds._sw.lng);
-        self.poi_sub = obs.subscribe((frbs_pois) => {
-          self.displayPointsOfInterest(frbs_pois.map((frbs) => frbs.item));
-        });
+        self.poiService.getInArea(bounds._ne.lat, bounds._ne.lng, bounds._sw.lat, bounds._sw.lng).then(
+          (frbs_pois) => {
+            self.displayPointsOfInterest(frbs_pois.map((frbs) => frbs.item));
+          }
+        );
       });
     });
 

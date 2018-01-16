@@ -4,6 +4,8 @@ import {Observable} from 'rxjs/Observable';
 import {environment} from '../../environments/environment';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {AlgoliaQueryParameters, AlgoliaResponse} from 'algoliasearch';
+import * as algoliasearch from 'algoliasearch';
 
 class InstantSearchManagerBuilder {
   private _widgets: Array<any> = [];
@@ -45,6 +47,12 @@ export class InstantSearchService {
       this._apiKey,
       environment.algolia.indexNamePrefix + indexName
     );
+  }
+
+  public search(indexName, query: AlgoliaQueryParameters): Promise<AlgoliaResponse> {
+    return algoliasearch(environment.algolia.appId, this._apiKey).initIndex(
+      environment.algolia.indexNamePrefix + indexName
+    ).search(query);
   }
 
   private _loadUserApiKey(): void {

@@ -27,6 +27,8 @@
     "@angular/router": "^5.0.0",
     "@mapbox/mapbox-gl-geocoder": "^2.1.2",
     "@mapbox/polyline": "^0.2.0",
+    "@types/algoliasearch": "^3.24.6",
+    "algoliasearch": "^3.24.9",
     "angularfire2": "^5.0.0-rc.5-next",
     "core-js": "^2.4.1",
     "firebase": "^4.7.0",
