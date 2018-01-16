@@ -2,9 +2,12 @@ require('firebase-admin').initializeApp(require('firebase-functions').config().f
 
 const FirestoreEventManager = require('./firestore-events/handling').FirestoreEventManager;
 
-const AlgoliaSyncHandler = require('./algolia/event-handlers').AlgoliaSyncHandler;
+const algoliaHandlers = require('./algolia/event-handlers');
+const RouteAlgoliaSyncHandler = algoliaHandlers.RouteAlgoliaSyncHandler;
+const PoiAlgoliaSyncHandler = algoliaHandlers.PoiAlgoliaSyncHandler;
 const RatingAggregationHandler = require('./aggregations/event-handlers').RatingAggregationHandler;
 
 
-FirestoreEventManager.attachEventHandlerFunctionsToExportsObject('Route', AlgoliaSyncHandler, exports);
+FirestoreEventManager.attachEventHandlerFunctionsToExportsObject('Route', RouteAlgoliaSyncHandler, exports);
+FirestoreEventManager.attachEventHandlerFunctionsToExportsObject('Poi', PoiAlgoliaSyncHandler, exports);
 FirestoreEventManager.attachEventHandlerFunctionsToExportsObject('Rateable', RatingAggregationHandler, exports);
