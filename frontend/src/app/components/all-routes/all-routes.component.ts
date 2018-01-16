@@ -7,12 +7,32 @@ import {InstantSearchService} from '../../instantsearch/instantsearch.service';
 import {InstantSearchManager} from '../../instantsearch/instantsearch-manager';
 import {FirebaseItem} from '../../commons/models/firebase.model';
 import {Route} from '../../routes/route.model';
+import {animate, keyframes, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-all-routes',
   templateUrl: './all-routes.component.html',
   styleUrls: ['./all-routes.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  animations: [
+    trigger('flyInOut', [
+      state('in', style({transform: 'translateY(0)'})),
+      transition('void => *', [
+        animate(300, keyframes([
+          style({opacity: 0, transform: 'translateY(100%)', offset: 0, 'z-index': 0}),
+          style({opacity: 1, transform: 'translateY(-15px)',  offset: 0.3}),
+          style({opacity: 1, transform: 'translateY(0)',     offset: 1.0, 'z-index': 5})
+        ]))
+      ]),
+      transition('* => void', [
+        animate(300, keyframes([
+          style({opacity: 1, transform: 'translateY(0)', offset: 0, 'z-index': 0}),
+          style({opacity: 1, transform: 'translateY(15px)', offset: 0.7}),
+          style({opacity: 0, transform: 'translateY(-100%)',  offset: 1.0})
+        ]))
+      ])
+    ])
+  ]
 })
 export class AllRoutesComponent implements OnInit {
   public instantSearchManager: InstantSearchManager = null;

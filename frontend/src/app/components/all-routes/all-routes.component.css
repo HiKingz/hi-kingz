@@ -24,6 +24,10 @@
   box-shadow: none;
 }
 
+.search-settings-card, .search-box-container {
+  z-index: 100;
+}
+
 .search-settings-card {
   padding: 12px !important;
   padding-left: 24px !important;
@@ -42,6 +46,7 @@
 
 .route-detail-card-container {
   padding: .5rem;
+  z-index: 5;
 }
 
 .load-more-container {
