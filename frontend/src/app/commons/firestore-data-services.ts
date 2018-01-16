@@ -1,15 +1,16 @@
 import {FirebaseStorable} from './models/firebase-storable';
 import {FirebaseItem} from './models/firebase.model';
 import {
-  Action, AngularFirestore, AngularFirestoreCollection, DocumentChangeAction, QueryFn
+  Action, AngularFirestore, AngularFirestoreCollection, DocumentChangeAction,
+  QueryFn
 } from 'angularfire2/firestore';
 import {Observable} from 'rxjs/Observable';
 import * as firebase from 'firebase';
-import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/concat';
 import 'rxjs/add/operator/take';
+import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
 
 export class OrderSettings {
   constructor(public by, public desc = false) {}
@@ -86,6 +87,10 @@ export abstract class FirestoreDataService<ModelType extends FirebaseStorable> {
     return this._db.doc<ModelType>(reference).snapshotChanges().map(
       (action: Action<DocumentSnapshot>, index: number) => this._deserializeDocumentSnapshot(action.payload)
     );
+  }
+
+  protected _exists(reference: string): Observable<Action<firebase.firestore.DocumentSnapshot>> {
+    return this._db.doc<ModelType>(reference).snapshotChanges();
   }
 
   protected async _create(

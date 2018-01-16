@@ -6,6 +6,9 @@ import {FirestoreDataService} from '../commons/firestore-data-services';
 import {FirebaseItem} from '../commons/models/firebase.model';
 import {AuthenticationService} from '../authentication/authentication.service';
 import 'rxjs/add/operator/first';
+import {Action} from 'angularfire2/firestore/interfaces';
+import * as firebase from 'firebase';
+import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
 
 @Injectable()
 export class UserDataService extends FirestoreDataService<UserData> {
@@ -27,14 +30,23 @@ export class UserDataService extends FirestoreDataService<UserData> {
     return this._get(firebaseItem.reference);
   }
 
-  private _loadCurrentUserData() {
-    this.getById(this._authService.getLoggedInUser().uid).first().subscribe(
-      userDataItem => this.currentUserData = userDataItem.item
-    );
+  public exists(uid: string): Observable<Action<DocumentSnapshot>> {
+    return this._exists(this._concatPaths(this._collectionPath, uid));
   }
 
   public getById(uid: string): Observable<FirebaseItem<UserData>> {
     return this._get(this._concatPaths(this._collectionPath, uid));
+  }
+
+  private _loadCurrentUserData() {
+    this.getById(this._authService.getLoggedInUser().uid).first().subscribe(
+      (userDataItem) => {
+        this.currentUserData = userDataItem.item;
+      },
+      (error) => {
+        console.log(error.code);
+      }
+    );
   }
 
   public update(user: FirebaseItem<UserData>): Promise<void> {
