@@ -9,12 +9,12 @@
     </mat-card>
   </div>
 </div>
-<app-map [route]="route.item" [readonly]="readonly"></app-map>
-<fieldset>
-  <legend>Options</legend>
+<app-map [route]="route.item" [readonly]="readonly" (showPoi)="toggleMetaUI($event)"></app-map>
+
+<div class="map-options">
   <!--<a *ngIf="readonly && route.item.userSignature.id == userDataService.currentUserData.userSignature.id" href="routes/edit/{{route.id}}"><button mat-icon-button ><mat-icon>mode edit</mat-icon></button></a>
   <button *ngIf="!readonly && route.item.userSignature.id == userDataService.currentUserData.userSignature.id" mat-icon-button (click)="saveRoute()"><mat-icon>done</mat-icon></button>-->
-  <a *ngIf="readonly" matTooltip="Bearbeiten" href="routes/{{route.id}}/edit"><button mat-icon-button ><mat-icon>mode_edit</mat-icon></button></a>
-  <button *ngIf="!readonly" matTooltip="Speichern" mat-icon-button (click)="saveRoute()"><mat-icon>done</mat-icon></button>
-  <button mat-icon-button matTooltip="Zeige Informationen" (click)="toggleMetaUI(route.item)"><mat-icon>description</mat-icon></button>
-</fieldset>
+  <a *ngIf="readonly" matTooltip="Bearbeiten" href="routes/{{route.id}}/edit"><button mat-fab><mat-icon>mode_edit</mat-icon></button></a>
+  <button *ngIf="!readonly" mat-fab matTooltip="Speichern" (click)="saveRoute()"><mat-icon>done</mat-icon></button>
+  <button mat-fab matTooltip="Zeige Informationen" (click)="toggleMetaUI([route.item, readonly])"><mat-icon>description</mat-icon></button>
+</div>

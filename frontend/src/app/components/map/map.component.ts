@@ -39,7 +39,7 @@ const point_src = {
 })
 export class MapComponent implements OnInit {
 
-  poi_count = 0; // Amount of POIs displayed, stored for knowing how many PoI-Layers to delete
+  pois: Array<Poi>;
   on_poi: boolean;
   poi_sub: any; // Observable<FirebaseItem<Poi>>;
   poi_list: Array<Poi>;
@@ -49,6 +49,7 @@ export class MapComponent implements OnInit {
   @Input() readonly: boolean;
 
   @Output() deleteWaypoint = new EventEmitter();
+  @Output() showPoi = new EventEmitter();
 
   cli;
   // map: mapboxgl.Map;
@@ -74,6 +75,7 @@ export class MapComponent implements OnInit {
   constructor(private poiService: PoiService) {
     mapboxgl.accessToken = environment.mapbox.accessToken;
     this.on_poi = false;
+    this.pois = [];
   }
 
   ngOnInit() {
@@ -142,11 +144,16 @@ export class MapComponent implements OnInit {
 
   public displayPointsOfInterest(pois: Array<Poi>) {
     let i = 0;
-    for (; i < this.poi_count; i++) {
+    for (; i < this.pois.length; i++) {
+      this.map.off('mousedown', 'poi' + i, this.clickPoi);
+      this.map.off('mouseenter', 'poi' + i, this.enterPoi);
+      this.map.off('mouseleave', 'poi' + i, this.leavePoi);
       this.map.removeLayer('poi' + i);
       this.map.removeSource('poi' + i);
+      delete this.pois[i];
     }
     i = 0;
+    this.pois.length = 0;
     const self = this;
     pois.forEach((poi) => {
       self.map.addSource('poi' + i, {
@@ -173,22 +180,26 @@ export class MapComponent implements OnInit {
         }
       });
 
-      self.map.on('click', 'poi' + i, (ev) => {
-        // Display this PoI in the popup (TODO)
-        alert('It\'s interesting, but not *that* interesting');
-      });
-
-      self.map.on('mouseenter', 'poi' + i, (ev) => {
-        self.on_poi = true;
-      });
-
-      self.map.on('mouseleave', 'poi' + i, (ev) => {
-        self.on_poi = false;
-      });
+      self.map.on('mousedown', 'poi' + i, this.clickPoi);
+      self.map.on('mouseenter', 'poi' + i, this.enterPoi);
+      self.map.on('mouseleave', 'poi' + i, this.leavePoi);
 
       i++;
+      self.pois.push(poi);
     });
-    this.poi_count = i;
+  }
+
+  private clickPoi = (event: any) => {
+    const index = Number.parseInt(event.features[0].layer.id.substring(3));
+    this.showPoi.emit([this.pois[index], true]);
+  }
+
+  private enterPoi = () => {
+    this.on_poi = true;
+  }
+
+  private leavePoi = () => {
+    this.on_poi = false;
   }
 
   public displayRouteOrPoi = (jumpTo: boolean = false) => {

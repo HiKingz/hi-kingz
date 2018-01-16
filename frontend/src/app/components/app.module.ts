@@ -110,8 +110,6 @@ const appRoutes: Routes = [
     MatSliderModule,
     MatSlideToggleModule,
     HttpClientModule,
-    MatCardModule,
-    MatTooltipModule
   ],
   entryComponents: [LoginComponent, UsernameDialogComponent, MediaDialogComponent, ForgotComponent, MetaUiComponent],
   providers: [

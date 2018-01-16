@@ -1,66 +1,97 @@
 <div class="modal-overlay" (click)="closeUI()">
 </div>
-<div class="hi-kingz-meta-ui">
-  <mat-form-field>
-    <input matInput placeholder="Name der Route" [(ngModel)]="route.name" [readonly]="rdonly"/>
-    <br/>
-  </mat-form-field>
-
-  <div class="rating_and_diff">
-    <div>
-        Schwierigkeitsgrad:<br/>
-        <mat-slider
+<mat-card class="hi-kingz-meta-ui slide-in" [@closedTrigger]="closedState">
+  <mat-card-header>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="meta-ui-upper-container">
+      <div class="rating_and_diff">
+        <mat-slider *ngIf="gotRoute() && !rdonly"
           class="diff_slider"
           [max]="5"
           [min]="1"
           [step]="1"
           [thumb-label]="true"
           [tick-interval]="1"
-          [(ngModel)]="route.difficulty"
+          [(ngModel)]="infoobject.difficulty"
           [vertical]="false">
         </mat-slider>
+        <app-difficulty-indicator *ngIf="gotRoute() && rdonly" matTooltip="difficulty" matTooltipPosition="below" [difficulty]="infoobject.difficulty"></app-difficulty-indicator>
+        <app-star-rating matTooltip="average rating" matTooltipPosition="below" class="rating" [rating]="infoobject.ratingAggregation"></app-star-rating>
+      </div>
+      <div class="meta-ui-left-column">
+        <mat-form-field *ngIf="!rdonly">
+          <input matInput placeholder="Name" [(ngModel)]="infoobject.name" [readonly]="rdonly"/>
+          <br/>
+        </mat-form-field>
+        <h2 *ngIf="rdonly">{{infoobject.name}}</h2>
+        <!--<mat-form-field>
+          <mat-select placeholder="Schwierigkeitsgrad" [(ngModel)]="route.difficulty" onselect="closeSelect()" [disabled]="rdonly">
+            <mat-option [value]="1" onselect="closeSelect()">EZ PZ</mat-option>
+            <mat-option [value]="2">Einfach</mat-option>
+            <mat-option [value]="3">Angemessen</mat-option>
+            <mat-option [value]="4">Hart wie Schotter</mat-option>
+            <mat-option [value]="5">Pilgerfahrt zur Hölle</mat-option>
+          </mat-select>
+        </mat-form-field>-->
+        <br/>
+        <mat-form-field *ngIf="!rdonly">
+          <textarea rows="8" matInput placeholder="Beschreibung" [(ngModel)]="infoobject.description" [readonly]="rdonly"></textarea>
+          <br/>
+        </mat-form-field>
+        <p *ngIf="rdonly">{{infoobject.description}}</p>
+        <br/>
+        <mat-slide-toggle *ngIf="gotRoute()" [(ngModel)]="infoobject.isPublic" (change)="changePrivacy()" [disabled]="rdonly">{{route_public_label}}</mat-slide-toggle>
+        <br/>
+
+        <button *ngIf="!rdonly" mat-button value="Speichern" (click)="saveObject()" [disabled]="rdonly">Speichern</button>
+
+        <fieldset class="media_gallery">
+          <legend>Medien</legend>
+
+          <div class="mediablock" *ngFor="let file of infoobject.files; let i = index">
+            <img src="{{file.url}}" width="150" height="150" (click)="showcasedImage = file.url">
+          </div>
+
+          <div *ngIf="!rdonly" class="fileinput mediablock">
+            <button class="fileinputbutton"><a href="javascript: void(0)"><mat-icon class="upload_icon"><i class="material-icons upload_icon">backup</i> </mat-icon></a></button>
+            <input type="file" name="routemedia" class="hiddenfile" (change)="fileChanged($event)">
+          </div>
+        </fieldset>
+      </div>
+      <div class="media-showcase">
+        <img src="{{showcasedImage}}">
+      </div>
+    </div>
+    <div class="meta-ui-lower-container">
+      <mat-card class="meta-ui-new-comment"  *ngIf="true"> <!-- TODO: Anzeigen nur wenn eingeloggt -->
+        <div class="meta-ui-new-comment-headline">
+          <mat-icon>account_circle</mat-icon>
+          <mat-form-field>
+            <input matInput placeholder="Title" [(ngModel)]="commentModel.title"/>
+            <br/>
+          </mat-form-field>
+          <app-star-rating [rating]="commentModel.rating" [canSet]="true"></app-star-rating>
+        </div>
+        <mat-form-field>
+          <textarea rows="8" matInput placeholder="Comment" [(ngModel)]="commentModel.text"></textarea>
+        </mat-form-field>
+        <br/>
+        <button mat-button value="Kommentar speichern" (click)="saveComment()">Kommnetar speichern</button>
+      </mat-card>
+
+      <mat-card class="meta-ui-comment" *ngFor="let comment of comments">
+        <div class="meta-ui-comment-headline">
+          <mat-icon>account_circle</mat-icon>
+          <span class="meta-ui-comment-user">{{comment.username}}</span><br/>
+          <span class="meta-ui-comment-title">{{comment.title}}</span>
+          <app-star-rating [rating]="comment.ratingAggregation"></app-star-rating>
+        </div>
+        <p class="meta-ui-comment-text">{{comment.text}}</p>
+      </mat-card>
+
     </div>
 
-    <div class="ratings">
-      <mat-icon *ngFor="let i of fullStars(route.ratingAggregation.avg)">star</mat-icon>
-      <mat-icon *ngIf="halfStar(route.ratingAggregation.avg)">star_half</mat-icon>
-      <mat-icon *ngFor="let i of emptyStars(route.ratingAggregation.avg)">star_border</mat-icon>
-    </div>
-  </div>
-
-  <!--<mat-form-field>
-    <mat-select placeholder="Schwierigkeitsgrad" [(ngModel)]="route.difficulty" onselect="closeSelect()" [disabled]="rdonly">
-      <mat-option [value]="1" onselect="closeSelect()">EZ PZ</mat-option>
-      <mat-option [value]="2">Einfach</mat-option>
-      <mat-option [value]="3">Angemessen</mat-option>
-      <mat-option [value]="4">Hart wie Schotter</mat-option>
-      <mat-option [value]="5">Pilgerfahrt zur Hölle</mat-option>
-    </mat-select>
-  </mat-form-field>-->
-  <br/>
-  <mat-form-field>
-    <textarea matInput placeholder="Beschreibung der Route" [(ngModel)]="route.description" [readonly]="rdonly"></textarea>
-    <br/>
-  </mat-form-field>
-  <br/>
-  <mat-slide-toggle [(ngModel)]="route.isPublic" (change)="changePrivacy()" [disabled]="rdonly">{{route_public_label}}</mat-slide-toggle>
-  <br/>
-
-
-  <button *ngIf="!rdonly" mat-button value="Route speichern" (click)="saveRoute()" [disabled]="rdonly">Route speichern</button>
-
-
-  <fieldset>
-    <legend>Medien</legend>
-
-    <div class="mediablock" *ngFor="let file of route.files; let i = index">
-      <img src="{{file.url}}" width="150" height="150" (click)="showImage(i)">
-    </div>
-
-    <div *ngIf="!rdonly" class="fileinput mediablock">
-      <button class="fileinputbutton"><a href="javascript: void(0)"><mat-icon class="upload_icon"><i class="material-icons upload_icon">backup</i> </mat-icon></a></button>
-      <input type="file" name="routemedia" class="hiddenfile" (change)="fileChanged($event)">
-    </div>
-  </fieldset>
-</div>
+  </mat-card-content>
+</mat-card>
 

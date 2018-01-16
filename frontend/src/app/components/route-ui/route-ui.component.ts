@@ -4,14 +4,13 @@ import {MapComponent} from '../map/map.component';
 import {MatSelect, MatDialog} from '@angular/material';
 import {Point} from '../../coordinates/point.model';
 import {MediaDialogComponent} from '../media-dialog/media-dialog.component';
-import {FileService} from '../../files/file.service';
 import {File} from '../../files/file.model';
 import {Waypoint} from '../../coordinates/waypoint.model';
 import {UserDataService} from '../../user-data/user-data.service';
 import {FirebaseItem} from '../../commons/models/firebase.model';
 import {OverlayModule, Overlay, OverlayRef} from '@angular/cdk/overlay';
 import {CdkPortal, ComponentPortal, Portal} from '@angular/cdk/portal';
-import {MetaUiComponent} from '../meta-ui/meta-ui.component';
+import {MetaUiComponent, MetaCallbacks} from '../meta-ui/meta-ui.component';
 
 @Component({
   selector: 'app-route-ui',
@@ -36,7 +35,6 @@ export class RouteUIComponent implements OnInit {
 
 
   constructor(public dialog: MatDialog,
-              private fileService: FileService,
               private userDataService: UserDataService,
               private overlay: Overlay) {
     // this._route = new Route(null, null, null, null, null, null, <[Waypoint]>[], new Direction(<[Point]>[]), null, null);
@@ -71,14 +69,6 @@ export class RouteUIComponent implements OnInit {
     this.mapComp.flyTo(location);
   }
 
-  public fileChanged(event) {
-    const file = event.target.files.item(0);
-    const task = this.fileService.upload(file);
-    task.then().then((val) => {
-      this.route.item.files.push(new File(val.downloadURL));
-    });
-  }
-
   public showImage(index: number) {
     this.dialog.open(MediaDialogComponent, {
       height: '40em',
@@ -90,14 +80,16 @@ export class RouteUIComponent implements OnInit {
   }
 
   // Wird als callBack zum schließen übergeben, da funktioniert es nur mit dieser Syntax, weil "this" sonst wieder was anderes ist.
-  public toggleMetaUI = (route: Route) => {
+  // data[0]: Fileable-Instanz deren Infos angezeigt weden soll
+  // data[1]: Readonly
+  public toggleMetaUI = (data: Array<any>) => {
     if (!this.metaUIPortal) {
       this.metaUIPortal = new ComponentPortal(MetaUiComponent,
         null,
         Injector.create([
-          {provide: Boolean, useValue: this.readonly},
-          {provide: Route, useValue: this.route.item},
-          {provide: Function, useValue: this.toggleMetaUI}
+          {provide: Boolean, useValue: data[1]},
+          {provide: 'FileableInterface', useValue: data[0]},
+          {provide: MetaCallbacks, useValue: new MetaCallbacks(this.saveRoute, this.toggleMetaUI)}
           ]
         )
       );
@@ -106,7 +98,5 @@ export class RouteUIComponent implements OnInit {
       this.overlayRef.detach()
       this.metaUIPortal = null;
     }
-
-
   }
 }
