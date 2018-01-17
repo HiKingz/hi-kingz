@@ -14,16 +14,25 @@
       <button class="defButton" color="primary" mat-raised-button (click)="loginWithEmail(email.value, password.value)">
         Login
       </button>
-      <ul class="flex-container">
-        <li class="flex-item"><img class="image" onmouseover="this.style.cursor='pointer';"
-                                   (click)="loginWithFacebook()" src="../../../assets/icons/facebook.svg"></li>
-        <li class="flex-item"><img class="image" onmouseover="this.style.cursor='pointer';" (click)="loginWithGoogle()"
-                                   src="../../../assets/icons/google.svg"></li>
-        <li class="flex-item"><img class="image" onmouseover="this.style.cursor='pointer';" (click)="loginWithTwitter()"
-                                   src="../../../assets/icons/twitter.svg"></li>
-        <li class="flex-item"><img class="image" onmouseover="this.style.cursor='pointer';" (click)="loginWithGithub()"
-                                   src="../../../assets/icons/github.svg"></li>
-      </ul>
+      <div class="row marginTop">
+        <div class="col-xs">
+          <div class="box-row"><img class="image" onmouseover="this.style.cursor='pointer';"
+                                    (click)="loginWithFacebook()" src="../../../assets/icons/facebook.svg"></div>
+        </div>
+        <div class="col-xs">
+          <div class="box-row"><img class="image" onmouseover="this.style.cursor='pointer';" (click)="loginWithGoogle()"
+                                    src="../../../assets/icons/google.svg"></div>
+        </div>
+        <div class="col-xs">
+          <div class="box-row"><img class="image" onmouseover="this.style.cursor='pointer';"
+                                    (click)="loginWithTwitter()"
+                                    src="../../../assets/icons/twitter.svg"></div>
+        </div>
+        <div class="col-xs">
+          <div class="box-row"><img class="image" onmouseover="this.style.cursor='pointer';" (click)="loginWithGithub()"
+                                    src="../../../assets/icons/github.svg"></div>
+        </div>
+      </div>
     </div>
 
   </mat-tab>
