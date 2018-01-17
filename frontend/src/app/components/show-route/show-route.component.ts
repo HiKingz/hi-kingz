@@ -2,9 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {RouteUIComponent} from '../route-ui/route-ui.component';
 import {FirebaseItem} from '../../commons/models/firebase.model';
 import {Route} from '../../routes/route.model';
-import {Point} from '../../coordinates/point.model';
-import {UserSignature} from '../../user-data/user-data.model';
-import {Waypoint} from '../../coordinates/waypoint.model';
 import { ActivatedRoute } from '@angular/router';
 import {RouteService} from '../../routes/route.service';
 
