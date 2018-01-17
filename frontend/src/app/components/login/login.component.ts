@@ -219,9 +219,9 @@ export class LoginComponent implements OnInit {
    * @returns {boolean}
    */
   uidInDatabase(uid: string): void {
-    this.userService.exists(uid).subscribe(
-      payload => {
-        if (payload.payload.exists === false) {
+    this.userService.exists(uid).then(
+      exists => {
+        if (!exists) {
           this.openUsernameDialog();
         }
       }

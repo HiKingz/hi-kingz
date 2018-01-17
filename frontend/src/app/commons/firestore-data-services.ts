@@ -89,8 +89,14 @@ export abstract class FirestoreDataService<ModelType extends FirebaseStorable> {
     );
   }
 
-  protected _exists(reference: string): Observable<Action<firebase.firestore.DocumentSnapshot>> {
-    return this._db.doc<ModelType>(reference).snapshotChanges();
+  protected _exists(reference: string): Promise<boolean> {
+    return new Promise<boolean>(
+      (resolve, reject) =>
+        this._db.doc<ModelType>(reference).snapshotChanges().subscribe(
+          item => resolve(item.payload.exists),
+          error => reject(error)
+        )
+    );
   }
 
   protected async _create(

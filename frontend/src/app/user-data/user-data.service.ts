@@ -6,19 +6,24 @@ import {FirestoreDataService} from '../commons/firestore-data-services';
 import {FirebaseItem} from '../commons/models/firebase.model';
 import {AuthenticationService} from '../authentication/authentication.service';
 import 'rxjs/add/operator/first';
-import {Action} from 'angularfire2/firestore/interfaces';
 import * as firebase from 'firebase';
-import DocumentSnapshot = firebase.firestore.DocumentSnapshot;
+import {Subscription} from 'rxjs/Subscription';
 
 @Injectable()
 export class UserDataService extends FirestoreDataService<UserData> {
+  private _currentUserDataSubscription: Subscription;
   protected readonly _collectionPath: string = 'user-data';
   public currentUserData: UserData = null;
 
   constructor(db: AngularFirestore, private _authService: AuthenticationService) {
     super(db);
     this._authService.onLogin.subscribe(() => this._loadCurrentUserData());
-    this._authService.onLogout.subscribe(() => this.currentUserData = null);
+    this._authService.onLogout.subscribe(() => {
+      if (this._currentUserDataSubscription && !this._currentUserDataSubscription.closed) {
+        this._currentUserDataSubscription.unsubscribe();
+      }
+      this.currentUserData = null;
+    });
   }
 
   public async create(user: UserSignature): Promise<Observable<FirebaseItem<UserData>>> {
@@ -27,10 +32,11 @@ export class UserDataService extends FirestoreDataService<UserData> {
       new UserData(user, [])
     );
     await this._updateOrCreate(firebaseItem);
+    this._loadCurrentUserData();
     return this._get(firebaseItem.reference);
   }
 
-  public exists(uid: string): Observable<Action<DocumentSnapshot>> {
+  public exists(uid: string): Promise<boolean> {
     return this._exists(this._concatPaths(this._collectionPath, uid));
   }
 
@@ -39,12 +45,16 @@ export class UserDataService extends FirestoreDataService<UserData> {
   }
 
   private _loadCurrentUserData() {
-    this.getById(this._authService.getLoggedInUser().uid).first().subscribe(
-      (userDataItem) => {
-        this.currentUserData = userDataItem.item;
-      },
-      (error) => {
-        console.log(error.code);
+    const userId = this._authService.getLoggedInUser().uid;
+    this.exists(userId).then(
+      exists => {
+        if (exists) {
+          this._currentUserDataSubscription = this.getById(userId).subscribe(
+            (userDataItem) => {
+              this.currentUserData = userDataItem.item;
+            }
+          );
+        }
       }
     );
   }
