@@ -1,18 +1,10 @@
-<div>
-  <div class="hi-kingz-sidebar">
-    <mat-form-field>
-      <input matInput placeholder="Name der Punktes" [(ngModel)]="poi.name" [readonly]="readonly"/>
-      <br/>
-    </mat-form-field>
-    <br/>
-    <mat-form-field>
-      <textarea matInput placeholder="Beschreibung des Punktes" [(ngModel)]="poi.description" [readonly]="readonly"></textarea>
-      <br/>
-    </mat-form-field>
-    <br/>
+<app-map [poi]="poi" [readonly]="readonly" (showPoi)="toggleMetaUI($event)"></app-map>
 
-    <button *ngIf="!readonly" mat-button value="Punkt speichern" (click)="saveRoute()" [disabled]="readonly">Punkt speichern</button>
-  </div>
+<div class="map-options">
+  <!--<a *ngIf="readonly && route.item.userSignature.id == userDataService.currentUserData.userSignature.id" href="routes/edit/{{route.id}}"><button mat-icon-button ><mat-icon>mode edit</mat-icon></button></a>
+  <button *ngIf="!readonly && route.item.userSignature.id == userDataService.currentUserData.userSignature.id" mat-icon-button (click)="saveRoute()"><mat-icon>done</mat-icon></button>-->
+  <a *ngIf="readonly" matTooltip="Bearbeiten" href="routes/{{route.id}}/edit"><button mat-fab><mat-icon>mode_edit</mat-icon></button></a>
+  <button *ngIf="!readonly" mat-icon-button mat-fab matTooltip="Speichern" (click)="saveRoute()"><mat-icon>done</mat-icon></button>
+  <button mat-icon-button mat-fab matTooltip="Zeige Informationen" (click)="toggleMetaUI([route.item, readonly])"><mat-icon>description</mat-icon></button>
 </div>
 
-<app-map [poi]="poi" [readonly]="readonly"></app-map>

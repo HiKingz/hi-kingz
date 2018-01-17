@@ -17,7 +17,6 @@ import {ForgotComponent} from './forgot-password-dialog/forgot.component';
 export class LoginComponent implements OnInit {
 
   private showProgressBar = false;
-  private uidExists = false;
   private errorCodePassword = 'auth/wrong-password';
   private errorCodeEmail = 'auth/invalid-email';
 
@@ -220,14 +219,9 @@ export class LoginComponent implements OnInit {
    * @returns {boolean}
    */
   uidInDatabase(uid: string): void {
-    this.uidExists = false;
-    this.userService.getById(uid).subscribe(
-      (user) => {
-        console.log(user);
-        this.uidExists = true;
-      },
-      () => {
-        if (this.uidExists !== true) {
+    this.userService.exists(uid).subscribe(
+      payload => {
+        if (payload.payload.exists === false) {
           this.openUsernameDialog();
         }
       }

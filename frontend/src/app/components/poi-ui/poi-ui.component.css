@@ -1,8 +1,12 @@
-.hi-kingz-sidebar {
-  width: 20em;
-  float: left;
+#map {
+  height: 100vh;
 }
 
-#map {
-  height: 500px;
+
+.map-options {
+  position: absolute;
+  left: 50vw;
+  right: 50vw;
+  width: 150px;
+  bottom: 0px;
 }

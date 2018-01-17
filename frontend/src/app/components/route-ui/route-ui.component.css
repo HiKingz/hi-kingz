@@ -1,5 +1,5 @@
 #map {
-  height: 55em;
+  height: 100vh;
 }
 
 .waypoints {
@@ -25,36 +25,11 @@
   padding: 4px;
   display: inline-block;
 }
-.hiddenfile {
-  opacity: 0;
-  filter:alpha(opacity=0);
-  position: relative;
-  width: 150px;
-  height: 150px;
-  top: -150px;
-}
 
-.fileinput {
-  display: block;
+.map-options {
+  position: absolute;
+  left: 50vw;
+  right: 50vw;
   width: 150px;
-  height: 150px;
-  overflow: hidden;
-}
-
-.fileinputbutton {
-  width: 150px;
-  height: 150px;
-  position: relative;
-}
-
-.upload_icon {
-  width: 50px;
-  height: 50px;
-  font-size: 50px;
-}
-
-.mediablock {
-  display: inline-block;
-  width: 150px;
-  height: 150px;
+  bottom: 0px;
 }

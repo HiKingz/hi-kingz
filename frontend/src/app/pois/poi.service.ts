@@ -4,9 +4,14 @@ import {FirestoreDataService} from '../commons/firestore-data-services';
 import {Observable} from 'rxjs/Observable';
 import {FirebaseItem} from '../commons/models/firebase.model';
 import {AngularFirestore} from 'angularfire2/firestore';
+<<<<<<< HEAD
 import {environment} from '../../environments/environment';
 import * as algoliasearch from 'algoliasearch';
 import {InstantSearchService} from '../instantsearch/instantsearch.service';
+=======
+import {RatingAggregation} from '../commons/models/rateable';
+import {File} from '../files/file.model';
+>>>>>>> 2f0965db1fa992c1c3776908042f6911a7e7bfc9
 
 @Injectable()
 export class PoiService extends FirestoreDataService<Poi> {
