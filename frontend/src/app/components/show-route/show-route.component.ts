@@ -4,6 +4,8 @@ import {FirebaseItem} from '../../commons/models/firebase.model';
 import {Route} from '../../routes/route.model';
 import { ActivatedRoute } from '@angular/router';
 import {RouteService} from '../../routes/route.service';
+import {RatingAggregation} from '../../commons/models/rateable';
+import {UserSignature} from '../../user-data/user-data.model';
 
 @Component({
   selector: 'app-show-route',
@@ -19,7 +21,7 @@ export class ShowRouteComponent implements OnInit {
   constructor(private route: ActivatedRoute, private routeService: RouteService) {
     this.frbs_route = new FirebaseItem(
       '0',
-      new Route(null, null, null, null, null, [], [], null, [], 0, true)
+      new Route([], '', '', 1, new UserSignature('0', 'Dummy'), [], [], new RatingAggregation(0, 0, 0), [], 0, true)
     );
   }
 

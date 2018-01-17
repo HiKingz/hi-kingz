@@ -26,9 +26,18 @@ export class RouteUIComponent implements OnInit {
 
   mapComp: MapComponent;
 
-  select: MatSelect;
+  ownsRoute: boolean;
 
-  @Input() route: FirebaseItem<Route>;
+  _route: FirebaseItem<Route>;
+  @Input()
+  set route(rt: FirebaseItem<Route>) {
+    this._route = rt;
+    this.ownsRoute = (this.userDataService.currentUserData.userSignature.id === this._route.item.userSignature.id);
+  }
+  get route (): FirebaseItem<Route> {
+    return this._route;
+  }
+
   @Input() readonly: boolean;
   @Output() routeSaved = new EventEmitter();
 
@@ -45,6 +54,7 @@ export class RouteUIComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.ownsRoute = (this.userDataService.currentUserData.userSignature.id === this.route.item.userSignature.id);
   }
 
   @ViewChild(MapComponent)
@@ -57,12 +67,20 @@ export class RouteUIComponent implements OnInit {
     this.mapComp.flyTo(this.route.item.waypoints[i].point);
   }
 
+  private centerOnUserPos() {
+    const self = this;
+    navigator.geolocation.getCurrentPosition((pos) => {
+      self.flyTo(new Point(pos.coords.longitude, pos.coords.latitude));
+    });
+  }
+
   private deleteWaypointAt(i: number) {
     this.mapComp.deleteWaypoint.emit(i);
   }
 
   saveRoute = () => {
     this.routeSaved.emit();
+    this.readonly = true; // G oback to showing mode
   }
 
   public flyTo(location: Point) {

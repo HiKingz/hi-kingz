@@ -1,20 +1,24 @@
-<div class="waypoints">
+<div class="waypoints slide-in-left">
   <div class="waypoints_viewport">
     <mat-card matInput *ngFor="let wp of route.item.waypoints; let i = index" class="md-elevation-z10">
-      <mat-form-field>
-        <input matInput [(ngModel)]="wp.name" [readonly]="readonly">
-      </mat-form-field>
-      <button mat-icon-button (click)="centerOn(i)"><mat-icon>explore</mat-icon></button>
-      <button *ngIf="!readonly" mat-icon-button (click)="deleteWaypointAt(i)"><mat-icon>delete</mat-icon></button>
+      <mat-card-content>
+        <mat-form-field>
+          <input matInput [(ngModel)]="wp.name" [readonly]="readonly">
+        </mat-form-field>
+        <!--<button mat-icon-button (click)="centerOn(i)"><mat-icon>explore</mat-icon></button>-->
+        <button *ngIf="!readonly" mat-icon-button (click)="deleteWaypointAt(i)"><mat-icon>delete</mat-icon></button>
+      </mat-card-content>
     </mat-card>
   </div>
 </div>
 <app-map [route]="route.item" [readonly]="readonly" (showPoi)="toggleMetaUI($event)"></app-map>
 
-<div class="map-options">
-  <!--<a *ngIf="readonly && route.item.userSignature.id == userDataService.currentUserData.userSignature.id" href="routes/edit/{{route.id}}"><button mat-icon-button ><mat-icon>mode edit</mat-icon></button></a>
-  <button *ngIf="!readonly && route.item.userSignature.id == userDataService.currentUserData.userSignature.id" mat-icon-button (click)="saveRoute()"><mat-icon>done</mat-icon></button>-->
-  <a *ngIf="readonly" matTooltip="Bearbeiten" href="routes/{{route.id}}/edit"><button mat-fab><mat-icon>mode_edit</mat-icon></button></a>
-  <button *ngIf="!readonly" mat-fab matTooltip="Speichern" (click)="saveRoute()"><mat-icon>done</mat-icon></button>
+<div class="map-options slide-in-right">
+  <button mat-fab matTooltip="Eigener Standord" (click)="centerOnUserPos()"><mat-icon>my_location</mat-icon></button>
   <button mat-fab matTooltip="Zeige Informationen" (click)="toggleMetaUI([route.item, readonly])"><mat-icon>description</mat-icon></button>
+  <button  *ngIf="readonly && ownsRoute" mat-fab matTooltip="Bearbeiten" (click)="readonly = false"><mat-icon>mode_edit</mat-icon></button>
+  <button *ngIf="!readonly && ownsRoute" mat-fab (click)="saveRoute()" matTooltip="Speichern"><mat-icon>done</mat-icon></button>
+  <!-- <a *ngIf="readonly" matTooltip="Bearbeiten" href="routes/{{route.id}}/edit"><button mat-fab><mat-icon>mode_edit</mat-icon></button></a>
+  <button *ngIf="!readonly" mat-fab matTooltip="Speichern" (click)="saveRoute()"><mat-icon>done</mat-icon></button> -->
+
 </div>

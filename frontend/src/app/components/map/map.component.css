@@ -1,11 +1,6 @@
 .mapboxgl-ctrl-top-left {
-  top: 0;
-  left: 0;
-  background: #DED3D3;
-  padding-right: 7px;
-  padding-bottom: 7px;
-  color: #053;
-  font-weight: bold;
+  margin-left: 15px;
+  width: 40%;
 }
 
 .hi-kingz-waypoint-list-element {
@@ -24,6 +19,10 @@
   margin-right: 15em;
 }
 
+.invisible {
+  display: none;
+}
+
 /* Basics extracted from Geocoder modules' CSS, Webpack doesn't properly put this in... */
 .mapboxgl-ctrl-geocoder,
 .mapboxgl-ctrl-geocoder *,
@@ -37,9 +36,8 @@
   font:15px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   position:relative;
   background-color:white;
-  width:33.3333%;
+  width:100%;
   min-width:240px;
-  max-width:360px;
   z-index:1;
   border-radius:3px;
 }

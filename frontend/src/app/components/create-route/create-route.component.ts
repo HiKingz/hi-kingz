@@ -11,7 +11,7 @@ import {RatingAggregation} from '../../commons/models/rateable';
   templateUrl: './create-route.component.html',
   styleUrls: ['./create-route.component.css']
 })
-export class CreateRouteComponent {
+export class CreateRouteComponent implements OnInit {
 
   mapComp: RouteUIComponent;
   frbs_route: FirebaseItem<Route>;
@@ -19,13 +19,17 @@ export class CreateRouteComponent {
   constructor(private routeService: RouteService, private userDataService: UserDataService) {
     this.frbs_route = new FirebaseItem(
       '0',
-      new Route([], '', '', 1, null, [], [], new RatingAggregation(2.5, 0, 0),[], 0,  true,)
+      new Route([], '', '', 1, null, [], [], new RatingAggregation(0, 0, 0), [], 0, true)
     );
   }
 
   @ViewChild(RouteUIComponent)
   set appMap(comp: RouteUIComponent) {
     this.mapComp = comp;
+  }
+
+  public ngOnInit() {
+    this.frbs_route.item.userSignature = this.userDataService.currentUserData.userSignature;
   }
 
   saveRoute = () => {

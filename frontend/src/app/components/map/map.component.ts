@@ -39,13 +39,35 @@ const point_src = {
 })
 export class MapComponent implements OnInit {
 
+  defaultZoom = 12;
+
   pois: Array<Poi>;
   on_poi: boolean;
   poi_list: Array<Poi>;
   map: mapboxgl.Map;
   _route: Route = undefined;
   _poi: Poi = undefined;
-  @Input() readonly: boolean;
+
+  planningCtrl: any;
+
+  _readonly: boolean;
+  @Input()
+  set readonly(value: boolean) {
+
+    // Add the control either way if we disable readonly
+    if (this.map) {
+      if (!value) {
+        this.map.addControl(this.planningCtrl);
+      } else if (!this._readonly && value) {
+        // Switch from edit to showmode (readonly = false -> true)
+        this.map.removeControl(this.planningCtrl);
+      }
+    }
+    this._readonly = value;
+  }
+  get readonly(): boolean {
+    return this._readonly;
+  }
 
   @Output() deleteWaypoint = new EventEmitter();
   @Output() showPoi = new EventEmitter();
@@ -113,6 +135,9 @@ export class MapComponent implements OnInit {
         }
       });
       self.map.on('mouseup', (ev) => {
+        if (this.map.getZoom() < this.defaultZoom) {
+          return;
+        }
         const bounds = self.map.getBounds();
         self.poiService.getInArea(bounds._ne.lat, bounds._ne.lng, bounds._sw.lat, bounds._sw.lng).then(
           (frbs_pois) => {
@@ -122,21 +147,22 @@ export class MapComponent implements OnInit {
       });
     });
 
+    this.planningCtrl = new ctrls.RoutePlanningControl(this, this.route);
+    this.deleteWaypoint.subscribe((data) => {
+      this.planningCtrl.deleteWaypointAt(data);
+    });
+
     if (!this.readonly) {
       if (this.route) {
-        const rt_ctrl = new ctrls.RoutePlanningControl(this, this.route);
-        this.deleteWaypoint.subscribe((data) => {
-          rt_ctrl.deleteWaypointAt(data);
-        });
-        this.map.addControl(rt_ctrl, 'top-left');
+        this.map.addControl(this.planningCtrl, 'bottom-left');
       } else if (this.poi) {
-        this.map.addControl(new ctrls.PoiMakerControl(this), 'top-left');
+        this.map.addControl(new ctrls.PoiMakerControl(this), 'bottom-left');
       }
     }
     if ((this.route && this.route.direction.length > 0) || (this.poi && this.poi.point)) {
       this.displayRouteOrPoi(true);
     }
-    this.map.addControl(new MapboxGeocoder({accessToken: environment.mapbox.accessToken}), 'top-right');
+    this.map.addControl(new MapboxGeocoder({accessToken: environment.mapbox.accessToken}), 'top-left');
   }
 
   public displayPointsOfInterest(pois: Array<Poi>) {
@@ -254,7 +280,7 @@ export class MapComponent implements OnInit {
         // These options control the ending camera position: centered at
         // the target, at zoom level 9, and north up.
         center: new mapboxgl.LngLat(location.longitude, location.latitude),
-        zoom: 15,
+        zoom: this.defaultZoom,
         bearing: 0,
 
         // These options control the flight curve, making it move
