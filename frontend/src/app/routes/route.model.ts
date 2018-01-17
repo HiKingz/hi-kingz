@@ -16,15 +16,15 @@ export class Route extends FirebaseStorable implements Fileable, Rateable {
     public waypoints: Array<Waypoint>,
     public direction: Array<Point>,
     public ratingAggregation: RatingAggregation,
+    public tags: Array<string>,
+    public distance: number,
     public isPublic: boolean,
-    public isSponsored: boolean
   ) {
     super();
   }
 
   public static deserialize(data: any): Route {
     return new Route(
-      // TODO deserialize properly when model is done
       data.files && data.files.map(fileData => new File(fileData.url)) || [],
       data.name || '',
       data.description || '',
@@ -46,8 +46,9 @@ export class Route extends FirebaseStorable implements Fileable, Rateable {
       data.ratingAggregation && new RatingAggregation(
       data.ratingAggregation.avg || 0, data.ratingAggregation.count || 0, data.ratingAggregation.sum || 0
       ) || new RatingAggregation(0, 0, 0),
+      data.tags || [],
+      data.distance || 0,
       data.isPublic || false,
-      data.isSponsored || false
     );
   }
 }

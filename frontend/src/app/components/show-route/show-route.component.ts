@@ -22,7 +22,7 @@ export class ShowRouteComponent implements OnInit {
   constructor(private route: ActivatedRoute, private routeService: RouteService) {
     this.frbs_route = new FirebaseItem(
       '0',
-      new Route(null, null, null, null, null, [], [], null, true, false)
+      new Route(null, null, null, null, null, [], [], null, [], 0, true)
     );
   }
 
