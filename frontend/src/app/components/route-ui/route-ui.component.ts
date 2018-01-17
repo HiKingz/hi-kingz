@@ -32,7 +32,8 @@ export class RouteUIComponent implements OnInit {
   @Input()
   set route(rt: FirebaseItem<Route>) {
     this._route = rt;
-    this.ownsRoute = (this.userDataService.currentUserData.userSignature.id === this._route.item.userSignature.id);
+    this.ownsRoute = (this.userDataService.currentUserData &&
+      this.userDataService.currentUserData.userSignature.id === this._route.item.userSignature.id);
   }
   get route (): FirebaseItem<Route> {
     return this._route;
@@ -54,7 +55,8 @@ export class RouteUIComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.ownsRoute = (this.userDataService.currentUserData.userSignature.id === this.route.item.userSignature.id);
+    this.ownsRoute = (this.userDataService.currentUserData &&
+      this.userDataService.currentUserData.userSignature.id === this._route.item.userSignature.id);
   }
 
   @ViewChild(MapComponent)

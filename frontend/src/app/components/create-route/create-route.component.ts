@@ -5,6 +5,7 @@ import {Route} from '../../routes/route.model';
 import {RouteService} from '../../routes/route.service';
 import {UserDataService} from '../../user-data/user-data.service';
 import {RatingAggregation} from '../../commons/models/rateable';
+import {UserSignature} from '../../user-data/user-data.model';
 
 @Component({
   selector: 'app-create-route',
@@ -29,7 +30,8 @@ export class CreateRouteComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.frbs_route.item.userSignature = this.userDataService.currentUserData.userSignature;
+    this.frbs_route.item.userSignature =
+      (this.userDataService.currentUserData ? this.userDataService.currentUserData.userSignature : new UserSignature('0', 'Dummy'));
   }
 
   saveRoute = () => {
