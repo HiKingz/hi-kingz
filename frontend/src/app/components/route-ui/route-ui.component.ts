@@ -82,7 +82,7 @@ export class RouteUIComponent implements OnInit {
 
   saveRoute = () => {
     this.routeSaved.emit();
-    this.readonly = true; // G oback to showing mode
+    this.readonly = true; // Go back to showing mode
   }
 
   public flyTo(location: Point) {

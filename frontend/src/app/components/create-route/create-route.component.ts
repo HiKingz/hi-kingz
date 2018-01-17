@@ -6,6 +6,7 @@ import {RouteService} from '../../routes/route.service';
 import {UserDataService} from '../../user-data/user-data.service';
 import {RatingAggregation} from '../../commons/models/rateable';
 import {UserSignature} from '../../user-data/user-data.model';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-create-route',
@@ -17,7 +18,7 @@ export class CreateRouteComponent implements OnInit {
   mapComp: RouteUIComponent;
   frbs_route: FirebaseItem<Route>;
 
-  constructor(private routeService: RouteService, private userDataService: UserDataService) {
+  constructor(private routeService: RouteService, private userDataService: UserDataService, private location: Location) {
     this.frbs_route = new FirebaseItem(
       '0',
       new Route([], '', '', 1, null, [], [], new RatingAggregation(0, 0, 0), [], 0, true)
@@ -42,6 +43,7 @@ export class CreateRouteComponent implements OnInit {
         this.routeService.create(this.frbs_route.item).then((rt) => {
           rt.subscribe((new_rt) => {
             self.frbs_route = new_rt;
+            self.location.go('routes/' + new_rt.id);
           });
         });
       } else {
