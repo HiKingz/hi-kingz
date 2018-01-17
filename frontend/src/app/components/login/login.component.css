@@ -1,15 +1,19 @@
-.container
-{
-  margin-top: 20px;
+.marginBot {
+  margin: auto auto 2%;
 }
 
-img {
+.marginTop {
+  margin: 2% auto auto;
+}
+
+.image {
   margin: 12px 12px 12px 12px;
   height: 42px;
   width: 42px;
 }
 
-button{
+.defButton {
+  margin-top: 2%;
   width: 100%;
 }
 
@@ -50,7 +54,7 @@ mat-form-field{
 }
 
 .flex-item {
-  padding: 5px;
+  padding: 0px;
   width: 100px;
   height: 100px;
 
