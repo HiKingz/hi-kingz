@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {RatingAggregation} from '../../commons/models/rateable';
 
 @Component({
@@ -6,28 +6,29 @@ import {RatingAggregation} from '../../commons/models/rateable';
   templateUrl: './star-rating.component.html',
   styleUrls: ['./star-rating.component.css']
 })
-export class StarRatingComponent {
+export class StarRatingComponent implements OnInit{
   @Input()
   public rating: RatingAggregation;
   @Input()
-  public canSet = false;
+  public readOnly = true;
 
-  // If there has been a click, stop "following" the cursor until the span is left again
-  private hasSet = false;
+  public displayedRating = 0;
 
-  constructor() {}
+  public ngOnInit(): void {
+    this.displayedRating = this.rating && this.rating.avg || 0;
+  }
 
-  private setRating(num: number): void {
-    if (this.canSet && !this.hasSet) {
-      this.rating.avg = num;
+  public displayRating(value: number): void {
+    if (!this.readOnly) {
+      this.displayedRating = value;
     }
   }
 
   private clicked() {
-    this.hasSet = true;
+    this.rating.avg = this.displayedRating;
   }
 
   private mouseLeave() {
-    this.hasSet = false;
+    this.displayedRating = this.rating.avg;
   }
 }
