@@ -71,6 +71,7 @@ export class MapComponent implements OnInit {
 
   @Output() deleteWaypoint = new EventEmitter();
   @Output() showPoi = new EventEmitter();
+  @Output() newMarker = new EventEmitter();
 
   cli;
   // map: mapboxgl.Map;
@@ -134,17 +135,7 @@ export class MapComponent implements OnInit {
           'line-width': 3
         }
       });
-      self.map.on('mouseup', (ev) => {
-        if (this.map.getZoom() < this.defaultZoom) {
-          return;
-        }
-        const bounds = self.map.getBounds();
-        self.poiService.getInArea(bounds._ne.lat, bounds._ne.lng, bounds._sw.lat, bounds._sw.lng).then(
-          (frbs_pois) => {
-            self.displayPointsOfInterest(frbs_pois.map((frbs) => frbs.item));
-          }
-        );
-      });
+      self.map.on('mouseup', this.getPoisInBounds);
     });
 
     this.planningCtrl = new ctrls.RoutePlanningControl(this, this.route);
@@ -155,14 +146,65 @@ export class MapComponent implements OnInit {
     if (!this.readonly) {
       if (this.route) {
         this.map.addControl(this.planningCtrl, 'bottom-left');
-      } else if (this.poi) {
-        this.map.addControl(new ctrls.PoiMakerControl(this), 'bottom-left');
       }
+      // else if (this.poi) { // Obsolete part, no longer used
+      //  this.map.addControl(new ctrls.MarkerControl(this), 'bottom-left');
+      // }
     }
-    if ((this.route && this.route.direction.length > 0) || (this.poi && this.poi.point)) {
+    if ((this.route && this.route.direction.length > 0)) { // } || (this.poi && this.poi.point)) {
       this.displayRouteOrPoi(true);
     }
     this.map.addControl(new MapboxGeocoder({accessToken: environment.mapbox.accessToken}), 'top-left');
+  }
+
+  public getPoisInBounds = () => {
+    if (this.map.getZoom() < this.defaultZoom) {
+      return;
+    }
+    const bounds = this.map.getBounds();
+    const self = this;
+    this.poiService.getInArea(bounds._ne.lat, bounds._ne.lng, bounds._sw.lat, bounds._sw.lng).then(
+      (frbs_pois) => {
+        self.displayPointsOfInterest(frbs_pois.map((frbs) => frbs.item));
+      }
+    );
+  }
+
+  // Propagate coords to event emitter
+  public newMarkerEmit(coords: any) {
+    this.newMarker.emit(coords);
+  }
+
+  public addPoi(poi: Poi) {
+    const poi_id = 'poi' + this.pois.length;
+    this.map.addSource(poi_id, {
+      'type': 'geojson',
+      'data': {
+        'type': 'FeatureCollection',
+        'features': [{
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [poi.point.longitude, poi.point.latitude]
+          }
+        }]
+      }
+    });
+
+    this.map.addLayer({
+      'id': poi_id,
+      'type': 'circle',
+      'source': poi_id,
+      'paint': {
+        'circle-radius': 14,
+        'circle-color': '#ff2300'
+      }
+    });
+
+    this.map.on('mousedown', poi_id, this.clickPoi);
+    this.map.on('mouseenter', poi_id, this.enterPoi);
+    this.map.on('mouseleave', poi_id, this.leavePoi);
+    this.pois.push(poi);
   }
 
   public displayPointsOfInterest(pois: Array<Poi>) {
@@ -179,36 +221,7 @@ export class MapComponent implements OnInit {
     this.pois.length = 0;
     const self = this;
     pois.forEach((poi) => {
-      self.map.addSource('poi' + i, {
-        'type': 'geojson',
-        'data': {
-          'type': 'FeatureCollection',
-          'features': [{
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [poi.point.longitude, poi.point.latitude]
-            }
-          }]
-        }
-      });
-
-      self.map.addLayer({
-        'id': 'poi' + i,
-        'type': 'circle',
-        'source': 'poi' + i,
-        'paint': {
-          'circle-radius': 14,
-          'circle-color': '#ff2300'
-        }
-      });
-
-      self.map.on('mousedown', 'poi' + i, this.clickPoi);
-      self.map.on('mouseenter', 'poi' + i, this.enterPoi);
-      self.map.on('mouseleave', 'poi' + i, this.leavePoi);
-
-      i++;
-      self.pois.push(poi);
+      self.addPoi(poi);
     });
   }
 

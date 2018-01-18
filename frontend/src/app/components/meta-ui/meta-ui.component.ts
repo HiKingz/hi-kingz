@@ -73,7 +73,7 @@ export class MetaUiComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.infoobject.files.length > 0) {
+    if (this.infoobject.files && this.infoobject.files.length > 0) {
       this.showcasedImage = this.infoobject.files[0].url;
     }
   }

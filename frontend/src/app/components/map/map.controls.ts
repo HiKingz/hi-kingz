@@ -22,10 +22,12 @@ const point_src = {
   }]
 };
 
-export class PoiMakerControl {
+export class MarkerControl {
   _map: mapboxgl.Map;
   _container;
   component: MapComponent;
+
+  coords: any;
 
   constructor(component: MapComponent) {
     this.component = component;
@@ -37,7 +39,8 @@ export class PoiMakerControl {
     this._container = document.createElement('div');
     this._container.className = 'invisible';
     map.on('click', this.handleClick);
-    map.on('load', () => {
+    map.on('mousemove', this.setPosition);
+    // map.on('load', () => {
       this._map.addSource('poi', {
         'type': 'geojson',
         'data': {
@@ -61,12 +64,12 @@ export class PoiMakerControl {
           'circle-color': '#00A0FF'
         }
       });
-    });
+    // });
 
     return this._container;
   }
 
-  public handleClick = (e) => {
+  public setPosition = (e) => {
     if (this.component.on_poi) {
       return;
     }
@@ -76,6 +79,17 @@ export class PoiMakerControl {
   public setPoint = (coords) => {
     point_src.features[0].geometry.coordinates = [coords.lng, coords.lat];
     this._map.getSource('poi').setData(point_src);
+  }
+
+  public handleClick = (e) => {
+    this.component.newMarkerEmit([e.lngLat.lng, e.lngLat.lat]);
+  }
+
+  public onRemove() {
+    this._map.off('click', this.handleClick);
+    this._map.off('mousemove', this.setPosition);
+    this._map.removeLayer('poi');
+    this._map.removeSource('poi');
   }
 
 }
@@ -106,12 +120,12 @@ export class RoutePlanningControl  {
 
 
     const self = this;
-    //map.on('load', () => {
+    // map.on('load', () => {
       map.on('mousedown', this.mouseDown);
       self.component.route.waypoints.forEach((wp) => {
         self.addPoint(new mapboxgl.LngLat(wp.point.longitude, wp.point.latitude), false);
       });
-    //});
+    // });
 
     return this._container;
     // return this.rootHTML.nativeElement;
@@ -242,6 +256,8 @@ export class RoutePlanningControl  {
   }
 
   public updateRoute = (route, route_wps) => {
+    // get distance of the route in meters as provided by service
+    this.component.route.distance = route.distance;
 
     // Decode the geometry and put the points in a simple array(decode gives LatLong, but we need LongLat, hence we call c.reverse())
     const decoded = decode(route.geometry, 5).map(function(c) {

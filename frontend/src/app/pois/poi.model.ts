@@ -22,14 +22,14 @@ export class Poi extends FirebaseStorable implements Fileable, Rateable {
       // TODO check if files need to be deserialized
       null,
       data.name || '',
-      data.descrpition || '',
+      data.description || '',
       data.userSignature && new UserSignature(
       data.userSignature.id || null, data.userSignature.username || ''
       ) || null,
       data.ratingAggregation && new RatingAggregation(
       data.ratingAggregation.avg || 0, data.ratingAggregation.count || 0, data.ratingAggregation.sum || 0
       ) || new RatingAggregation(0, 0, 0),
-      data.point && new Point(data.point.longitude || null, data.point.altitude || null) || null
+      data.point && new Point(data.point.longitude || null, data.point.latitude || null) || null
     );
   }
 }
