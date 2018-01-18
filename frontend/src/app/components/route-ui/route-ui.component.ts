@@ -71,6 +71,9 @@ export class RouteUIComponent implements OnInit {
       this.ownsRoute =
         (userData.userSignature.id === this._route.item.userSignature.id);
     });
+    this.userDataService.onCurrentUserDataUnset.subscribe((userData) => {
+      this.ownsRoute = false;
+    });
   }
 
   @ViewChild(MapComponent)
