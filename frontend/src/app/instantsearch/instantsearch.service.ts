@@ -3,14 +3,19 @@ import {InstantSearchManager} from './instantsearch-manager';
 import {Observable} from 'rxjs/Observable';
 import {environment} from '../../environments/environment';
 import {AuthenticationService} from '../authentication/authentication.service';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {AlgoliaQueryParameters, AlgoliaResponse} from 'algoliasearch';
 import * as algoliasearch from 'algoliasearch';
+import {Subject} from 'rxjs/Subject';
 
 class InstantSearchManagerBuilder {
   private _widgets: Array<any> = [];
 
-  constructor(private _appId: string, private _apiKey: string, private _indexName: string) { }
+  constructor(
+    private _appId: string,
+    private _apiKey: string,
+    private _indexName: string,
+    private _apiKeyChangeObservable?: Observable<string>
+  ) { }
 
   public addWidget(widget): InstantSearchManagerBuilder {
     this._widgets.push(widget);
@@ -22,7 +27,8 @@ class InstantSearchManagerBuilder {
       this._appId,
       this._apiKey,
       this._indexName,
-      this._widgets
+      this._widgets,
+      this._apiKeyChangeObservable
     );
   }
 }
@@ -30,22 +36,20 @@ class InstantSearchManagerBuilder {
 @Injectable()
 export class InstantSearchService {
   private _apiKey: string = environment.algolia.publicApiKey;
-  private _apiKeyChangeSubject: BehaviorSubject<void> = new BehaviorSubject<void>(null);
-  public onApiKeyChange: Observable<void> = this._apiKeyChangeSubject.asObservable();
+  private _apiKeyChangeSubject: Subject<string> = new Subject<string>();
+  public onApiKeyChange: Observable<string> = this._apiKeyChangeSubject.asObservable();
 
-  constructor(authService: AuthenticationService) {
-    authService.onLogin.subscribe(() => this._loadUserApiKey());
-    authService.onLogout.subscribe(() => {
-      this._apiKey = environment.algolia.publicApiKey;
-      this._apiKeyChangeSubject.next(null);
-    });
+  constructor(private _authService: AuthenticationService) {
+    this._authService.onLogin.subscribe(() => this._loadUserApiKey());
+    this._authService.onLogout.subscribe(() => this._unsetUserApiKey());
   }
 
   public buildInstantSearchManager(indexName: string): InstantSearchManagerBuilder {
     return new InstantSearchManagerBuilder(
       environment.algolia.appId,
       this._apiKey,
-      environment.algolia.indexNamePrefix + indexName
+      environment.algolia.indexNamePrefix + indexName,
+      this.onApiKeyChange
     );
   }
 
@@ -56,7 +60,24 @@ export class InstantSearchService {
   }
 
   private _loadUserApiKey(): void {
-    // TODO get api key form function endpoint and fire onApiChange
-    this._apiKeyChangeSubject.next(null);
+    this._authService.getLoggedInUser().getIdToken().then(
+      token => fetch(
+        `https://us-central1-hikingz-185410.cloudfunctions.net/api/algolia/search-key`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
+    ).then(response => {
+      return response.json();
+    })
+    .then(data => {
+      this._apiKey = data.key;
+      this._apiKeyChangeSubject.next(data.key);
+    });
+  }
+
+  private _unsetUserApiKey(): void {
+    this._apiKey = environment.algolia.publicApiKey;
+    this._apiKeyChangeSubject.next(this._apiKey);
   }
 }

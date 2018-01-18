@@ -18,7 +18,8 @@ export const environment = {
   },
   algolia: {
     appId: 'FN552M4GBM',
-    publicApiKey: '6d3baf4c1604a87d3a8d245f7040cd0e',
+    publicApiKey: 'MTA4OTc2MDYzMzZlYTU1Y2QwMjVhYWNlNWU0NWZiMWNlYzE5ODcyOGI5OWE4NDE5ZTc5MjVhYjRmY2VjODYyMmZpbHRlcn' +
+                  'M9aXNQdWJsaWMlM0F0cnVlJnVzZXJUb2tlbj1hbm9ueW1vdXM=',
     indexNamePrefix: 'hi-kingz.'
   }
 };
