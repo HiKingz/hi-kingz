@@ -10,12 +10,25 @@
 
 .private-icon-container {
   position: absolute;
+  left: 10px;
+  top: 10px;
   color: white;
   z-index: 50;
 }
 
 .private-icon {
-  font-size: 35px;
+  font-size: 30px;
+}
+
+.distance-icon-container {
+  color: white;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.distance-icon {
+  margin-right: 5px;
 }
 
 .route-image-sizing-container {

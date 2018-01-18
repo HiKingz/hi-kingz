@@ -11,6 +11,8 @@ import {Router} from '@angular/router';
   styleUrls: ['./route-overview-card.component.css']
 })
 export class RouteOverviewCardComponent {
+  public Math: any = Math;
+
   @Input()
   public route: FirebaseItem<Route>;
 

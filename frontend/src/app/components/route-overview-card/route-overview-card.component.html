@@ -7,9 +7,10 @@
       <i class="panorama-icon material-icons">landscape</i>
     </div>
     <div class="route-image-container">
-      <img class="route-image" [src]="'https://loremflickr.com/640/300/hiking?random=' + route.item.name">
+      <img class="route-image" [src]="'https://loremflickr.com/1200/600/hiking?random=' + route.item.name">
     </div>
   </div>
+  <span class="distance-icon-container center-content-vertically" matTooltip="distance" matTooltipPosition="below"><i class="distance-icon material-icons">map</i>{{ Math.round(route.item.distance / 10) / 100 }}km</span>
   <button mat-fab class="open-route-button" color="primary"><mat-icon svgIcon="hiking"></mat-icon></button>
   <div class="info-container transparent-background">
     <div class="row middle-xs full-height">
@@ -30,10 +31,7 @@
     </div>
     <div class="tags-container">
       <mat-chip-list>
-        <mat-chip>One fish</mat-chip>
-        <mat-chip>Two fish</mat-chip>
-        <mat-chip color="primary">Primary fish</mat-chip>
-        <mat-chip color="accent">Accent fish</mat-chip>
+        <mat-chip *ngFor="let tag of route.item.tags">{{ tag }}</mat-chip>
       </mat-chip-list>
     </div>
   </mat-card-content>

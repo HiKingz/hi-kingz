@@ -4,7 +4,6 @@ import {MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
 import {UserDataService} from '../../user-data/user-data.service';
 import {UsernameDialogComponent} from './username-dialog/username-dialog.component';
 import {UserSignature} from '../../user-data/user-data.model';
-import {FileService} from '../../files/file.service';
 import {ForgotComponent} from './forgot-password-dialog/forgot.component';
 
 @Component({
@@ -32,7 +31,6 @@ export class LoginComponent implements OnInit {
   /**
    * @param {AuthenticationService} authenticationService
    * @param {UserDataService} userService
-   * @param {FileService} fileService
    * @param {MatDialogRef<LoginComponent>} dialogRef
    * @param {MatSnackBar} snackBar
    * @param {MatDialog} dialog
@@ -40,7 +38,6 @@ export class LoginComponent implements OnInit {
    */
   constructor(private authenticationService: AuthenticationService,
               private userService: UserDataService,
-              private fileService: FileService,
               public dialogRef: MatDialogRef<LoginComponent>,
               public snackBar: MatSnackBar,
               public dialog: MatDialog,
