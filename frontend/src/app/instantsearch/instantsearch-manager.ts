@@ -13,12 +13,18 @@ export class InstantSearchManager {
   public gotMoreToLoad = true;
   public searchResults: Observable<Array<any>> = this._searchResultSubject.asObservable();
 
-  constructor(appId: string, apiKey: string, indexName: string, widgets: Array<any>) {
+  constructor(appId: string, apiKey: string, indexName: string, widgets: Array<any>, apiKeyChangeObservable?: Observable<string>) {
     this._searchConnector = instantsearch({
       appId: appId,
       apiKey: apiKey,
       indexName: indexName
     });
+    if (apiKeyChangeObservable) {
+      apiKeyChangeObservable.subscribe(newApiKey => {
+        this._searchConnector.client.apiKey = newApiKey;
+        this._searchConnector.client.clearCache();
+      });
+    }
     widgets.forEach(widget => this._searchConnector.addWidget(widget));
     this._searchConnector.addWidget(connectInfiniteHits(
       (InfiniteHitsRenderingOptions, isFirstRendering) => this._handleIncomingSearchResults(
