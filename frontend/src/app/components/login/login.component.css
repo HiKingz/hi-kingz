@@ -1,15 +1,19 @@
-.container
-{
-  margin-top: 20px;
+.marginBot {
+  margin: auto auto 2%;
 }
 
-img {
+.marginTop {
+  margin: 2% auto auto;
+}
+
+.image {
   margin: 12px 12px 12px 12px;
   height: 42px;
   width: 42px;
 }
 
-button{
+.defButton {
+  margin-top: 2%;
   width: 100%;
 }
 
@@ -31,31 +35,4 @@ div#mat-tab-label-1-1.mat-tab-label.mat-ripple.ng-star-inserted {
 
 mat-form-field{
   width: 100%;
-}
-
-
-.flex-container {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-
-  -webkit-flex-flow: row wrap;
-  justify-content: space-around;
-}
-
-.flex-item {
-  padding: 5px;
-  width: 100px;
-  height: 100px;
-
-  line-height: 150px;
-  font-weight: bold;
-  font-size: 3em;
-  text-align: center;
 }

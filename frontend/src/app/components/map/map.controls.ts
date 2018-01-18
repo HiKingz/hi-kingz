@@ -35,8 +35,7 @@ export class PoiMakerControl {
   onAdd(map) {
     this._map = map;
     this._container = document.createElement('div');
-    this._container.className = 'mapboxgl-ctrl';
-    this._container.textContent = 'Point of Interest';
+    this._container.className = 'invisible';
     map.on('click', this.handleClick);
     map.on('load', () => {
       this._map.addSource('poi', {
@@ -100,20 +99,19 @@ export class RoutePlanningControl  {
   public onAdd(map) {
     this._map = map;
     this._container = document.createElement('div');
-    this._container.className = 'mapboxgl-ctrl';
-    this._container.textContent = 'Route Planning';
+    this._container.className = 'invisible';
     this._wpList = document.createElement('div');
     this._container.appendChild(this._wpList);
     map.on('click', this.handleClick);
 
 
     const self = this;
-    map.on('load', () => {
+    //map.on('load', () => {
       map.on('mousedown', this.mouseDown);
       self.component.route.waypoints.forEach((wp) => {
         self.addPoint(new mapboxgl.LngLat(wp.point.longitude, wp.point.latitude), false);
       });
-    });
+    //});
 
     return this._container;
     // return this.rootHTML.nativeElement;
@@ -146,19 +144,8 @@ export class RoutePlanningControl  {
     });
 
     const self = this;
-    this._map.on('mouseenter', wp_id, () => {
-      self._map.getCanvasContainer().style.cursor = 'move';
-      self.draggedPoint = wp_id;
-      self._map.dragPan.disable();
-    });
-    this._map.on('mouseleave', wp_id, () => {
-      if (self.isDragging) {
-        return; // YOU SHALL NOT LEAVE
-      }
-      self._map.getCanvasContainer().style.cursor = '';
-      self.draggedPoint = null;
-      self._map.dragPan.enable();
-    });
+    this._map.on('mouseenter', wp_id, this.enterDragPoint);
+    this._map.on('mouseleave', wp_id, this.leaveDragPoint);
 
     this.waypoints[wp_id] = [coords.lng, coords.lat];
     this.wp_ids.push(wp_id);
@@ -167,6 +154,21 @@ export class RoutePlanningControl  {
     if (update) {
       this.fetchDirections();
     }
+  }
+
+  private enterDragPoint = (event: any) => {
+    this._map.getCanvasContainer().style.cursor = 'move';
+    this.draggedPoint = event.features[0].layer.id;
+    this._map.dragPan.disable();
+  }
+
+  private leaveDragPoint = (event: any) => {
+    if (this.isDragging) {
+      return; // YOU SHALL NOT LEAVE
+    }
+    this._map.getCanvasContainer().style.cursor = '';
+    this.draggedPoint = null;
+    this._map.dragPan.enable();
   }
 
   public deleteWaypointAt(index: number) {
@@ -315,8 +317,19 @@ export class RoutePlanningControl  {
     request.send();
   }
 
-  onRemove() {
+  public onRemove() {
     this._container.parentNode.removeChild(this._container);
+    const self = this;
+    this.wp_ids.forEach((wp_id) => {
+      this._map.off('mouseenter', wp_id, this.enterDragPoint);
+      this._map.off('mouseleave', wp_id, this.leaveDragPoint);
+      self._map.removeLayer(wp_id);
+      self._map.removeSource(wp_id);
+    });
+
+    this._map.off('mouseDown', this.mouseDown);
     this._map = undefined;
+    this.wp_ids.length = 0;
+    this._wpList.length = 0;
   }
 }

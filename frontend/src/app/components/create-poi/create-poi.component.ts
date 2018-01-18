@@ -20,7 +20,7 @@ export class CreatePoiComponent {
   constructor(private poiService: PoiService, private userDataService: UserDataService) {
     this.frbs_poi = new FirebaseItem(
       '0',
-      new Poi([], null, null, null, new RatingAggregation(1, 0, 0), new Point(8.24958214937908, 50.00016862900732))
+      new Poi([], '', '', null, new RatingAggregation(1, 0, 0), new Point(8.24958214937908, 50.00016862900732))
     );
   }
 

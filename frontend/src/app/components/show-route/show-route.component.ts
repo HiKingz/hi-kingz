@@ -4,6 +4,9 @@ import {FirebaseItem} from '../../commons/models/firebase.model';
 import {Route} from '../../routes/route.model';
 import { ActivatedRoute } from '@angular/router';
 import {RouteService} from '../../routes/route.service';
+import {RatingAggregation} from '../../commons/models/rateable';
+import {UserSignature} from '../../user-data/user-data.model';
+import {UserDataService} from '../../user-data/user-data.service';
 
 @Component({
   selector: 'app-show-route',
@@ -16,10 +19,10 @@ export class ShowRouteComponent implements OnInit {
   frbs_route: FirebaseItem<Route>;
   sub: any;
 
-  constructor(private route: ActivatedRoute, private routeService: RouteService) {
+  constructor(private route: ActivatedRoute, private routeService: RouteService, private userDataService: UserDataService) {
     this.frbs_route = new FirebaseItem(
       '0',
-      new Route(null, null, null, null, null, [], [], null, [], 0, true)
+      new Route([], '', '', 1, new UserSignature('0', 'Dummy'), [], [], new RatingAggregation(0, 0, 0), [], 0, true)
     );
   }
 
@@ -39,4 +42,10 @@ export class ShowRouteComponent implements OnInit {
     });
   }
 
+  saveRoute = () => {
+    if (this.userDataService.currentUserData &&
+      this.frbs_route.item.userSignature.id === this.userDataService.currentUserData.userSignature.id) {
+      this.routeService.update(this.frbs_route);
+    }
+  }
 }
