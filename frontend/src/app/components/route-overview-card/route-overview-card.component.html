@@ -1,4 +1,7 @@
 <mat-card class="card-container clickable" (click)="openRoute()">
+  <div class="private-icon-container" *ngIf="!route.item.isPublic">
+    <i class="private-icon material-icons">lock_outline</i>
+  </div>
   <div class="route-image-sizing-container">
     <div class="loading-image-container center-content-horizontally center-content-vertically">
       <i class="panorama-icon material-icons">landscape</i>
