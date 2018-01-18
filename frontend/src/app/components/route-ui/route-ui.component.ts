@@ -67,12 +67,9 @@ export class RouteUIComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userDataService.onCurrentUserDataLoaded.subscribe((userData) => {
+    this.userDataService.onCurrentUserDataUpdated.subscribe((userData) => {
       this.ownsRoute =
-        (userData.userSignature.id === this._route.item.userSignature.id);
-    });
-    this.userDataService.onCurrentUserDataUnset.subscribe((userData) => {
-      this.ownsRoute = false;
+        (userData && userData.userSignature.id === this._route.item.userSignature.id);
     });
   }
 

@@ -31,8 +31,10 @@ export class CreateRouteComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.userDataService.onCurrentUserDataLoaded.subscribe((userData) => {
-      this.frbs_route.item.userSignature = userData.userSignature;
+    this.frbs_route.item.userSignature =
+      (this.userDataService.currentUserData ? this.userDataService.currentUserData.userSignature : new UserSignature('0', 'Dummy'));
+    this.userDataService.onCurrentUserDataUpdated.subscribe((userData) => {
+      this.frbs_route.item.userSignature = userData ? userData.userSignature : new UserSignature('0', 'Dummy');
     });
   }
 
