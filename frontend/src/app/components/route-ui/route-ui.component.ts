@@ -67,8 +67,10 @@ export class RouteUIComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.ownsRoute = (this.userDataService.currentUserData &&
-      this.userDataService.currentUserData.userSignature.id === this._route.item.userSignature.id);
+    this.userDataService.onCurrentUserDataUpdated.subscribe((userData) => {
+      this.ownsRoute =
+        (userData && userData.userSignature.id === this._route.item.userSignature.id);
+    });
   }
 
   @ViewChild(MapComponent)
