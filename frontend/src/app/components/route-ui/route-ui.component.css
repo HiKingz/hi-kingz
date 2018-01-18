@@ -30,6 +30,7 @@
 .map-options {
   position: absolute;
   right: 15px;
-  width: 225px;
+  width: 275px;
   bottom: 25px;
+  text-align: right;
 }
