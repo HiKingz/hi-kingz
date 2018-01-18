@@ -8,6 +8,16 @@
   object-fit: cover;
 }
 
+.private-icon-container {
+  position: absolute;
+  color: white;
+  z-index: 50;
+}
+
+.private-icon {
+  font-size: 35px;
+}
+
 .route-image-sizing-container {
   position: relative;
   margin: -24px;

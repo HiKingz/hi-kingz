@@ -12,13 +12,11 @@ import {Subject} from 'rxjs/Subject';
 
 @Injectable()
 export class UserDataService extends FirestoreDataService<UserData> {
-  private _currentUserDataLoadedSubject: Subject<UserData> = new Subject<UserData>();
-  private _currentUserDataUnsetSubject: Subject<void> = new Subject<void>();
+  private readonly _currentUserDataUpdatedSubject: Subject<UserData> = new Subject<UserData>();
   private _currentUserDataSubscription: Subscription;
   protected readonly _collectionPath: string = 'user-data';
   public currentUserData: UserData = null;
-  public onCurrentUserDataLoaded: Observable<UserData> = this._currentUserDataLoadedSubject.asObservable();
-  public onCurrentUserDataUnset: Observable<void> = this._currentUserDataUnsetSubject.asObservable();
+  public readonly onCurrentUserDataUpdated: Observable<UserData> = this._currentUserDataUpdatedSubject.asObservable();
 
   constructor(db: AngularFirestore, private _authService: AuthenticationService) {
     super(db);
@@ -52,7 +50,7 @@ export class UserDataService extends FirestoreDataService<UserData> {
           this._currentUserDataSubscription = this.getById(userId).subscribe(
             (userDataItem) => {
               this.currentUserData = userDataItem.item;
-              this._currentUserDataLoadedSubject.next(this.currentUserData);
+              this._currentUserDataUpdatedSubject.next(this.currentUserData);
             }
           );
         }
@@ -65,7 +63,7 @@ export class UserDataService extends FirestoreDataService<UserData> {
       this._currentUserDataSubscription.unsubscribe();
     }
     this.currentUserData = null;
-    this._currentUserDataUnsetSubject.next();
+    this._currentUserDataUpdatedSubject.next(this.currentUserData);
   }
 
   public update(user: FirebaseItem<UserData>): Promise<void> {
