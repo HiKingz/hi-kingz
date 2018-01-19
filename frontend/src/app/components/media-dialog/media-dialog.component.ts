@@ -1,20 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import {MatDialog, MAT_DIALOG_DATA} from '@angular/material';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA} from '@angular/material';
+import {File} from '../../files/file.model';
 
 @Component({
   selector: 'app-media-dialog',
   templateUrl: './media-dialog.component.html',
   styleUrls: ['./media-dialog.component.css']
 })
-export class MediaDialogComponent implements OnInit {
-
-  mediasource: string;
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-    this.mediasource = data.source;
-  }
-
-  ngOnInit() {
-  }
-
+export class MediaDialogComponent {
+  constructor(@Inject(MAT_DIALOG_DATA) public file: File) {}
 }
