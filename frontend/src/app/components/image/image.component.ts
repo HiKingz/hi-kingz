@@ -1,5 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {File} from '../../files/file.model';
+import {MediaDialogComponent} from '../media-dialog/media-dialog.component';
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'app-image',
@@ -8,7 +10,13 @@ import {File} from '../../files/file.model';
 })
 export class ImageComponent {
   @Input()
-  public file: File;
+  public files: Array<File>;
 
-  constructor() { }
+  constructor(private _dialog: MatDialog) { }
+
+  openMediaDialog(file) {
+    this._dialog.open(MediaDialogComponent, {
+      data: file
+    });
+  }
 }
