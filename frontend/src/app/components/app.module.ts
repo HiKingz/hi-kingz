@@ -45,6 +45,7 @@ import {DifficultyIndicatorComponent} from './difficulty-indicator/difficulty-in
 import {RouteOverviewCardComponent} from './route-overview-card/route-overview-card.component';
 import {HttpClientModule} from '@angular/common/http';
 import {MetaUiComponent} from './meta-ui/meta-ui.component';
+import {ImageComponent} from './image/image.component';
 
 const appRoutes: Routes = [
   { path: '', component: AllRoutesComponent },
@@ -77,7 +78,8 @@ const appRoutes: Routes = [
     StarRatingComponent,
     DifficultyIndicatorComponent,
     RouteOverviewCardComponent,
-    MetaUiComponent
+    MetaUiComponent,
+    ImageComponent
   ],
   imports: [
     RouterModule.forRoot(
