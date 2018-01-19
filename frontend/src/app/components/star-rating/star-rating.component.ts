@@ -1,5 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {RatingAggregation} from '../../commons/models/rateable';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-star-rating',
@@ -8,14 +7,15 @@ import {RatingAggregation} from '../../commons/models/rateable';
 })
 export class StarRatingComponent implements OnInit{
   @Input()
-  public rating: RatingAggregation;
+  public rating: number;
   @Input()
   public readOnly = true;
-
+  @Output()
+  public ratingUpdated: EventEmitter<number> = new EventEmitter<number>();
   public displayedRating = 0;
 
   public ngOnInit(): void {
-    this.displayedRating = this.rating && this.rating.avg || 0;
+    this.displayedRating = this.rating || 0;
   }
 
   public displayRating(value: number): void {
@@ -25,10 +25,11 @@ export class StarRatingComponent implements OnInit{
   }
 
   private clicked() {
-    this.rating.avg = this.displayedRating;
+    this.rating = this.displayedRating;
+    this.ratingUpdated.emit(this.rating);
   }
 
   private mouseLeave() {
-    this.displayedRating = this.rating.avg;
+    this.displayedRating = this.rating;
   }
 }
