@@ -15,7 +15,7 @@
   <div class="info-container transparent-background">
     <div class="row middle-xs full-height">
       <div class="col-xs-5 info-col">
-        <app-star-rating matTooltip="average rating" matTooltipPosition="below" [rating]="route.item.ratingAggregation"></app-star-rating>
+        <app-star-rating matTooltip="average rating" matTooltipPosition="below" [rating]="route.item.ratingAggregation && route.item.ratingAggregation.avg || 0"></app-star-rating>
       </div>
       <div class="col-xs-5 info-col">
         <app-difficulty-indicator matTooltip="difficulty" matTooltipPosition="below" [difficulty]="route.item.difficulty"></app-difficulty-indicator>
