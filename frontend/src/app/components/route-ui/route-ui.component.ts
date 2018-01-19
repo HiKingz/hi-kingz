@@ -161,14 +161,14 @@ export class RouteUIComponent implements OnInit {
       );
       this.overlayRef.attach(this.metaUIPortal);
     } else {
-      this.overlayRef.detach()
+      this.overlayRef.detach();
       this.metaUIPortal = null;
     }
   }
 
   public closeMetaUIAndSavePOI = () => {
     if (this.metaUIPortal) {
-      this.overlayRef.detach()
+      this.overlayRef.detach();
       this.metaUIPortal = null;
     }
     this.poiService.create(this._tmpPOI);
