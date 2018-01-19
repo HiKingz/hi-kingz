@@ -1,23 +1,26 @@
 service cloud.firestore {
   match /databases/{database}/documents {
     match /user-data/{userId} {
-      allow read: if request.auth.uid == userId;
       allow write: if request.auth.uid == userId;
+      allow read: if request.auth.uid == userId;
     }
 
     match /pois/{poiId} {
+      allow create: if request.auth.uid == request.resource.data.userSignature.id;
+      allow update, delete: if request.auth.uid == resource.data.userSignature.id;
       allow read: if resource.data.isPublic || request.auth.uid == resource.data.userSignature.id;
-      allow write: if request.auth.uid == resource.data.userSignature.id;
     }
 
     match /routes/{routeId} {
+      allow create: if request.auth.uid == request.resource.data.userSignature.id;
+      allow update, delete: if request.auth.uid == resource.data.userSignature.id;
       allow read: if resource.data.isPublic || request.auth.uid == resource.data.userSignature.id;
-      allow write: if request.auth.uid == resource.data.userSignature.id;
     }
 
     match /{rateable}/{rateableId}/ratings/{ratingId} {
+      allow create: if request.auth.uid == request.resource.data.userSignature.id;
+      allow update, delete: if request.auth.uid == resource.data.userSignature.id;
       allow read;
-      allow write: if request.auth.uid == resource.data.userSignature.id;
     }
   }
 }
