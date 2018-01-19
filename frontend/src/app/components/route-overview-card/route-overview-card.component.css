@@ -32,10 +32,6 @@
   height: 224px;
 }
 
-.transparent-background {
-  background-color: rgba(0, 0, 0, .4);
-}
-
 .open-route-button {
   position: absolute;
   right: 32px;

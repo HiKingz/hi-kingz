@@ -71,6 +71,7 @@ export class RouteUIComponent implements OnInit {
       this.ownsRoute =
         (userData && userData.userSignature.id === this._route.item.userSignature.id);
     });
+    setTimeout(() => this.toggleMetaUI([this.route.item, this.readonly]), 1000);
   }
 
   @ViewChild(MapComponent)
@@ -107,16 +108,6 @@ export class RouteUIComponent implements OnInit {
     this.mapComp.flyTo(location);
   }
 
-  public showImage(index: number) {
-    this.dialog.open(MediaDialogComponent, {
-      height: '40em',
-      width: '40em',
-      data: {
-        source: this.route.item.files[index].url
-      }
-    });
-  }
-
   public enablePOIAdder() {
     this._readonlyBefore = this.readonly;
     this.readonly = true;
@@ -149,7 +140,7 @@ export class RouteUIComponent implements OnInit {
         null,
         Injector.create([
           {provide: Boolean, useValue: data[1]},
-          {provide: 'FileableInterface', useValue: data[0]},
+          {provide: 'MetaUiData', useValue: data[0]},
           {provide: MetaCallbacks, useValue:
             new MetaCallbacks(
               data.length > 2 ? data[2] : this.saveRoute,
