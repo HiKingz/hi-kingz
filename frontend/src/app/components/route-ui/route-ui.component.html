@@ -15,8 +15,8 @@
   <button mat-fab matTooltip="Eigener Standort" (click)="centerOnUserPos()"><mat-icon>my_location</mat-icon></button>
   <button mat-fab matTooltip="Add Point of Interest" (click)="enablePOIAdder()"><mat-icon>add_location</mat-icon></button>
   <button mat-fab matTooltip="Zeige Informationen" (click)="toggleMetaUI([route.item, readonly, route.reference])"><mat-icon>description</mat-icon></button>
-  <button *ngIf="readonly && ownsRoute" mat-fab matTooltip="Bearbeiten" (click)="readonly = false"><mat-icon>mode_edit</mat-icon></button>
-  <button *ngIf="!readonly && (ownsRoute || !userDataService.currentUserData)" mat-fab (click)="saveRoute()" matTooltip="Speichern"><mat-icon>done</mat-icon></button>
+  <button *ngIf="readonly && ownsRoute && mapComp.mapLoaded" mat-fab matTooltip="Bearbeiten" (click)="readonly = false"><mat-icon>mode_edit</mat-icon></button>
+  <button *ngIf="!readonly && mapComp.mapLoaded && (ownsRoute || !route.item.userSignature)" mat-fab (click)="saveRoute()" matTooltip="Speichern"><mat-icon>done</mat-icon></button>
   <!-- <a *ngIf="readonly" matTooltip="Bearbeiten" href="routes/{{route.id}}/edit"><button mat-fab><mat-icon>mode_edit</mat-icon></button></a>
   <button *ngIf="!readonly" mat-fab matTooltip="Speichern" (click)="saveRoute()"><mat-icon>done</mat-icon></button> -->
 </div>

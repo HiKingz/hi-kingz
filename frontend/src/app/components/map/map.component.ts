@@ -48,6 +48,8 @@ export class MapComponent implements OnInit {
   _route: Route = undefined;
   _poi: Poi = undefined;
 
+  mapLoaded = false;
+
   planningCtrl: any;
 
   _readonly: boolean;
@@ -111,12 +113,12 @@ export class MapComponent implements OnInit {
     });
     const self = this;
     this.map.on('load', () => {
-      self.map.loadImage('../../../assets/icons/map-marker.png', (err, img) => {
+      /*self.map.loadImage('../../../assets/icons/map-marker.png', (err, img) => {
         if (err) {
           alert(err);
         }
         self.map.addImage('marker', img);
-      });
+      }); )*/
 
       self.map.loadImage('../../../assets/icons/map-marker-poi.png', (err, img) => {
         if (err) {
@@ -177,7 +179,7 @@ export class MapComponent implements OnInit {
           'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
           'text-offset': [0, 0],
           'text-anchor': 'center',
-          'symbol-spacing' : 25,
+          'symbol-spacing' : 15,
         },
         'paint' : {
           'text-color' : '#FFFFFF'
@@ -185,6 +187,7 @@ export class MapComponent implements OnInit {
       });
 
       self.map.on('mouseup', this.getPoisInBounds);
+      self.mapLoaded = true;
     });
 
     this.planningCtrl = new ctrls.RoutePlanningControl(this, this.route);

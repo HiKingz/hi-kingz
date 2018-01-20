@@ -39,9 +39,10 @@ export class MarkerControl {
     this._container = document.createElement('div');
     this._container.className = 'invisible';
     map.on('click', this.handleClick);
-    map.on('mousemove', this.setPosition);
+    this._map.getCanvasContainer().style.cursor = 'crosshair';
+    // map.on('mousemove', this.setPosition);
     // map.on('load', () => {
-      this._map.addSource('poi', {
+      /* this._map.addSource('poi', {
         'type': 'geojson',
         'data': {
           'type': 'FeatureCollection',
@@ -63,7 +64,7 @@ export class MarkerControl {
           'circle-radius': 10,
           'circle-color': '#00A0FF'
         }
-      });
+      }); */
     // });
 
     return this._container;
@@ -78,7 +79,7 @@ export class MarkerControl {
 
   public setPoint = (coords) => {
     point_src.features[0].geometry.coordinates = [coords.lng, coords.lat];
-    this._map.getSource('poi').setData(point_src);
+    // this._map.getSource('poi').setData(point_src);
   }
 
   public handleClick = (e) => {
@@ -87,16 +88,16 @@ export class MarkerControl {
 
   public onRemove() {
     this._map.off('click', this.handleClick);
-    this._map.off('mousemove', this.setPosition);
-    this._map.removeLayer('poi');
-    this._map.removeSource('poi');
+    // this._map.off('mousemove', this.setPosition);
+    // this._map.removeLayer('poi');
+    // this._map.removeSource('poi');
+    this._map.getCanvasContainer().style.cursor = 'grab';
   }
 
 }
 
 export class RoutePlanningControl  {
 
-  _wpList;
   _container;
   _map: mapboxgl.Map;
 
@@ -114,8 +115,6 @@ export class RoutePlanningControl  {
     this._map = map;
     this._container = document.createElement('div');
     this._container.className = 'invisible';
-    this._wpList = document.createElement('div');
-    this._container.appendChild(this._wpList);
     map.on('click', this.handleClick);
 
 
@@ -155,7 +154,7 @@ export class RoutePlanningControl  {
         'circle-radius': 10,
         'circle-color': '#00A0FF'
       }
-    });
+    }, 'route_waypoints');
 
     const self = this;
     this._map.on('mouseenter', wp_id, this.enterDragPoint);
@@ -166,7 +165,11 @@ export class RoutePlanningControl  {
 
     this.wp_next_id++;
     if (update) {
-      this.fetchDirections();
+      if (this.wp_ids.length > 1) {
+        this.fetchDirections();
+      } else if (this.wp_ids.length === 1) {
+        this.component.route.waypoints.push(new Waypoint('', new Point(coords.lng, coords.lat)));
+      }
     }
   }
 
@@ -258,25 +261,32 @@ export class RoutePlanningControl  {
     // Unbind mouse events
     this._map.off('mousemove', this.onMove);
 
-    this.fetchDirections();
+    if (this.wp_ids.length > 1) {
+      this.fetchDirections();
+    } else {
+      alert('onepoint');
+      this.updateRoute({}, [{location: this.waypoints[this.draggedPoint], name : ''}]);
+    }
   }
 
   public updateRoute = (route, route_wps) => {
     // get distance of the route in meters as provided by service
-    this.component.route.distance = route.distance;
-
-    // Decode the geometry and put the points in a simple array(decode gives LatLong, but we need LongLat, hence we call c.reverse())
-    const decoded = decode(route.geometry, 5).map(function(c) {
-      return c.reverse();
-    });
-
+    if (route.distance) {
+      this.component.route.distance = route.distance;
+    }
     const self = this;
-    this.component.route.direction.length = 0;
-    decoded.forEach(function(c, i) {
-      // push this into the current _route model passed down by the component embedding the map
-      self.component.route.direction.push(new Point(c[0], c[1]));
-    });
+    if (route.geometry) {
+      // Decode the geometry and put the points in a simple array(decode gives LatLong, but we need LongLat, hence we call c.reverse())
+      const decoded = decode(route.geometry, 5).map(function (c) {
+        return c.reverse();
+      });
 
+      this.component.route.direction.length = 0;
+      decoded.forEach(function (c, i) {
+        // push this into the current _route model passed down by the component embedding the map
+        self.component.route.direction.push(new Point(c[0], c[1]));
+      });
+    }
     // Merge waypoints by iterating over both arrays: route_wps and self.component.rt.waypoints
     for (let i = 0; i < self.component.route.waypoints.length; i++) {
       const wp_srvc = route_wps[i]; // Waypoint coming from the service
@@ -331,7 +341,7 @@ export class RoutePlanningControl  {
         }
 
       }
-    }
+    };
     request.onerror = () => {
       alert(JSON.parse(request.responseText).message);
     };
@@ -347,11 +357,11 @@ export class RoutePlanningControl  {
       this._map.off('mouseleave', wp_id, this.leaveDragPoint);
       self._map.removeLayer(wp_id);
       self._map.removeSource(wp_id);
+      delete this.waypoints[wp_id];
     });
-
+    this._map.off('click', this.handleClick);
     this._map.off('mouseDown', this.mouseDown);
     this._map = undefined;
     this.wp_ids.length = 0;
-    this._wpList.length = 0;
   }
 }
