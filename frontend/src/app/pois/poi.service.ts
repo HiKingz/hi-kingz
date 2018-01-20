@@ -28,7 +28,7 @@ export class PoiService extends FirestoreDataService<Poi> {
     }).then(
       result => Promise.resolve(
         result.hits.map(
-          hit => new FirebaseItem<Poi>(hit.objectID, this._deserializeData(hit))
+          hit => new FirebaseItem<Poi>('pois/' + hit.objectID, this._deserializeData(hit))
         )
       )
     );
