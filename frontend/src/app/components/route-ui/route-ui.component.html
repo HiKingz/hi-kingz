@@ -1,7 +1,8 @@
 <div class="waypoints slide-in-left">
   <div class="waypoints_viewport">
-    <mat-card matInput *ngFor="let wp of route.item.waypoints; let i = index" class="md-elevation-z10">
+    <mat-card matInput *ngFor="let wp of route.item.waypoints; let i = index" class="md-elevation-z10" (click)="centerOn(i)">
       <mat-card-content>
+        <label>{{getCharEnum(i)}}:</label>
         <mat-form-field>
           <input matInput [(ngModel)]="wp.name" [readonly]="readonly">
         </mat-form-field>

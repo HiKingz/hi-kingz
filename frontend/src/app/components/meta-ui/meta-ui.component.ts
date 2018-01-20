@@ -40,7 +40,7 @@ export class MetaUiComponent implements OnInit {
   commentModel: CommentModel;
   comments: Array<any>;
 
-  constructor(private fileService: FileService, private rdonly: boolean, @Inject('FileableInterface') private infoobject: Fileable, private callbacks: MetaCallbacks) {
+  constructor(private fileService: FileService, private rdonly: boolean, @Inject('MetaUiData') private infoobject: Fileable, private callbacks: MetaCallbacks) {
     this.route_public_label = 'Öffentliche Route';
     this.commentModel = new CommentModel('', new UserSignature('42', 'Witzelbritz'), new RatingAggregation(0, 0, 0));
     // TODO: Subscribe to service

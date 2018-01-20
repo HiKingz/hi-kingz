@@ -71,7 +71,7 @@ export class RouteUIComponent implements OnInit {
       this.ownsRoute =
         (userData && userData.userSignature.id === this._route.item.userSignature.id);
     });
-    setTimeout(() => this.toggleMetaUI([this.route.item, this.readonly]), 1000);
+    // setTimeout(() => this.toggleMetaUI([this.route.item, this.readonly]), 1000);
   }
 
   @ViewChild(MapComponent)
@@ -81,7 +81,16 @@ export class RouteUIComponent implements OnInit {
     this.markerControl = new MarkerControl(this.mapComp);
   }
 
+  private getCharEnum(i: number): String {
+    let res = '';
+    while (i > 24) {
+      res = String.fromCharCode(i % 24 + 65) + res;
+      i = Math.floor(i / 24);
+    }
+    res = String.fromCharCode(i % 24 + 65) + res;
 
+    return res;
+  }
 
   // Center the map on the 'i'th waypoint in the _route
   public centerOn(i: number) {
@@ -162,8 +171,12 @@ export class RouteUIComponent implements OnInit {
       this.overlayRef.detach();
       this.metaUIPortal = null;
     }
-    this.poiService.create(this._tmpPOI);
-    this.mapComp.addPoi(this._tmpPOI);
+    this.poiService.create(this._tmpPOI).then(poi_obs => {
+      poi_obs.first((poi, i, src) => {
+        this.mapComp.addPoi(poi);
+        return true;
+      });
+    });
     this.mapComp.map.removeControl(this.markerControl);
     this.readonly = this._readonlyBefore;
     this.markerMode = false;

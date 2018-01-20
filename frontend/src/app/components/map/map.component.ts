@@ -1,7 +1,7 @@
 import { Component, Input, Output, OnInit, ViewEncapsulation, EventEmitter, ComponentFactoryResolver } from '@angular/core';
 import {OverlayModule} from '@angular/cdk/overlay';
 import { environment } from '../../../environments/environment';
-
+import {FirebaseItem} from '../../commons/models/firebase.model';
 
 import 'rxjs/add/operator/switchMap';
 
@@ -41,7 +41,7 @@ export class MapComponent implements OnInit {
 
   defaultZoom = 12;
 
-  pois: Array<Poi>;
+  pois: Array<FirebaseItem<Poi>>;
   on_poi: boolean;
   poi_list: Array<Poi>;
   map: mapboxgl.Map;
@@ -165,7 +165,8 @@ export class MapComponent implements OnInit {
     const self = this;
     this.poiService.getInArea(bounds._ne.lat, bounds._ne.lng, bounds._sw.lat, bounds._sw.lng).then(
       (frbs_pois) => {
-        self.displayPointsOfInterest(frbs_pois.map((frbs) => frbs.item));
+        alert('Got POIs');
+        self.displayPointsOfInterest(frbs_pois);
       }
     );
   }
@@ -175,7 +176,7 @@ export class MapComponent implements OnInit {
     this.newMarker.emit(coords);
   }
 
-  public addPoi(poi: Poi) {
+  public addPoi(poi: FirebaseItem<Poi>) {
     const poi_id = 'poi' + this.pois.length;
     this.map.addSource(poi_id, {
       'type': 'geojson',
@@ -185,7 +186,7 @@ export class MapComponent implements OnInit {
           'type': 'Feature',
           'geometry': {
             'type': 'Point',
-            'coordinates': [poi.point.longitude, poi.point.latitude]
+            'coordinates': [poi.item.point.longitude, poi.item.point.latitude]
           }
         }]
       }
@@ -207,7 +208,7 @@ export class MapComponent implements OnInit {
     this.pois.push(poi);
   }
 
-  public displayPointsOfInterest(pois: Array<Poi>) {
+  public displayPointsOfInterest(pois: Array<FirebaseItem<Poi>>) {
     let i = 0;
     for (; i < this.pois.length; i++) {
       this.map.off('mousedown', 'poi' + i, this.clickPoi);

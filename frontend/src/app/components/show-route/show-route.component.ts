@@ -20,7 +20,7 @@ export class ShowRouteComponent {
     this.route.params.subscribe(params => {
       this.routeService.getById(params['id']).subscribe(new_rt => {
         this.frbs_route = new_rt;
-        if (new_rt.item.waypoints.length > 0) {
+        if (new_rt.item.waypoints.length > 0 && this.mapComp) {
           this.mapComp.flyTo(new_rt.item.waypoints[0].point);
         }
       });
