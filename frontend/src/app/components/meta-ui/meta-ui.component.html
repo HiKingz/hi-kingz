@@ -7,7 +7,7 @@
           <i class="private-icon material-icons">lock_outline</i>
         </div>
         <div class="image-sizing-container">
-          <div *ngIf="!readOnly" class="upload-image-overlay center-content-horizontally center-content-vertically transparent-background clickable" (click)="hiddenFileInput.click()">
+          <div *ngIf="!readOnly" class="upload-image-overlay center-content-horizontally center-content-vertically transparent-background clickable" (click)="hiddenFileInput.click()" (mouseover)="hoveringUploadButton = true" (mouseleave)="hoveringUploadButton = false">
             <i class="upload-icon material-icons">add_a_photo</i>
             <input type="file" hidden (change)="fileChanged($event)" #hiddenFileInput>
           </div>
@@ -16,7 +16,7 @@
         <span *ngIf="isRoute" class="distance-icon-container center-content-vertically" matTooltip="distance" matTooltipPosition="below"><i class="distance-icon material-icons">map</i>{{ Math.round(data.distance / 10) / 100 }}km</span>
         <button *ngIf="!isRoute && !readOnly" mat-fab class="create-poi-button" color="accent" (click)="saveObject()"><mat-icon>done</mat-icon></button>
         <button *ngIf="!isRoute && !readOnly" mat-fab class="cancel-create-poi-button" color="accent" (click)="closeUi()"><mat-icon>close</mat-icon></button>
-        <div class="info-container" [ngClass]="{'transparent-background': readOnly, 'primary-background': !readOnly}">
+        <div class="info-container" [ngClass]="{'transparent-background': readOnly || !readOnly && hoveringUploadButton, 'primary-background': !readOnly && !hoveringUploadButton}">
           <div class="row middle-xs full-height">
             <div class="info-col" [ngClass]="{'col-xs-6': isRoute, 'col-xs-12': !isRoute}" *ngIf="readOnly">
               <app-star-rating matTooltip="average rating" matTooltipPosition="below" [rating]="data.ratingAggregation && data.ratingAggregation.avg || 0"></app-star-rating>

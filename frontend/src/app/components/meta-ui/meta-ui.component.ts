@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {ENTER, COMMA, SPACE} from '@angular/cdk/keycodes';
 import {FileService} from '../../files/file.service';
 import {File} from '../../files/file.model';
@@ -46,13 +46,14 @@ export class MetaUiVisibilityState {
   ]
 })
 
-export class MetaUiComponent implements OnInit {
+export class MetaUiComponent {
   public visibilityState = MetaUiVisibilityState.OPEN;
   public Math = Math;
   public isRoute: boolean;
   public separatorKeysCodes = [ENTER, COMMA, SPACE];
   public ratings: Observable<Array<FirebaseItem<Rating>>>;
   public ratingToCreate: Rating;
+  public hoveringUploadButton = false;
 
   constructor(
     private _fileService: FileService,
