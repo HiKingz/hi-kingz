@@ -9,7 +9,6 @@ import {ListRoutesComponent} from './list-routes/list-routes.component';
 import {RouteComponent} from './route/route.component';
 import {MapComponent} from './map/map.component';
 import {RouteUIComponent} from './route-ui/route-ui.component';
-import {PoiUIComponent} from './poi-ui/poi-ui.component';
 import {CreateRouteComponent} from './create-route/create-route.component';
 import {ShowRouteComponent} from './show-route/show-route.component';
 import {RatingComponent} from './rating/rating.component';
@@ -63,7 +62,6 @@ const appRoutes: Routes = [
     ShowRouteComponent,
     MapComponent,
     RouteUIComponent,
-    PoiUIComponent,
     RatingComponent,
     MyRoutesComponent,
     UsernameDialogComponent,

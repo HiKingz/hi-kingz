@@ -300,7 +300,7 @@ export class MapComponent implements OnInit {
   }
 
   private clickPoi = (event: any) => {
-    const index = Number.parseInt(event.features[0].layer.id.substring(3));
+    const index = Number.parseInt(event.features[0].layer.id.substring(3)); // cut 'poi' away from the front
     this.showPoi.emit([this.pois[index].item, true, this.pois[index].reference]);
   }
 
