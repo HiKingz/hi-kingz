@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {FirestoreDataService} from '../commons/firestore-data-services';
+import {FirestoreDataService, OrderSettings, PaginatedDataView} from '../commons/firestore-data-services';
 import {Rating} from './rating.model';
 import {AngularFirestore} from 'angularfire2/firestore';
 import {FirebaseItem} from '../commons/models/firebase.model';
@@ -12,6 +12,10 @@ export class RatingService extends FirestoreDataService<Rating> {
 
   constructor(db: AngularFirestore) {
     super(db);
+  }
+
+  public getPaginatedView(rateable: FirebaseItem<Rateable>): PaginatedDataView<Rating> {
+    return this._getPaginatedView(new OrderSettings('rating', true), 30, rateable);
   }
 
   public create(rateable: FirebaseItem<Rateable>, rating: Rating): Promise<Observable<FirebaseItem<Rating>>> {

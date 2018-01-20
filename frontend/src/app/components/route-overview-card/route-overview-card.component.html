@@ -3,7 +3,7 @@
     <i class="private-icon material-icons">lock_outline</i>
   </div>
   <div class="route-image-sizing-container">
-    <app-image [files]="[{url: 'https://loremflickr.com/1200/600/hiking?random=' + route.item.name}]"></app-image>
+    <app-image [files]="route.item.files"></app-image>
   </div>
   <span class="distance-icon-container center-content-vertically" matTooltip="distance" matTooltipPosition="below"><i class="distance-icon material-icons">map</i>{{ Math.round(route.item.distance / 10) / 100 }}km</span>
   <button mat-fab class="open-route-button" color="primary" (click)="openRoute()"><mat-icon svgIcon="hiking"></mat-icon></button>

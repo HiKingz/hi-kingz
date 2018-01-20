@@ -2,7 +2,7 @@
   <div class="loading-image-container center-content-horizontally center-content-vertically">
     <i class="panorama-icon material-icons">landscape</i>
   </div>
-  <div class="loaded-image-container">
+  <div class="loaded-image-container" *ngIf="files && files.length > 0">
     <img class="image full-width clickable" [src]="files[0].url" *ngIf="files.length === 1" (click)="openMediaDialog(files[0])" />
     <div class="image-gallery-container" *ngIf="files.length > 1">
       <img class="image clickable" *ngFor="let file of files" [src]="file.url" (click)="openMediaDialog(file)" />

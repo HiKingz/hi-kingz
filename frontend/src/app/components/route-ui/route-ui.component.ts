@@ -15,6 +15,8 @@ import {Poi} from '../../pois/poi.model';
 import {MarkerControl} from '../map/map.controls';
 import {RatingAggregation} from '../../commons/models/rateable';
 import {PoiService} from '../../pois/poi.service';
+import {LoginDialogService} from '../../authentication/login-dialog.service';
+
 
 @Component({
   selector: 'app-route-ui',
@@ -57,7 +59,8 @@ export class RouteUIComponent implements OnInit {
   constructor(public dialog: MatDialog,
               private userDataService: UserDataService,
               private overlay: Overlay,
-              private poiService: PoiService) {
+              private poiService: PoiService,
+              private loginSrvc: LoginDialogService) {
     // this._route = new Route(null, null, null, null, null, null, <[Waypoint]>[], new Direction(<[Point]>[]), null, null);
     this.overlayRef = this.overlay.create({
       height: '100%',
@@ -71,7 +74,6 @@ export class RouteUIComponent implements OnInit {
       this.ownsRoute =
         (userData && userData.userSignature.id === this._route.item.userSignature.id);
     });
-    // setTimeout(() => this.toggleMetaUI([this.route.item, this.readonly]), 1000);
   }
 
   @ViewChild(MapComponent)
@@ -109,8 +111,18 @@ export class RouteUIComponent implements OnInit {
   }
 
   saveRoute = () => {
-    this.routeSaved.emit();
-    this.readonly = true; // Go back to showing mode
+    const self = this;
+    if (!this.userDataService.currentUserData) {
+      this.loginSrvc.open();
+      this.userDataService.onCurrentUserDataUpdated.first((userData, i, src) => {
+        self.saveRoute();
+        this.readonly = true; // Go back to showing mode
+        return true;
+      });
+    } else {
+      this.routeSaved.emit();
+      this.readonly = true; // Go back to showing mode
+    }
   }
 
   public flyTo(location: Point) {
@@ -135,7 +147,7 @@ export class RouteUIComponent implements OnInit {
       this.userDataService.currentUserData.userSignature, new RatingAggregation(0, 0, 0),
       new Point(coords[0], coords[1]));
 
-    this.toggleMetaUI([this._tmpPOI, false, this.closeMetaUIAndSavePOI, this.closeMetaUIAndSavePOI]);
+    this.toggleMetaUI([this._tmpPOI, false]);
   }
 
   // Wird als callBack zum schließen übergeben, da funktioniert es nur mit dieser Syntax, weil "this" sonst wieder was anderes ist.
@@ -150,14 +162,15 @@ export class RouteUIComponent implements OnInit {
         Injector.create([
           {provide: Boolean, useValue: data[1]},
           {provide: 'MetaUiData', useValue: data[0]},
-          {provide: MetaCallbacks, useValue:
-            new MetaCallbacks(
-              data.length > 2 ? data[2] : this.saveRoute,
-              data.length > 3 ? data[3] : this.toggleMetaUI
+          {
+            provide: MetaCallbacks,
+            useValue: new MetaCallbacks(
+              this.closeMetaUIAndSavePOI,
+              this.toggleMetaUI
             )
-          }
-          ]
-        )
+          },
+          {provide: String, useValue: data.length > 2 ? data[2] : null},
+        ])
       );
       this.overlayRef.attach(this.metaUIPortal);
     } else {

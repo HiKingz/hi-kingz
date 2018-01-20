@@ -163,9 +163,9 @@ export class MapComponent implements OnInit {
     }
     const bounds = this.map.getBounds();
     const self = this;
+    // TODO DO NOT THROW AWAY ENTITY REFERENCE!
     this.poiService.getInArea(bounds._ne.lat, bounds._ne.lng, bounds._sw.lat, bounds._sw.lng).then(
       (frbs_pois) => {
-        alert('Got POIs');
         self.displayPointsOfInterest(frbs_pois);
       }
     );
@@ -228,7 +228,7 @@ export class MapComponent implements OnInit {
 
   private clickPoi = (event: any) => {
     const index = Number.parseInt(event.features[0].layer.id.substring(3));
-    this.showPoi.emit([this.pois[index], true]);
+    this.showPoi.emit([this.pois[index].item, true, this.pois[index].reference]);
   }
 
   private enterPoi = () => {
