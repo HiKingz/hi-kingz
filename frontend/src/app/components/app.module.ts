@@ -11,7 +11,6 @@ import {MapComponent} from './map/map.component';
 import {RouteUIComponent} from './route-ui/route-ui.component';
 import {PoiUIComponent} from './poi-ui/poi-ui.component';
 import {CreateRouteComponent} from './create-route/create-route.component';
-import {EditRouteComponent} from './edit-route/edit-route.component';
 import {ShowRouteComponent} from './show-route/show-route.component';
 import {RatingComponent} from './rating/rating.component';
 import {MyRoutesComponent} from './my-routes/my-routes.component';
@@ -33,7 +32,6 @@ import {RatingService} from '../ratings/rating.service';
 import {PoiService} from '../pois/poi.service';
 import {UserDataService} from '../user-data/user-data.service';
 import {UsernameDialogComponent} from './login/username-dialog/username-dialog.component';
-import {CreatePoiComponent} from './create-poi/create-poi.component';
 import {FileService} from '../files/file.service';
 import {AngularFireStorageModule} from 'angularfire2/storage';
 import {LoginDialogService} from '../authentication/login-dialog.service';
@@ -50,9 +48,7 @@ import {ImageComponent} from './image/image.component';
 const appRoutes: Routes = [
   { path: '', component: AllRoutesComponent },
   { path: 'routes/create', component: CreateRouteComponent },
-  { path: 'routes/:id/edit', component: EditRouteComponent },
   { path: 'routes/:id', component: ShowRouteComponent },
-  { path: 'pois/create', component: CreatePoiComponent },
   { path: '**', redirectTo: '' }
 ];
 
@@ -64,8 +60,6 @@ const appRoutes: Routes = [
     ListRoutesComponent,
     RouteComponent,
     CreateRouteComponent,
-    CreatePoiComponent,
-    EditRouteComponent,
     ShowRouteComponent,
     MapComponent,
     RouteUIComponent,

@@ -111,6 +111,20 @@ export class MapComponent implements OnInit {
     });
     const self = this;
     this.map.on('load', () => {
+      self.map.loadImage('../../../assets/icons/map-marker.png', (err, img) => {
+        if (err) {
+          alert(err);
+        }
+        self.map.addImage('marker', img);
+      });
+
+      self.map.loadImage('../../../assets/icons/map-marker-poi.png', (err, img) => {
+        if (err) {
+          alert(err);
+        }
+        self.map.addImage('marker-poi', img);
+      });
+
       self.map.addSource('route_source', {
         'type' : 'geojson',
         'data' : {
@@ -132,9 +146,43 @@ export class MapComponent implements OnInit {
         },
         'paint': {
           'line-color': '#888',
-          'line-width': 3
+          'line-width': 3,
         }
       });
+
+      self.map.addSource('route_waypoints', {
+        'type' : 'geojson',
+        'data' : {
+          'type' : 'FeatureCollection',
+          'features' : []
+        }
+      });
+
+      self.map.addLayer({
+        'id' : 'route_waypoints',
+        'type': 'symbol',
+        'source': 'route_waypoints',
+        'layout': {
+          'icon-image': 'marker',
+          'icon-anchor' : 'bottom',
+          'icon-text-fit' : 'both',
+          'icon-offset' : [0, -1.8],
+          'icon-text-fit-padding' : [7, 20, 28, 20],
+          'text-field': '{title}',
+          'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+          'text-offset': [0, -1.8],
+          'text-anchor': 'bottom',
+          'icon-allow-overlap' : true,
+          'icon-ignore-placement' : true,
+          'symbol-spacing' : 25,
+        },
+        'paint' : {
+          'icon-color' : '#3f51b5',
+          'icon-halo-width' : 5,
+          'icon-halo-blur': 5,
+        }
+      });
+
       self.map.on('mouseup', this.getPoisInBounds);
     });
 
@@ -157,13 +205,23 @@ export class MapComponent implements OnInit {
     this.map.addControl(new MapboxGeocoder({accessToken: environment.mapbox.accessToken}), 'top-left');
   }
 
+  private getCharEnum(i: number): String {
+    let res = '';
+    while (i > 24) {
+      res = String.fromCharCode(i % 24 + 65) + res;
+      i = Math.floor(i / 24);
+    }
+    res = String.fromCharCode(i % 24 + 65) + res;
+
+    return res;
+  }
+
   public getPoisInBounds = () => {
     if (this.map.getZoom() < this.defaultZoom) {
       return;
     }
     const bounds = this.map.getBounds();
     const self = this;
-    // TODO DO NOT THROW AWAY ENTITY REFERENCE!
     this.poiService.getInArea(bounds._ne.lat, bounds._ne.lng, bounds._sw.lat, bounds._sw.lng).then(
       (frbs_pois) => {
         self.displayPointsOfInterest(frbs_pois);
@@ -187,6 +245,11 @@ export class MapComponent implements OnInit {
           'geometry': {
             'type': 'Point',
             'coordinates': [poi.item.point.longitude, poi.item.point.latitude]
+          },
+          properties: {
+            'marker-color': '#d0b23b',
+            'marker-size': 'large',
+            'marker-symbol': 'mountain'
           }
         }]
       }
@@ -194,11 +257,21 @@ export class MapComponent implements OnInit {
 
     this.map.addLayer({
       'id': poi_id,
-      'type': 'circle',
+      'type': 'symbol',
       'source': poi_id,
-      'paint': {
-        'circle-radius': 14,
-        'circle-color': '#ff2300'
+      'layout': {
+        'icon-image': 'marker-poi',
+        'icon-anchor' : 'bottom',
+        'icon-size' : 0.2,
+        'icon-offset' : [0, -1.8],
+        'icon-text-fit-padding' : [7, 20, 28, 20],
+        'icon-allow-overlap' : true,
+        'symbol-spacing' : 50,
+      },
+      'paint' : {
+        'icon-color' : '#3f51b5',
+        'icon-halo-width' : 5,
+        'icon-halo-blur': 5,
       }
     });
 
@@ -254,21 +327,43 @@ export class MapComponent implements OnInit {
       }
     };
 
+    const geojson_wps = {
+      'type' : 'FeatureCollection',
+      'features' : [],
+    };
+
     const self = this;
 
     if (self.route) {
       self.route.direction.forEach(function(c, i) {
         geojson.geometry.coordinates.push([c.longitude, c.latitude]);
       });
+      self.route.waypoints.forEach(function(c, i) {
+        geojson_wps.features.push({
+          'type' : 'Feature',
+          'properties' : {
+            'title' : self.getCharEnum(i),
+            'icon' : 'br-state-2'
+          },
+          'geometry' : {
+            'type' : 'Point',
+            'coordinates' : [c.point.longitude, c.point.latitude]
+          }
+        });
+      });
     }// else {
     //  geojson.geometry.coordinates.push([this.poi.point.longitude, this._poi.point.latitude]);
     // }
+
+
     const src = this.map.getSource('route_source');
     if (src) {
       src.setData(geojson);
+      this.map.getSource('route_waypoints').setData(geojson_wps);
     } else {
       this.map.on('load', () => {
         self.map.getSource('route_source').setData(geojson);
+        self.map.getSource('route_waypoints').setData(geojson_wps);
         if (jumpTo) {
           if (self.route && self.route.direction.length > 0) {
             self.flyTo(self.route.direction[0]);
