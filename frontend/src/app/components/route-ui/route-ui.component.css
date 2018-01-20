@@ -1,47 +1,45 @@
-.waypoints {
-  width: 17em;
-  max-height: calc(100vh - 154px);
-  display: inline;
+.waypoints-container {
   position: absolute;
-  top: 60px;
-  left: 25px;
+  overflow: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 500px;
   z-index: 2;
-  overflow: hidden;
+  padding-top: 50px;
 }
 
-.waypoints_viewport {
-  overflow-y: scroll;
-  max-height: calc(100vh - 154px);
-  width: 19em;
-  overflow-x: hidden;
+.waypoints-container::-webkit-scrollbar {
+  display: none;
 }
 
-.waypoints_viewport .mat-card {
-  height: 50px;
-  margin-bottom: 10px;
-  padding: 4px;
-  display: inline-block;
-  width: 15em;
+.waypoint-identifier {
+  float: left;
+  margin-right: 24px;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  color: white;
 }
 
-.waypoints_viewport .mat-card mat-form-field {
-  width: 90%;
+.waypoint-name {
+  width: calc(100% - 80px);
+}
+
+.waypoint-card {
+  margin-top: 10px;
+  margin-left: 10px;
+  padding: 14px !important;
 }
 
 .clear_button {
+  color: #5f5f5f;
   width: 24px !important;
   height: 24px !important;
   top: 5px;
-  right: 3px;
+  right: 5px;
   position: absolute !important;
   line-height: 20px !important;
-}
-
-.clear_button .mat-button-wrapper {
-  line-height: 20px !important;
-  top: 0px !important;
-  position: absolute;
-  right: 0px;
 }
 
 .map-options {

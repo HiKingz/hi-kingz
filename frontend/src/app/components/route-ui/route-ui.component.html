@@ -1,16 +1,13 @@
-<div class="waypoints slide-in-left">
-  <div class="waypoints_viewport">
-    <mat-card matInput *ngFor="let wp of route.item.waypoints; let i = index" class="md-elevation-z10" (click)="centerOn(i)">
-      <mat-card-content>
-        <label>{{getCharEnum(i)}}:</label>
-        <mat-form-field>
-          <input matInput [(ngModel)]="wp.name" [readonly]="readonly">
-        </mat-form-field>
-        <!--<button mat-icon-button (click)="centerOn(i)"><mat-icon>explore</mat-icon></button>-->
-        <button mat-icon-button class="clear_button" *ngIf="!readonly" (click)="deleteWaypointAt(i)"><mat-icon>clear</mat-icon></button>
-      </mat-card-content>
-    </mat-card>
-  </div>
+<div class="waypoints-container">
+  <mat-card *ngFor="let wp of route.item.waypoints; let i = index" class="md-elevation-z10 waypoint-card slide-in-left" (click)="centerOn(i)">
+    <button mat-icon-button class="clear_button" *ngIf="!readonly" (click)="deleteWaypointAt(i)"><mat-icon>clear</mat-icon></button>
+    <mat-card-content>
+      <div class="waypoint-identifier primary-background center-content-horizontally center-content-vertically">{{ getCharEnum(i) }}</div>
+      <mat-form-field class="waypoint-name">
+        <input matInput [(ngModel)]="wp.name" [readonly]="readonly">
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
 </div>
 <app-map [route]="route.item" [readonly]="readonly" (showPoi)="toggleMetaUI($event)"></app-map>
 
