@@ -14,8 +14,8 @@ export class RatingService extends FirestoreDataService<Rating> {
     super(db);
   }
 
-  public getPaginatedView(rateable: FirebaseItem<Rateable>): PaginatedDataView<Rating> {
-    return this._getPaginatedView(new OrderSettings('rating', true), 30, rateable);
+  public getAll(rateable: FirebaseItem<Rateable>): Observable<Array<FirebaseItem<Rating>>> {
+    return this._getAll(rateable);
   }
 
   public create(rateable: FirebaseItem<Rateable>, rating: Rating): Promise<Observable<FirebaseItem<Rating>>> {

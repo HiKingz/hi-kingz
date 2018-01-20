@@ -79,6 +79,7 @@
   right: 0;
   top: 280px;
   height: 44px;
+  transition: background-color .2s ease-in-out;
 }
 
 .info-col {
@@ -117,4 +118,23 @@
 
 .cancel-create-poi-button {
   right: 104px;
+}
+
+.comment-card {
+  margin-top: 8px;
+}
+
+.profile-image-icon {
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  color: white;
+}
+
+.username-row {
+  height: 48px;
+}
+
+.username-row h2 {
+  margin: 0;
 }

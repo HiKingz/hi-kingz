@@ -7,7 +7,7 @@
           <i class="private-icon material-icons">lock_outline</i>
         </div>
         <div class="image-sizing-container">
-          <div *ngIf="!readOnly" class="upload-image-overlay center-content-horizontally center-content-vertically transparent-background clickable" (click)="hiddenFileInput.click()">
+          <div *ngIf="!readOnly" class="upload-image-overlay center-content-horizontally center-content-vertically transparent-background clickable" (click)="hiddenFileInput.click()" (mouseover)="hoveringUploadButton = true" (mouseleave)="hoveringUploadButton = false">
             <i class="upload-icon material-icons">add_a_photo</i>
             <input type="file" hidden (change)="fileChanged($event)" #hiddenFileInput>
           </div>
@@ -16,7 +16,7 @@
         <span *ngIf="isRoute" class="distance-icon-container center-content-vertically" matTooltip="distance" matTooltipPosition="below"><i class="distance-icon material-icons">map</i>{{ Math.round(data.distance / 10) / 100 }}km</span>
         <button *ngIf="!isRoute && !readOnly" mat-fab class="create-poi-button" color="accent" (click)="saveObject()"><mat-icon>done</mat-icon></button>
         <button *ngIf="!isRoute && !readOnly" mat-fab class="cancel-create-poi-button" color="accent" (click)="closeUi()"><mat-icon>close</mat-icon></button>
-        <div class="info-container" [ngClass]="{'transparent-background': readOnly, 'primary-background': !readOnly}">
+        <div class="info-container" [ngClass]="{'transparent-background': readOnly || !readOnly && hoveringUploadButton, 'primary-background': !readOnly && !hoveringUploadButton}">
           <div class="row middle-xs full-height">
             <div class="info-col" [ngClass]="{'col-xs-6': isRoute, 'col-xs-12': !isRoute}" *ngIf="readOnly">
               <app-star-rating matTooltip="average rating" matTooltipPosition="below" [rating]="data.ratingAggregation && data.ratingAggregation.avg || 0"></app-star-rating>
@@ -67,13 +67,51 @@
           </div>
         </mat-card-content>
       </mat-card>
-      <ng-template [ngIf]="paginatedRatingsView">
-        <button (click)="paginatedRatingsView.loadNextPage()">test</button>
-        <!--pagination and stuff-->
-        <mat-card *ngFor="let rating of paginatedRatingsView.data | async">
+      <ng-template [ngIf]="userDataService.currentUserData && dataFirestoreReference">
+        <mat-card class="slide-in comment-card">
           <mat-card-content>
-            <app-star-rating [rating]="rating"></app-star-rating>
-            <p>{{ rating.comment }}</p>
+            <div class="row">
+              <div class="col-xs-1 center-content-horizontally"><div class="profile-image-icon primary-background center-content-horizontally center-content-vertically">{{ userDataService.currentUserData.userSignature.username[0].toUpperCase() }}</div></div>
+              <div class="col-xs-11">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="row middle-xs username-row">
+                      <div class="col-xs-8"><h2>{{ userDataService.currentUserData.userSignature.username }}</h2></div>
+                      <div class="col-xs-4"><app-star-rating class="pull-right" [readOnly]="false" [rating]="ratingToCreate.rating" (ratingUpdated)="ratingToCreate.rating = $event"></app-star-rating></div></div>
+                  </div>
+                  <div class="col-xs-12">
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Leave a comment..." [(ngModel)]="ratingToCreate.comment">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-xs-6">
+                    <button mat-button class="full-width" color="primary" (click)="resetRatingToCreate()">CANCEL</button>
+                  </div>
+                  <div class="col-xs-6">
+                    <button mat-button class="full-width" color="primary" (click)="createRating()">CREATE</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </ng-template>
+      <ng-template [ngIf]="ratings">
+        <mat-card *ngFor="let rating of ratings | async" class="slide-in comment-card">
+          <mat-card-content>
+            <div class="row">
+              <div class="col-xs-1 center-content-horizontally"><div class="profile-image-icon primary-background center-content-horizontally center-content-vertically">{{ rating.item.user.username[0].toUpperCase() }}</div></div>
+              <div class="col-xs-11">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="row middle-xs username-row">
+                      <div class="col-xs-8"><h2>{{ rating.item.user.username }}</h2></div>
+                      <div class="col-xs-4"><app-star-rating class="pull-right" [rating]="rating.item.rating"></app-star-rating></div></div>
+                    </div>
+                  <div class="col-xs-12"><p>{{ rating.item.comment }}</p></div>
+                </div>
+              </div>
+            </div>
           </mat-card-content>
         </mat-card>
       </ng-template>
