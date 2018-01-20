@@ -7,10 +7,11 @@ import {Poi} from '../../pois/poi.model';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MatChipInputEvent} from '@angular/material';
 import {RatingService} from '../../ratings/rating.service';
-import {PaginatedDataView} from '../../commons/firestore-data-services';
 import {Rating} from '../../ratings/rating.model';
 import {Rateable} from '../../commons/models/rateable';
 import {FirebaseItem} from '../../commons/models/firebase.model';
+import {Observable} from 'rxjs/Observable';
+import {UserDataService} from '../../user-data/user-data.service';
 
 export class MetaCallbacks {
   constructor(public saveCallback: Function, public closeCallback: Function) {}
@@ -50,24 +51,25 @@ export class MetaUiComponent implements OnInit {
   public Math = Math;
   public isRoute: boolean;
   public separatorKeysCodes = [ENTER, COMMA, SPACE];
-  public paginatedRatingsView: PaginatedDataView<Rating>;
+  public ratings: Observable<Array<FirebaseItem<Rating>>>;
+  public ratingToCreate: Rating;
 
   constructor(
     private _fileService: FileService,
+    private userDataService: UserDataService,
     private _ratingService: RatingService,
     public readOnly: boolean,
     @Inject('MetaUiData') private data: Route | Poi,
     private _callbacks: MetaCallbacks,
-    private _dataFirestoreReference: string,
+    public dataFirestoreReference: string,
   ) {
     this.isRoute = data instanceof Route;
-
-    if (this._dataFirestoreReference) {
-      this.paginatedRatingsView = this._ratingService.getPaginatedView(
-        new FirebaseItem<Rateable>(this._dataFirestoreReference, data)
+    this.resetRatingToCreate();
+    console.log(this.dataFirestoreReference)
+    if (this.dataFirestoreReference) {
+      this.ratings = this._ratingService.getAll(
+        new FirebaseItem<Rateable>(this.dataFirestoreReference, data)
       );
-      this.paginatedRatingsView.data.subscribe(items => console.log(items));
-      // this.paginatedRatingsView.loadNextPage();
     }
   }
 
@@ -104,5 +106,16 @@ export class MetaUiComponent implements OnInit {
     }
   }
 
-  ngOnInit() {console.log(this._dataFirestoreReference)}
+  private resetRatingToCreate() {
+    this.ratingToCreate = new Rating([], null, 0, '');
+  }
+
+  public createRating() {
+    this.ratingToCreate.user = this.userDataService.currentUserData.userSignature;
+
+    this._ratingService.create(
+      new FirebaseItem<Rateable>(this.dataFirestoreReference, this.data),
+      this.ratingToCreate
+    ).then(value => this.resetRatingToCreate());
+  }
 }

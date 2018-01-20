@@ -89,6 +89,21 @@ export abstract class FirestoreDataService<ModelType extends FirebaseStorable> {
     );
   }
 
+  /**
+   * Use with caution to avoid doing to many requests. That's why it's only allowed for subcollections.
+   *
+   * @param {FirebaseItem<FirebaseStorable>} parentDocument
+   * @returns {Observable<Array<FirebaseItem<ModelType extends FirebaseStorable>>>}
+   * @private
+   */
+  protected _getAll(parentDocument: FirebaseItem<FirebaseStorable>): Observable<Array<FirebaseItem<ModelType>>> {
+    return this._db.collection<ModelType>(this._getCollectionPath(parentDocument)).snapshotChanges().map(
+      (changeActions: Array<DocumentChangeAction>) => changeActions.map(
+        changeAction => this._deserializeDocumentSnapshot(changeAction.payload.doc)
+      )
+    );
+  }
+
   protected _exists(reference: string): Promise<boolean> {
     return new Promise<boolean>(
       (resolve, reject) =>

@@ -20,7 +20,7 @@ export class CreateRouteComponent implements OnInit {
 
   constructor(private routeService: RouteService, private userDataService: UserDataService, private location: Location) {
     this.frbs_route = new FirebaseItem(
-      '0',
+      null,
       new Route([], '', '', 1, null, [], [], new RatingAggregation(0, 0, 0), [], 0, true)
     );
   }
@@ -42,7 +42,7 @@ export class CreateRouteComponent implements OnInit {
     const self = this;
     if (this.userDataService.currentUserData) {
       this.frbs_route.item.userSignature = this.userDataService.currentUserData.userSignature;
-      if (this.frbs_route.id === '0') {
+      if (!this.frbs_route.id) {
         this.routeService.create(this.frbs_route.item).then((rt) => {
           rt.subscribe((new_rt) => {
             self.frbs_route = new_rt;
