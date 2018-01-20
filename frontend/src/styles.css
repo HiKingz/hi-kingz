@@ -36,6 +36,10 @@ body {
   height: 100%;
 }
 
+.primary-background {
+  background-color: #3f51b5;
+}
+
 .transparent-background {
   background-color: rgba(0, 0, 0, .4);
 }

@@ -71,7 +71,6 @@ export class RouteUIComponent implements OnInit {
       this.ownsRoute =
         (userData && userData.userSignature.id === this._route.item.userSignature.id);
     });
-    setTimeout(() => this.toggleMetaUI([this.route.item, this.readonly]), 1000);
   }
 
   @ViewChild(MapComponent)
@@ -126,7 +125,7 @@ export class RouteUIComponent implements OnInit {
       this.userDataService.currentUserData.userSignature, new RatingAggregation(0, 0, 0),
       new Point(coords[0], coords[1]));
 
-    this.toggleMetaUI([this._tmpPOI, false, this.closeMetaUIAndSavePOI, this.closeMetaUIAndSavePOI]);
+    this.toggleMetaUI([this._tmpPOI, false]);
   }
 
   // Wird als callBack zum schließen übergeben, da funktioniert es nur mit dieser Syntax, weil "this" sonst wieder was anderes ist.
@@ -141,14 +140,15 @@ export class RouteUIComponent implements OnInit {
         Injector.create([
           {provide: Boolean, useValue: data[1]},
           {provide: 'MetaUiData', useValue: data[0]},
-          {provide: MetaCallbacks, useValue:
-            new MetaCallbacks(
-              data.length > 2 ? data[2] : this.saveRoute,
-              data.length > 3 ? data[3] : this.toggleMetaUI
+          {
+            provide: MetaCallbacks,
+            useValue: new MetaCallbacks(
+              this.closeMetaUIAndSavePOI,
+              this.toggleMetaUI
             )
-          }
-          ]
-        )
+          },
+          {provide: String, useValue: data.length > 2 ? data[2] : null},
+        ])
       );
       this.overlayRef.attach(this.metaUIPortal);
     } else {

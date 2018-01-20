@@ -1,22 +1,24 @@
-import { Component, OnInit, Inject, trigger, transition, animate, state, style } from '@angular/core';
-import {Fileable} from '../../commons/models/fileable';
+import {Component, Inject} from '@angular/core';
+import {ENTER, COMMA, SPACE} from '@angular/cdk/keycodes';
 import {FileService} from '../../files/file.service';
 import {File} from '../../files/file.model';
 import {Route} from '../../routes/route.model';
 import {Poi} from '../../pois/poi.model';
-
-// TODO: RatingService und UserDataservice verwenden statt dieser Imports für Mocks
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {MatChipInputEvent} from '@angular/material';
+import {RatingService} from '../../ratings/rating.service';
+import {PaginatedDataView} from '../../commons/firestore-data-services';
 import {Rating} from '../../ratings/rating.model';
-import {UserSignature} from '../../user-data/user-data.model';
-import {RatingAggregation} from '../../commons/models/rateable';
+import {Rateable} from '../../commons/models/rateable';
+import {FirebaseItem} from '../../commons/models/firebase.model';
 
 export class MetaCallbacks {
   constructor(public saveCallback: Function, public closeCallback: Function) {}
 }
 
-class CommentModel {
-  constructor(public comment: string, public user: UserSignature, public rating: RatingAggregation) {}
-
+export class MetaUiVisibilityState {
+  public static OPEN = 'open';
+  public static CLOSED = 'closed';
 }
 
 @Component({
@@ -24,76 +26,82 @@ class CommentModel {
   templateUrl: './meta-ui.component.html',
   styleUrls: ['./meta-ui.component.css'],
   animations: [
-    trigger('closedTrigger', [
-      state('open', style({'opacity' : '1.0', 'top' : '5vh'})),
-      state('closed', style({'opacity' : '0.0', 'top' : '70vh'})),
-      transition('open => closed', animate('400ms ease-out'))
+    trigger('slideOut', [
+      state(MetaUiVisibilityState.OPEN, style({transform: 'translateY(0)', opacity: 1})),
+      state(MetaUiVisibilityState.CLOSED, style({transform: 'translateY(100%)', opacity: 0})),
+      transition(
+        MetaUiVisibilityState.OPEN + ' => ' +  MetaUiVisibilityState.CLOSED,
+        animate('400ms ease-out')
+      )
+    ]),
+    trigger('fadeOut', [
+      state(MetaUiVisibilityState.OPEN, style({opacity: 1})),
+      state(MetaUiVisibilityState.CLOSED, style({opacity: 0})),
+      transition(
+        MetaUiVisibilityState.OPEN + ' => ' +  MetaUiVisibilityState.CLOSED,
+        animate('400ms ease-out')
+      )
     ])
   ]
 })
-export class MetaUiComponent implements OnInit {
+export class MetaUiComponent {
+  public visibilityState = MetaUiVisibilityState.OPEN;
+  public Math = Math;
+  public isRoute: boolean;
+  public separatorKeysCodes = [ENTER, COMMA, SPACE];
+  public paginatedRatingsView: PaginatedDataView<Rating>;
 
-  closedState = 'open';
-  route_public_label: string;
-  showcasedImage: string;
+  constructor(
+    private _fileService: FileService,
+    private _ratingService: RatingService,
+    public readOnly: boolean,
+    @Inject('MetaUiData') private data: Route | Poi,
+    private _callbacks: MetaCallbacks,
+    private _dataFirestoreReference: string,
+  ) {
+    this.isRoute = data instanceof Route;
 
-  commentModel: CommentModel;
-  comments: Array<any>;
-
-  constructor(private fileService: FileService, private rdonly: boolean, @Inject('FileableInterface') private infoobject: Fileable, private callbacks: MetaCallbacks) {
-    this.route_public_label = 'Öffentliche Route';
-    this.commentModel = new CommentModel('', new UserSignature('42', 'Witzelbritz'), new RatingAggregation(0, 0, 0));
-    // TODO: Subscribe to service
-    this.comments = [
-      {
-        'username' : 'Hans Wurst',
-        'title' : 'Klebt prima!',
-        'ratingAggregation' : { 'avg' : 5 },
-        'text' : 'Eine Minute nachdem ich reingetreten bin fand eine unvorhersehbare chemische Reaktion statt, die meinen Schuh prompt am Bürgersteig festgesetzt hat. NASA pickelt mich gerade von der Straße, weil sie sehr an einer Probe interessiert sind.'
-      }
-    ];
-  }
-
-  private saveComment() {
-    // TODO: Write comment to service into the correct collection.
-  }
-
-  private gotRoute(): boolean {
-    return this.infoobject instanceof Route;
-  }
-
-  changePrivacy() {
-    if (this.infoobject instanceof Route) {
-      if (this.infoobject.isPublic) {
-        this.route_public_label = 'Öffentliche Route';
-      } else {
-        this.route_public_label = 'Private Route';
-      }
+    if (this._dataFirestoreReference) {
+      this.paginatedRatingsView = this._ratingService.getPaginatedView(
+        new FirebaseItem<Rateable>(this._dataFirestoreReference, data)
+      );
+      this.paginatedRatingsView.data.subscribe(items => console.log(items));
+      // this.paginatedRatingsView.loadNextPage();
     }
   }
 
-  ngOnInit() {
-    if (this.infoobject.files && this.infoobject.files.length > 0) {
-      this.showcasedImage = this.infoobject.files[0].url;
-    }
-  }
-
-  async closeUI() {
-    this.closedState = 'closed';
+  async closeUi() {
+    this.visibilityState = MetaUiVisibilityState.CLOSED;
     await (new Promise(res => setTimeout(res, 400)));
-    this.callbacks.closeCallback();
+    this._callbacks.closeCallback();
   }
 
   public fileChanged(event) {
     const file = event.target.files.item(0);
-    const task = this.fileService.upload(file);
+    const task = this._fileService.upload(file);
     task.then().then((val) => {
-      this.infoobject.files.push(new File(val.downloadURL));
+      this.data.files.push(new File(val.downloadURL));
     });
   }
 
   public saveObject() {
-    this.callbacks.saveCallback();
+    this._callbacks.saveCallback();
   }
 
+  public addTag(event: MatChipInputEvent): void {
+    if (this.data instanceof Route) {
+      const input = event.input;
+      const value = event.value;
+
+      if ((value || '').trim()) {
+        this.data.tags.push(value.trim());
+      }
+
+      if (input) {
+        input.value = '';
+      }
+    }
+  }
+
+  ngOnInit() {console.log(this._dataFirestoreReference)}
 }
