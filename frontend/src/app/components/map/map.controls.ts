@@ -191,7 +191,13 @@ export class RoutePlanningControl  {
     delete this.waypoints[this.wp_ids[index]];
     this.component.route.waypoints.splice(index, 1);
     this.wp_ids.splice(index, 1);
-    this.fetchDirections();
+    if (this.wp_ids.length < 2) {
+      this.component.route.direction.length = 0;
+      this.component.route.waypoints.length = 0;
+      this.component.displayRouteOrPoi();
+    } else {
+      this.fetchDirections();
+    }
   }
 
   public handleClick = (e) => {

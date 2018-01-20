@@ -159,27 +159,28 @@ export class MapComponent implements OnInit {
       });
 
       self.map.addLayer({
+        'id' : 'route_waypoints_circles',
+        'type': 'circle',
+        'source': 'route_waypoints',
+        'paint' : {
+          'circle-radius' : 14,
+          'circle-color' : '#3f51b5'
+        }
+      });
+
+      self.map.addLayer({
         'id' : 'route_waypoints',
         'type': 'symbol',
         'source': 'route_waypoints',
         'layout': {
-          'icon-image': 'marker',
-          'icon-anchor' : 'bottom',
-          'icon-text-fit' : 'both',
-          'icon-offset' : [0, -1.8],
-          'icon-text-fit-padding' : [7, 20, 28, 20],
           'text-field': '{title}',
           'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
-          'text-offset': [0, -1.8],
-          'text-anchor': 'bottom',
-          'icon-allow-overlap' : true,
-          'icon-ignore-placement' : true,
+          'text-offset': [0, 0],
+          'text-anchor': 'center',
           'symbol-spacing' : 25,
         },
         'paint' : {
-          'icon-color' : '#3f51b5',
-          'icon-halo-width' : 5,
-          'icon-halo-blur': 5,
+          'text-color' : '#FFFFFF'
         }
       });
 
@@ -355,6 +356,9 @@ export class MapComponent implements OnInit {
     //  geojson.geometry.coordinates.push([this.poi.point.longitude, this._poi.point.latitude]);
     // }
 
+    if (geojson.geometry.coordinates.length === 0) {
+      geojson.geometry.coordinates.push([0, 0]);
+    }
 
     const src = this.map.getSource('route_source');
     if (src) {
