@@ -1,7 +1,3 @@
-#map {
-  height: 100%;
-}
-
 .waypoints {
   width: 17em;
   max-height: calc(100vh - 154px);
@@ -50,8 +46,7 @@
 
 .map-options {
   position: absolute;
-  right: 15px;
-  width: 275px;
-  bottom: 25px;
+  right: 25px;
+  bottom: 35px;
   text-align: right;
 }

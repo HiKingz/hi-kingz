@@ -6,7 +6,6 @@ import {FirestoreDataService} from '../commons/firestore-data-services';
 import {FirebaseItem} from '../commons/models/firebase.model';
 import {AuthenticationService} from '../authentication/authentication.service';
 import 'rxjs/add/operator/first';
-import * as firebase from 'firebase';
 import {Subscription} from 'rxjs/Subscription';
 import {Subject} from 'rxjs/Subject';
 

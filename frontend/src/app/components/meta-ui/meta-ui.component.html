@@ -72,7 +72,7 @@
             <input matInput placeholder="Title" [(ngModel)]="commentModel.title"/>
             <br/>
           </mat-form-field>-->
-          <app-star-rating [rating]="commentModel.rating" [canSet]="true"></app-star-rating>
+          <app-star-rating [rating]="commentModel.rating" [readOnly]="false"></app-star-rating>
         </div>
         <mat-form-field>
           <textarea rows="8" matInput placeholder="Comment" [(ngModel)]="commentModel.comment"></textarea>

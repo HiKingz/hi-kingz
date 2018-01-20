@@ -13,6 +13,7 @@ export class Poi extends FirebaseStorable implements Fileable, Rateable {
     public userSignature: UserSignature,
     public ratingAggregation: RatingAggregation,
     public point: Point,
+    public isPublic: boolean = true,
   ) {
     super();
   }
@@ -20,7 +21,7 @@ export class Poi extends FirebaseStorable implements Fileable, Rateable {
   public static deserialize(data: any): Poi {
     return new Poi(
       // TODO check if files need to be deserialized
-      null,
+      data.files && data.files.map(fileData => new File(fileData.url)) || [],
       data.name || '',
       data.description || '',
       data.userSignature && new UserSignature(
@@ -29,7 +30,7 @@ export class Poi extends FirebaseStorable implements Fileable, Rateable {
       data.ratingAggregation && new RatingAggregation(
       data.ratingAggregation.avg || 0, data.ratingAggregation.count || 0, data.ratingAggregation.sum || 0
       ) || new RatingAggregation(0, 0, 0),
-      data.point && new Point(data.point.longitude || null, data.point.latitude || null) || null
+      data.point && new Point(data.point.longitude || null, data.point.latitude || null) || null,
     );
   }
 }

@@ -1,33 +1,35 @@
-import {Component, Input} from '@angular/core';
-import {RatingAggregation} from '../../commons/models/rateable';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-star-rating',
   templateUrl: './star-rating.component.html',
   styleUrls: ['./star-rating.component.css']
 })
-export class StarRatingComponent {
+export class StarRatingComponent implements OnInit{
   @Input()
-  public rating: RatingAggregation;
+  public rating: number;
   @Input()
-  public canSet = false;
+  public readOnly = true;
+  @Output()
+  public ratingUpdated: EventEmitter<number> = new EventEmitter<number>();
+  public displayedRating = 0;
 
-  // If there has been a click, stop "following" the cursor until the span is left again
-  private hasSet = false;
+  public ngOnInit(): void {
+    this.displayedRating = this.rating || 0;
+  }
 
-  constructor() {}
-
-  private setRating(num: number): void {
-    if (this.canSet && !this.hasSet) {
-      this.rating.avg = num;
+  public displayRating(value: number): void {
+    if (!this.readOnly) {
+      this.displayedRating = value;
     }
   }
 
   private clicked() {
-    this.hasSet = true;
+    this.rating = this.displayedRating;
+    this.ratingUpdated.emit(this.rating);
   }
 
   private mouseLeave() {
-    this.hasSet = false;
+    this.displayedRating = this.rating;
   }
 }
