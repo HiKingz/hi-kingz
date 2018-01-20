@@ -6,7 +6,7 @@
           <input matInput [(ngModel)]="wp.name" [readonly]="readonly">
         </mat-form-field>
         <!--<button mat-icon-button (click)="centerOn(i)"><mat-icon>explore</mat-icon></button>-->
-        <button *ngIf="!readonly" mat-icon-button (click)="deleteWaypointAt(i)"><mat-icon>delete</mat-icon></button>
+        <button mat-icon-button class="clear_button" *ngIf="!readonly" (click)="deleteWaypointAt(i)"><mat-icon>clear</mat-icon></button>
       </mat-card-content>
     </mat-card>
   </div>

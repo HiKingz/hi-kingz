@@ -259,9 +259,9 @@ export class MapComponent implements OnInit {
       self.route.direction.forEach(function(c, i) {
         geojson.geometry.coordinates.push([c.longitude, c.latitude]);
       });
-    } else {
-      geojson.geometry.coordinates.push([this.poi.point.longitude, this._poi.point.latitude]);
-    }
+    }// else {
+    //  geojson.geometry.coordinates.push([this.poi.point.longitude, this._poi.point.latitude]);
+    // }
     const src = this.map.getSource('route_source');
     if (src) {
       src.setData(geojson);
