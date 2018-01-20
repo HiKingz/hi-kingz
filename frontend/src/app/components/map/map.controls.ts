@@ -193,7 +193,7 @@ export class RoutePlanningControl  {
     this.wp_ids.splice(index, 1);
     if (this.wp_ids.length < 2) {
       this.component.route.direction.length = 0;
-      this.component.route.waypoints.length = 0;
+      this.component.route.waypoints.length = this.wp_ids.length === 1 ? 1 : 0;
       this.component.displayRouteOrPoi();
     } else {
       this.fetchDirections();
