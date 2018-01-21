@@ -1,0 +1,17 @@
+<span class="rating-stars" (click)="clicked()" (mouseleave)="mouseLeave()" [ngClass]="{clickable: !readOnly}">
+  <mat-icon *ngIf="displayedRating < 0.5" (mouseenter)="displayRating(1)">star_border</mat-icon>
+  <mat-icon *ngIf="displayedRating >= 0.5 && displayedRating < 1" (mouseenter)="displayRating(1)">star_half</mat-icon>
+  <mat-icon *ngIf="displayedRating >= 1" (mouseenter)="displayRating(1)">star</mat-icon>
+  <mat-icon *ngIf="displayedRating < 1.5" (mouseenter)="displayRating(2)">star_border</mat-icon>
+  <mat-icon *ngIf="displayedRating >= 1.5 && displayedRating < 2" (mouseenter)="displayRating(2)">star_half</mat-icon>
+  <mat-icon *ngIf="displayedRating >= 2" (mouseenter)="displayRating(2)">star</mat-icon>
+  <mat-icon *ngIf="displayedRating < 2.5" (mouseenter)="displayRating(3)">star_border</mat-icon>
+  <mat-icon *ngIf="displayedRating >= 2.5 && displayedRating < 3" (mouseenter)="displayRating(3)">star_half</mat-icon>
+  <mat-icon *ngIf="displayedRating >= 3" (mouseenter)="displayRating(3)">star</mat-icon>
+  <mat-icon *ngIf="displayedRating < 3.5" (mouseenter)="displayRating(4)">star_border</mat-icon>
+  <mat-icon *ngIf="displayedRating >= 3.5 && displayedRating < 4" (mouseenter)="displayRating(4)">star_half</mat-icon>
+  <mat-icon *ngIf="displayedRating >= 4" (mouseenter)="displayRating(4)">star</mat-icon>
+  <mat-icon *ngIf="displayedRating < 4.5" (mouseenter)="displayRating(5)">star_border</mat-icon>
+  <mat-icon *ngIf="displayedRating >= 4.5 && displayedRating < 5" (mouseenter)="displayRating(5)">star_half</mat-icon>
+  <mat-icon *ngIf="displayedRating >= 5" (mouseenter)="displayRating(5)">star</mat-icon>
+</span>

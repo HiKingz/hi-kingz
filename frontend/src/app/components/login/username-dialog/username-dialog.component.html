@@ -1,0 +1,5 @@
+<div>Username, der in HiKingz verwendet wird, eingeben</div>
+<mat-form-field class="container">
+  <input #username matInput (keyup.enter)="addUser(username.value)" placeholder="Username">
+</mat-form-field>
+<button class="container" color="primary" mat-raised-button (click)="addUser(username.value)">Bestätigen</button>

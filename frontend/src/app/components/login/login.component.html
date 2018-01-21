@@ -1,0 +1,70 @@
+<mat-tab-group>
+  <mat-tab label="Login">
+    <div>
+      <mat-form-field class="marginTop">
+        <input #email (keyup.enter)="loginWithEmail(email.value, password.value)" matInput placeholder="Emailadresse">
+      </mat-form-field>
+      <mat-form-field class="marginTop">
+        <input #password (keyup.enter)="loginWithEmail(email.value, password.value)" matInput placeholder="Passwort"
+               [type]="hide ? 'text' : 'password'">
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+      </mat-form-field>
+      <div class="marginBot" onmouseover="this.style.cursor='pointer';" (click)="forgotPassword()">Passwort vergessen
+      </div>
+      <button class="defButton" color="primary" mat-raised-button (click)="loginWithEmail(email.value, password.value)">
+        Login
+      </button>
+      <div class="row marginTop">
+        <div class="col-xs">
+          <div class="box-row"><img class="image" onmouseover="this.style.cursor='pointer';"
+                                    (click)="loginWithFacebook()" src="../../../assets/icons/facebook.svg"></div>
+        </div>
+        <div class="col-xs">
+          <div class="box-row"><img class="image" onmouseover="this.style.cursor='pointer';" (click)="loginWithGoogle()"
+                                    src="../../../assets/icons/google.svg"></div>
+        </div>
+        <div class="col-xs">
+          <div class="box-row"><img class="image" onmouseover="this.style.cursor='pointer';"
+                                    (click)="loginWithTwitter()"
+                                    src="../../../assets/icons/twitter.svg"></div>
+        </div>
+        <div class="col-xs">
+          <div class="box-row"><img class="image" onmouseover="this.style.cursor='pointer';" (click)="loginWithGithub()"
+                                    src="../../../assets/icons/github.svg"></div>
+        </div>
+      </div>
+    </div>
+
+  </mat-tab>
+  <mat-tab label="Registrierung">
+    <div>
+      <div class="marginTop">Erstelle ein neues Konto</div>
+      <mat-form-field class="marginTop">
+        <input #usernameRegister
+               (keyup.enter)="register(usernameRegister.value, emailRegister.value, passwordRegister.value, passwordRegisterCheck.value)"
+               matInput placeholder="Username">
+      </mat-form-field>
+      <mat-form-field class="marginTop">
+        <input #emailRegister
+               (keyup.enter)="register(usernameRegister.value, emailRegister.value, passwordRegister.value, passwordRegisterCheck.value)"
+               matInput placeholder="Emailadresse">
+      </mat-form-field>
+      <mat-form-field class="marginTop">
+        <input #passwordRegister
+               (keyup.enter)="register(usernameRegister.value, emailRegister.value, passwordRegister.value, passwordRegisterCheck.value)"
+               matInput placeholder="Passwort" [type]="hide ? 'text' : 'password'">
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+      </mat-form-field>
+      <mat-form-field class="marginTop">
+        <input #passwordRegisterCheck
+               (keyup.enter)="register(usernameRegister.value, emailRegister.value, passwordRegister.value, passwordRegisterCheck.value)"
+               matInput placeholder="Passwort bestätigen" [type]="hide ? 'text' : 'password'">
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+      </mat-form-field>
+      <button class="defButton" mat-raised-button color="primary"
+              (click)="register(usernameRegister.value, emailRegister.value, passwordRegister.value, passwordRegisterCheck.value)">
+        Registrieren
+      </button>
+    </div>
+  </mat-tab>
+</mat-tab-group>

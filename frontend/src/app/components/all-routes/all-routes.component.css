@@ -1,0 +1,56 @@
+#create-route-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 70px;
+  height: 70px;
+  z-index: 100;
+}
+
+.search-box-container {
+  max-width: none !important;
+  height: 70px;
+}
+
+.spaced-item {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+
+.search-box-input {
+  font-size: 20px;
+  border-radius: 2px;
+  border: none;
+  box-shadow: none;
+}
+
+.search-settings-card, .search-box-container {
+  z-index: 100;
+}
+
+.search-settings-card {
+  padding: 12px !important;
+  padding-left: 24px !important;
+  margin-bottom: .5rem;
+}
+
+#difficulty-slider {
+  flex-grow: 5;
+}
+
+#rating-stars {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.route-detail-card-container {
+  padding: .5rem;
+  z-index: 5;
+}
+
+.load-more-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}

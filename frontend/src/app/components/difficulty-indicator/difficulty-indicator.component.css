@@ -1,0 +1,13 @@
+.difficulty-indicator-container {
+  position: relative;
+}
+
+.click-blocker {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0);
+  width: 100%;
+  height: 62px;
+  top: -29px;
+  left: 8px;
+  z-index: 10;
+}

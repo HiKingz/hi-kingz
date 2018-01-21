@@ -1,0 +1,33 @@
+<mat-card class="card-container clickable">
+  <div class="private-icon-container" *ngIf="!route.item.isPublic">
+    <i class="private-icon material-icons">lock_outline</i>
+  </div>
+  <div class="route-image-sizing-container">
+    <app-image [files]="route.item.files"></app-image>
+  </div>
+  <span class="distance-icon-container center-content-vertically" matTooltip="distance" matTooltipPosition="below"><i class="distance-icon material-icons">map</i>{{ Math.round(route.item.distance / 10) / 100 }}km</span>
+  <button mat-fab class="open-route-button" color="primary" (click)="openRoute()"><mat-icon svgIcon="hiking"></mat-icon></button>
+  <div class="info-container transparent-background">
+    <div class="row middle-xs full-height">
+      <div class="col-xs-5 info-col">
+        <app-star-rating matTooltip="average rating" matTooltipPosition="below" [rating]="route.item.ratingAggregation && route.item.ratingAggregation.avg || 0"></app-star-rating>
+      </div>
+      <div class="col-xs-5 info-col">
+        <app-difficulty-indicator matTooltip="difficulty" matTooltipPosition="below" [difficulty]="route.item.difficulty"></app-difficulty-indicator>
+      </div>
+      <div class="col-xs-2"></div>
+    </div>
+  </div>
+  <mat-card-content>
+    <div class="description-container">
+      <h2>{{ route.item.name }}</h2>
+      <p>{{ route.item.description }}</p>
+      <div class="read-more-gradient"></div>
+    </div>
+    <div class="tags-container">
+      <mat-chip-list>
+        <mat-chip *ngFor="let tag of route.item.tags">{{ tag }}</mat-chip>
+      </mat-chip-list>
+    </div>
+  </mat-card-content>
+</mat-card>
