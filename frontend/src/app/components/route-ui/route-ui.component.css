@@ -18,19 +18,20 @@
   float: left;
   margin-right: 14px;
   border-radius: 50%;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   color: white;
 }
 
-.waypoint-name {
-  width: calc(100% - 70px);
+.waypoint-name-container {
+  width: calc(100% - 62px);
 }
 
 .waypoint-card {
   margin-top: 10px;
   margin-left: 10px;
   padding: 14px !important;
+  height: 48px;
 }
 
 .clear-button {
