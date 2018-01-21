@@ -16,7 +16,7 @@
 
 .waypoint-identifier {
   float: left;
-  margin-right: 24px;
+  margin-right: 14px;
   border-radius: 50%;
   width: 56px;
   height: 56px;
@@ -24,7 +24,7 @@
 }
 
 .waypoint-name {
-  width: calc(100% - 80px);
+  width: calc(100% - 70px);
 }
 
 .waypoint-card {

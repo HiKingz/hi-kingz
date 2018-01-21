@@ -1,5 +1,5 @@
 <div class="waypoints-container">
-  <mat-card *ngFor="let wp of route.item.waypoints; let i = index" class="md-elevation-z10 waypoint-card slide-in-left" (click)="centerOn(i)">
+  <mat-card *ngFor="let wp of route.item.waypoints; let i = index" class="md-elevation-z10 waypoint-card slide-in-left clickable" (click)="centerOn(i)">
     <button mat-icon-button class="clear-button clear-button-icon" *ngIf="!readonly" (click)="deleteWaypointAt(i)"><i class="clear-button-icon material-icons">clear</i></button>
     <mat-card-content>
       <div class="waypoint-identifier primary-background center-content-horizontally center-content-vertically">{{ getCharEnum(i) }}</div>
